@@ -1,0 +1,35 @@
+.content-term {
+    padding: 4em 10%;
+    text-align: left;
+}
+
+.content-term h1 {
+    color: #233DFF;
+    margin-bottom: 0.1em;
+    font-weight: bold;
+    opacity: 0.8;
+}
+
+.content-term p, li { 
+    font-size: 1.1em;
+    color: #333;
+    opacity: 0.8;
+}
+
+.content-term h2 {
+    color: #233DFF;
+    margin: 2em 0 0.1em;
+    opacity: 0.8;
+    font-weight: bold;
+}
+
+@media (max-width: 768px) {}
+.content-term h1, .content-term h2, .content-term h3  {
+    font-size: 2.1em;
+}
+
+@media (max-width: 505px) {
+.content-term h1, .content-term h2, .content-term h3 {
+    font-size: 1.5em;
+}
+}   

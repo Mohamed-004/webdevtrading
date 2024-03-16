@@ -1,0 +1,285 @@
+{% extends "layout.html" %}
+{% block title %}
+<title>Prop Patrol - Home | Ensuring Fair Play in Prop Trading</title>
+{% endblock %}
+
+{% block content %}
+ 
+
+    <main class="content-main">
+      <div class="num-text-container"><div class="line-animated ">
+      </div>
+    
+    <h2 class="num-text">
+      Featured Firms</h2>
+       <div class="line-animated second-line">
+      </div>
+    </div>
+
+
+    <div class="firm-list" id="firm-link">
+      <!-- Example of a single firm entry -->
+      <div class="firm">
+        <div class="num-rank">1</div>
+        <div class="firm-detail-1 firm-details firm-sz">
+          
+ 
+              
+            <div class="firm-ranking firm-pic">   <img src="{{ url_for('static', filename='images/fundednext.png') }}" alt="Funded Next Logo"></div>
+         
+
+              <div class="firm-name ">Funded Next</div>
+              </div>
+
+              <div class="firm-tags firm-sz">
+                  <span class="tag preferred">Preferred</span>
+                  <span class="tag trusted">MQL License</span>
+              </div>
+        
+              <div class="firm-rating firm-sz">
+                <img src="{{ url_for('static', filename='images/proppatrolplus.png') }}" alt="Prop Patrol Regulated">
+              </div>
+    
+          <div class="firm-actions firm-sz">
+              <a class="visit-btn" href="https://fundednext.com/" target="_blank">Visit Now</a>
+              <a class="details-btn">View Details</a>
+          </div>
+        </div>
+
+        <div class="firm firm-mg-top">
+          <div class="num-rank">2</div>
+          <div class="firm-detail-1 firm-details firm-sz">
+            
+   
+                
+              <div class="firm-ranking firm-pic">   <img src="{{ url_for('static', filename='images/ftmo.png') }}" alt="Funded Next Logo"></div>
+           
+  
+                <div class="firm-name ">FTMO</div>
+                </div>
+  
+                <div class="firm-tags firm-sz">
+                    <span class="tag preferred">Preferred</span>
+                    <span class="tag trusted">MQL License</span>
+                </div>
+                <div class="firm-rating firm-sz">
+                  <img src="{{ url_for('static', filename='images/proppatrolplus.png') }}" alt="Prop Patrol Regulated">
+                </div>
+      
+            <div class="firm-actions firm-sz">
+                <a class="visit-btn" href="https://ftmo.com/en/" target="_blank">Visit Now</a>
+                <a class="details-btn">View Details</a>
+            </div>
+          </div>
+
+
+          <div class="firm firm-mg-top">
+            <div class="num-rank">3</div>
+            <div class="firm-detail-1 firm-details firm-sz">
+              
+     
+                  
+                <div class="firm-ranking firm-pic">   <img src="{{ url_for('static', filename='images/5ers.png') }}" alt="Funded Next Logo"></div>
+             
+    
+                  <div class="firm-name ">The 5ers</div>
+                  </div>
+    
+                  <div class="firm-tags firm-sz">
+                      <span class="tag preferred">Preferred</span>
+                      <span class="tag trusted">MQL License</span>
+                  </div>
+                  <div class="firm-rating firm-sz">
+                    <img src="{{ url_for('static', filename='images/proppatrolplus.png') }}" alt="Prop Patrol Regulated">
+                  </div>
+        
+              <div class="firm-actions firm-sz">
+                  <a class="visit-btn" href="https://the5ers.com/" target="_blank">Visit Now</a>
+                  <a class="details-btn">View Details</a>
+              </div>
+            </div>
+            <div class="view-more-container firm-mg-top">
+
+              <a class="visit-btn view-more" href="{{url_for('featured_firms')}}#fundednext-logo" target="_blank">View More</a>
+            </div>
+
+      </div>
+
+      <!-- <main> -->
+
+      
+
+      <div class="num-text-container">
+        <!-- <div class="line-animated "> </div> -->
+    
+    <h2 class="num-text" id="about-ref">
+      How We Help</h2>
+       <!-- <div class="line-animated second-line"></div> -->
+    </div>
+
+      <div class="about-us">
+
+       
+
+        <div class="about-parts advocacy">
+          <img src="{{ url_for('static', filename='images/shield.png') }}" alt="shield image">
+          <div>
+          <h2>Advocacy</h2>
+          <a href="{{ url_for('home') }}#faq" >Learn More</a>
+        </div>
+        </div>
+
+        <div class="about-parts advocacy">
+          <img src="{{ url_for('static', filename='images/glass.png') }}" alt="transparency image">
+          <div>
+          <h2>Transparency</h2>
+          <a href="{{ url_for('home') }}#faq" >Learn More</a>
+        </div>
+        </div>
+
+        <div class="about-parts advocacy">
+          <img src="{{ url_for('static', filename='images/check-small.png') }}" alt="check-mark">
+          <div>
+          <h2>Authenticity</h2>
+          <a href="{{ url_for('home') }}#faq" >Learn More</a>
+        </div>
+        </div>
+
+
+      </div>
+
+    </main>
+
+
+
+    <!-- <h2 class="num-text social-h2">
+     Reach Out to Us!</h2> -->
+
+    <div class="socials">
+      <div class="social-flex">
+
+        <a href="https://twitter.com/PropPatrol" target="_blank"> <img src="{{ url_for('static', filename='images/twitter.png') }}" alt="twitter"></a>
+        <a href="https://discord.gg/PzrUwSzJ8T" target="_blank"> <img src="{{ url_for('static', filename='images/discord.png') }}" alt="discord"></a>
+        <a href="mailto:proppatrol24@gmail.com"> <img src="{{ url_for('static', filename='images/email.png') }}" alt="email"></a>
+      </div>
+    </div>
+
+        <h2 class="num-text social-h2">
+          Assert Your Rights: <br> Report Your Payout Denial Now!</h2>
+
+    <script src="https://www.cognitoforms.com/f/seamless.js" data-key="Zt5vWQcmuUGGzNRkJbfuHQ" data-form="3"></script>
+
+
+    <section id="quick-links">
+      <div class="phone-container quick-links-div">
+        <h2> Your Ultimate Prop Firm Navigator</h2>
+        <p>Join our Discord to connect with a community that <br> help with your prop firm decisions!</p>
+        <a id="discord-join" href="https://discord.gg/PzrUwSzJ8T" target="_blank">Join Now</a>
+        <div>
+
+          <img src="{{ url_for('static', filename='images/phone.png') }}" alt="phone pic">
+        </div>
+      </div>
+
+      <!-- <div class="quick-links-div">
+        <h2>All Your Prop Needs</h2>
+        <img src="{{ url_for('static', filename='images/phone.png') }}" alt="phone picture">
+      </div> -->
+    </section>
+
+    <section id="faq">
+      <div class="container">
+          <h2 class="num-text">Frequently Asked Questions</h2>
+          <div class="faq-item">
+           
+              <button class="faq-question"> <div class="num-rank">Q</div>What is Prop Patrol?<span class="faq-toggle">+</span></button>
+              <div class="faq-answer" style="display: none;">
+                <div class="num-rank">A</div>
+                  <p>Prop Patrol is a dedicated platform designed to ensure traders are well-informed and protected, offering resources for prop firm verification, dispute advocacy, and community support.</p>
+              </div>
+          </div>
+          <div class="faq-item">
+              <button class="faq-question"> <div class="num-rank">Q</div>How can I report a denied payout?<span class="faq-toggle">+</span></button>
+              <div class="faq-answer" style="display: none;">
+                <div class="num-rank">A</div>   <p>You can report a denied payout directly through our Payout Report system, providing details for us to advocate on your behalf.</p> 
+              </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question"> <div class="num-rank">Q</div>What verification process does Prop Patrol use?<span class="faq-toggle">+</span></button>
+            <div class="faq-answer" style="display: none;">
+              <div class="num-rank">A</div>
+                <p>We utilize a comprehensive verification process that includes checking regulatory compliance, financial stability, and user reviews to ensure only trustworthy prop firms are recommended.</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question"> <div class="num-rank">Q</div>How often is the prop firm directory updated?<span class="faq-toggle">+</span></button>
+          <div class="faq-answer" style="display: none;">
+            <div class="num-rank">A</div>
+              <p>Our prop firm directory is regularly updated to reflect the most current information, with reviews and new firms added monthly.</p>
+          </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question"> <div class="num-rank">Q</div>Is there a fee to use Prop Patrol's services?<span class="faq-toggle">+</span></button>
+        <div class="faq-answer" style="display: none;">
+          <div class="num-rank">A</div>
+            <p>Access to features on Prop Patrol is free.</p>
+        </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question"> <div class="num-rank">Q</div>Does Prop Patrol have a community for traders?<span class="faq-toggle">+</span></button>
+      <div class="faq-answer" style="display: none;">
+        <div class="num-rank">A</div>
+          <p>Yes, Prop Patrol boasts a vibrant community of traders on Discord. It's a space where members share insights, discuss trading strategies, and support one another in navigating the prop trading landscape. Join us to connect with fellow traders and enhance your trading journey.</p>
+      </div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-question"> <div class="num-rank">Q</div>Will Prop Patrol add more features, like articles and featured reported payouts?<span class="faq-toggle">+</span></button>
+    <div class="faq-answer" style="display: none;">
+      <div class="num-rank">A</div>
+        <p>Yes, we're constantly evolving to meet the needs of our community. Upcoming enhancements include a rich library of educational articles and a section for featured reported payouts, offering even more support and insights for our traders.</p>
+    </div>
+</div>
+
+<div class="faq-item">
+  <button class="faq-question"> <div class="num-rank">Q</div>What are Prop Patrol + firms?<span class="faq-toggle">+</span></button>
+  <div class="faq-answer" style="display: none;">
+    <div class="num-rank">A</div>
+      <p>Prop Patrol+ firms are select prop firms that we closely monitor and have placed on our preferred list. These firms have demonstrated exceptional service, reliability, and trader support, meeting our stringent criteria for trader safety and satisfaction.</p>
+  </div>
+</div>
+          <!-- Repeat the above block for each FAQ you want to include -->
+      </div>
+  </section>
+
+
+  
+
+{% endblock %}
+
+
+{% block script %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('.faq-question').click(function() {
+        var answer = $(this).next('.faq-answer');
+        var toggle = $(this).find('.faq-toggle');
+
+        // Check if the answer is already displayed as flex to toggle
+        if (answer.css('display') === 'flex') {
+            answer.slideUp();
+            toggle.text('+');
+        } else {
+            answer.slideDown().css('display', 'flex');
+            toggle.text('-');
+        }
+    });
+});
+</script>
+
+{% endblock %}

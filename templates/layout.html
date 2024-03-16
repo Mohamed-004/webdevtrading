@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block title %}  {% endblock %}
+  
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favi.png') }}">
+    {% seo %} {% endblock %}
+    <meta name="description" content="Prop Patrol is dedicated to advocating for traders, providing dispute resolution services, and ensuring fair practices by prop firms.">
+    <meta name="keywords" content="prop firm, trading, dispute resolution, trader advocacy, prop trading, payout disputes, funded next, The 5%ers, FTMO">
+    <meta name="robots" content="index, follow">
+    <meta name="MobileOptimized" content="width">
+  <meta name="HandheldFriendly" content="true">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script type="application/ld+json">
+      {
+        "@context": "http://schema.org/",
+        "@type": "Service",
+        "serviceType": "Prop Firm Advocacy",
+        "provider": {
+          "@type": "Organization",
+          "name": "Prop Patrol",
+          "image": "https://www.yourwebsite.com/path/to/logo.png",
+          "url": "https://www.proppatrol.io"
+        },
+        "description": "Prop Patrol is a dedicated platform aimed at safeguarding traders' rights, offering verification services for prop firms, advocating in payout disputes, and fostering a community for trader education and support.",
+        "areaServed": "Worldwide",
+        "hasOfferCatalog": {
+          "@type": "OfferCatalog",
+          "name": "Prop Firm Advocacy Services",
+          "itemListElement": [
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "Payout Dispute Resolution"
+              }
+            },
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "Prop Firm Verification"
+              }
+            },
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "Trader Education & Resources"
+              }
+            }
+          ]
+        }
+      }
+      </script>
+      
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    {% block css %}{% endblock %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://kit.fontawesome.com/e5e83edd49.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <header>
+        <nav>
+            <div id="logo">
+                <img src="{{ url_for('static', filename='images/logo.svg') }}" alt="Prop Patrol Logo">
+            </div>
+             <!-- <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button> -->
+
+      <!-- <div class="box">
+        <select>
+          <option><a href="#home" class="special-link">Home</a></option>
+          <option><a href="#trusted-props">Featured Props</a></option>
+          <option><a href="#faq">FAQ</a></option>
+          <option><a href="#about">About</a></option>
+          <option><a href="#denied-payouts" class="special-2">Denied Payouts (Soon)</a></option>
+        </select>
+        <svg class="svg-arrow" xmlns="http://www.w3.org/2000/svg" height="20" width="20" viewBox="0 0 320 512"><path fill="#74C0FC" d="M137.4 374.6c12.5 12.5 32.8 12.5 45.3 0l128-128c9.2-9.2 11.9-22.9 6.9-34.9s-16.6-19.8-29.6-19.8L32 192c-12.9 0-24.6 7.8-29.6 19.8s-2.2 25.7 6.9 34.9l128 128z"/></svg>
+      </div> -->
+
+      <!-- <div class="dropdown">
+        <button class="dropbtn">Select Option  <svg class="svg-arrow" xmlns="http://www.w3.org/2000/svg" height="20" width="20" viewBox="0 0 320 512"><path fill="#74C0FC" d="M137.4 374.6c12.5 12.5 32.8 12.5 45.3 0l128-128c9.2-9.2 11.9-22.9 6.9-34.9s-16.6-19.8-29.6-19.8L32 192c-12.9 0-24.6 7.8-29.6 19.8s-2.2 25.7 6.9 34.9l128 128z"/></svg></button>
+        <div class="dropdown-content">
+            <a href="#home">Home</a>
+            <a href="#trusted-props">Featured Props</a>
+            <a href="#faq">FAQ</a>
+            <a href="#about">About</a>
+            <a href="#denied-payouts">Denied Payouts (Soon)</a>
+        </div>
+    </div> -->
+
+    <div class="dropdown">
+        <button class="btn btn-primary dropdown-toggle" id="menu1" type="button" data-toggle="dropdown">Home
+        <span class="caret"></span></button>
+        <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+          <li role="presentation"><a role="menuitem" tabindex="-1" href="{{ url_for('home') }}">Home</a></li>
+          <li role="presentation"><a role="menuitem" tabindex="-1" href="{{ url_for('featured_firms') }}">Featured Props</a></li>
+          <li role="presentation"><a role="menuitem" tabindex="-1" href="{{ url_for('home') }}#faq">FAQ</a></li>
+          <li role="presentation" class="divider"><a role="menuitem" tabindex="-1" href="{{ url_for('home') }}#about-ref">About</a></li>
+          <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Denied Payouts <br> (Soon)</a></li>    
+        </ul>
+      </div>
+
+            <ul id="nav-links">
+                <li><a href="{{ url_for('home') }}" class="special-link">Home</a></li>
+                <li><a href="{{ url_for('featured_firms') }}">Featured Props</a></li>
+                <li><a href="{{ url_for('home') }}#faq">FAQ</a></li>
+                <li><a href="{{ url_for('home') }}#about-ref">About</a></li>
+                <li><a href="#denied-payouts" class="special-2">Denied Payouts (Soon)</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="hero">
+          <div class="hero-flex-1">
+
+            <h1 class="flex-full-child"> You Secure <span class="unline">Your</span> Trades<br> <span class="blue-text">  <span class="s-left">W</span>e Guard <span class="unline"> Your</span> Gains </span></h1>
+            <p class="flex-full-child">Unfair Payout <strong> Denied</strong>? We'll Advocate for Your <br> <strong>  Rightful Earnings</strong>, at No Cost.</p>
+            <div id="cta-buttons" class="flex-full-child">
+              <a id="advocate-button" href="{{ url_for('report_payout') }}#cog-input-auto-0">Prop Advocate</a>
+             <a id="report-button" href="{{ url_for('report_payout') }}#cog-input-auto-0">  Payout Report</a>
+            </div>
+          </div>
+          <div class="hero-flex-2">
+            <img src="{{ url_for('static', filename='images/check.png') }}" alt="Prop Patrol | never get your payout rejected">
+          </div>
+        </section>
+    </main>
+    
+    {% block content %}{% endblock %}
+    
+    <footer>
+        <div class="container">
+            <h2>Disclaimer</h2>
+            <p>Please note that Prop Patrol is not a financial advisory service. Our platform and services are designed to facilitate informed decision-making by providing a comprehensive database and insights on proprietary trading firms. Users are responsible for adhering to the laws and regulations applicable within their jurisdiction while utilizing Prop Patrol's offerings. All information and content available through Prop Patrol are intended for general guidance and are governed by Canadian regulations. We encourage all users to conduct thorough research and consider their financial circumstances before making investment decisions. Prop Patrol shall not be held liable for any outcomes resulting from actions taken based on information found on our platform.</p>
+            
+        </div>
+    </footer>
+
+    <div class="bottom-footer">
+        <div class="copyright">
+            &copy; 2024 Prop Patrol. All rights reserved.
+        </div>
+        <div class="social-contact">
+            <a href="https://twitter.com/PropPatrol" target="_blank">Twitter</a>
+            <a href="mailto:proppatrol24@gmail.com">Contact Us</a>
+            <a href="{{url_for('tos')}}#terms">Terms Of Service</a>
+        </div>
+    </div>
+    
+
+    {% block script %}{% endblock %}
+</body>
+
+</html>

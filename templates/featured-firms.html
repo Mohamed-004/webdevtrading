@@ -1,0 +1,189 @@
+{% extends "layout.html" %}
+
+{% block title %}
+<title>Featured Prop Firms | Prop Patrol - Your Trading Safeguard</title>
+{% endblock %}
+
+{% block content %}
+
+<main class="content-main">
+    <div class="num-text-container"><div class="line-animated ">
+    </div>
+  
+  <h2 class="num-text">
+    Forex Firms</h2>
+     <div class="line-animated second-line">
+    </div>
+  </div>
+
+
+  <div class="firm-list" id="firm-link">
+    <!-- Example of a single firm entry -->
+    <div class="firm">
+      <div class="num-rank">1</div>
+      <div class="firm-detail-1 firm-details firm-sz">
+        
+
+            
+          <div class="firm-ranking firm-pic">   <img id="fundednext-logo" src="{{ url_for('static', filename='images/fundednext.png') }}" alt="Funded Next Logo"></div>
+       
+
+            <div class="firm-name ">Funded Next</div>
+            </div>
+
+            <div class="firm-tags firm-sz">
+                <span class="tag preferred">Preferred</span>
+                <span class="tag trusted">MQL License</span>
+            </div>
+      
+            <div class="firm-rating firm-sz">
+              <img src="{{ url_for('static', filename='images/proppatrolplus.png') }}" alt="Prop Patrol Regulated">
+            </div>
+  
+        <div class="firm-actions firm-sz">
+            <a class="visit-btn" href="https://fundednext.com/" target="_blank">Visit Now</a>
+            <a class="details-btn">View Details</a>
+        </div>
+      </div>
+
+      <div class="firm firm-mg-top">
+        <div class="num-rank">2</div>
+        <div class="firm-detail-1 firm-details firm-sz">
+          
+ 
+              
+            <div class="firm-ranking firm-pic">   <img src="{{ url_for('static', filename='images/ftmo.png') }}" alt="Funded Next Logo"></div>
+         
+
+              <div class="firm-name ">FTMO</div>
+              </div>
+
+              <div class="firm-tags firm-sz">
+                  <span class="tag preferred">Preferred</span>
+                  <span class="tag trusted">MQL License</span>
+              </div>
+              <div class="firm-rating firm-sz">
+                <img src="{{ url_for('static', filename='images/proppatrolplus.png') }}" alt="Prop Patrol Regulated">
+              </div>
+    
+          <div class="firm-actions firm-sz">
+              <a class="visit-btn" href="https://ftmo.com/en/" target="_blank">Visit Now</a>
+              <a class="details-btn">View Details</a>
+          </div>
+        </div>
+
+
+        <div class="firm firm-mg-top">
+          <div class="num-rank">3</div>
+          <div class="firm-detail-1 firm-details firm-sz">
+            
+   
+                
+              <div class="firm-ranking firm-pic">   <img src="{{ url_for('static', filename='images/5ers.png') }}" alt="Funded Next Logo"></div>
+           
+  
+                <div class="firm-name ">The 5ers</div>
+                </div>
+  
+                <div class="firm-tags firm-sz">
+                    <span class="tag preferred">Preferred</span>
+                    <span class="tag trusted">MQL License</span>
+                </div>
+                <div class="firm-rating firm-sz">
+                  <img src="{{ url_for('static', filename='images/proppatrolplus.png') }}" alt="Prop Patrol Regulated">
+                </div>
+      
+            <div class="firm-actions firm-sz">
+                <a class="visit-btn" href="https://the5ers.com/" target="_blank">Visit Now</a>
+                <a class="details-btn">View Details</a>
+            </div>
+          </div>
+
+    </div>
+
+    <div class="num-text-container"><div class="line-animated ">
+    </div>
+  
+  <h2 class="num-text">
+     Stock & Future Firms</h2>
+     <div class="line-animated second-line">
+    </div>
+  </div>
+
+  <div class="firm-list" id="firm-link">
+    <!-- Example of a single firm entry -->
+    <div class="firm firm-mg-top">
+      <div class="num-rank">1</div>
+      <div class="firm-detail-1 firm-details firm-sz">
+        
+
+            
+          <div class="firm-ranking firm-pic">   <img src="{{ url_for('static', filename='images/topstep.png') }}" alt="Top Step Logo"></div>
+       
+
+            <div class="firm-name ">Top Step</div>
+            </div>
+
+            <div class="firm-tags firm-sz">
+                <!-- <span class="tag preferred">Preferred</span> -->
+                <span class="tag trusted">Monthly Sub</span>
+              
+            </div>
+      
+            <div class="firm-rating firm-sz firm-tag-dk">
+              <!-- <img src="{{ url_for('static', filename='images/proppatrolplus.png') }}" alt="Prop Patrol Regulated">
+               -->
+               <span class="tag trusted">90-100% Split</span>
+               <span class="tag trusted">Futures</span>
+            </div>
+  
+        <div class="firm-actions firm-sz">
+            <a class="visit-btn" href="https://www.topstep.com/" target="_blank">Visit Now</a>
+            <a class="details-btn">View Details</a>
+        </div>
+      </div>
+
+      <div class="firm firm-mg-top">
+        <div class="num-rank">2</div>
+        <div class="firm-detail-1 firm-details firm-sz">
+          
+  
+              
+            <div class="firm-ranking firm-pic">   <img src="{{ url_for('static', filename='images/traderslaunch.png') }}" alt="Traders Launch Logo"></div>
+         
+  
+              <div class="firm-name ">Traders Launch</div>
+              </div>
+  
+              <div class="firm-tags firm-sz">
+                  <!-- <span class="tag preferred">Preferred</span> -->
+                  <span class="tag trusted">Payouts Unscheduled</span>
+                
+              </div>
+        
+              <div class="firm-rating firm-sz firm-tag-dk">
+                <!-- <img src="{{ url_for('static', filename='images/proppatrolplus.png') }}" alt="Prop Patrol Regulated">
+                 -->
+                 <span class="tag trusted">Consistency Rules</span>
+                 <span class="tag trusted">Stocks</span>
+              </div>
+    
+          <div class="firm-actions firm-sz">
+              <a class="visit-btn" href="https://www.traderslaunch.com/" target="_blank">Visit Now</a>
+              <a class="details-btn">View Details</a>
+          </div>
+        </div>
+
+
+
+      <!-- future firm list end -->
+      </div>
+
+
+
+
+
+    </main>
+    
+
+{% endblock %}
