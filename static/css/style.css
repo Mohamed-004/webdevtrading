@@ -1468,6 +1468,10 @@ width: 85%;
     #logo img {
         max-width: 80px;
     }
+
+    button.el-button.cog-button--has-status.cog-button--primary.cog-button--navigation.cog-button--submit.el-button--default.cog-button {
+        width: 163px !important;
+    }
  
 }
 
