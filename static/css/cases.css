@@ -373,6 +373,10 @@ main.content-main {
 
 @media (max-width: 900px) {
 
+    .tweet-icon, .tag {
+        margin-right: 0.6em;
+    }
+
 .report-header {
     display: flex;
     flex-flow: row wrap;
