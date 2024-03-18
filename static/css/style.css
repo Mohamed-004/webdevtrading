@@ -295,7 +295,8 @@ h2.num-text {
 .firm-ranking {
     font-size: 1.5em;
     color: #050A30; /* A deep blue color */
-    margin-right: 10px;
+    display: flex;
+    justify-content: center;
 }
 
 .firm-details {
@@ -406,6 +407,7 @@ h2.num-text {
 .firm-detail-1.firm-details.firm-sz {
     display: flex;
     align-items: center;
+    justify-content: center;
 } 
 
 .firm-detail-1.firm-details.firm-sz img {
@@ -1219,12 +1221,18 @@ width: 80%;
 margin-right: auto;
 margin-left: auto;
     }
+
+    #nav-links a {
+        font-size: 1em;
+    }
 }
 
 @media (max-width: 1200px) {
    #hero h1.flex-full-child {
     font-size: 3.4em;
    }
+
+
 }
 
 /* Responsive Styles */
@@ -1441,7 +1449,7 @@ width: 100%;
 
     .firm-detail-1.firm-details.firm-sz {
         width: 50%;
-  justify-content: left;
+        /* justify-content: left; */
     }
 
    

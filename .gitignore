@@ -1,3 +1,4 @@
 # .gitignore
 venv
 __pycache__
+templates/report_1_mock.html
