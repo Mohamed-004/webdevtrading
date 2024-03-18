@@ -19,9 +19,9 @@ def featured_firms():
 def tos():
     return render_template('terms-of-service.html')
 
-# @app.route('/reports/tft-10a')
-# def tft_10():
-#     return render_template('report_1_mock.html')
+@app.route('/reports/tft-10a')
+def tft_10():
+    return render_template('report_1_mock.html')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)

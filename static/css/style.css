@@ -118,11 +118,11 @@ header nav {
 }
 
 #nav-links .special-link {
-    color: #233DFF;
+    color: #0c3594d1;
 }
 #nav-links .special-2 {
 
-    color:#3C56F2
+color: #0c3594d1;
 }
 
 /* Hero Section Styles */
@@ -325,10 +325,24 @@ h2.num-text {
 
 .preferred {
     background-color: #F1F8FF; /* Different background for preferred tag */
+    color: #0c3594d1;
+    font-weight: bold;
+    padding: 5px 10px;
+    margin-right: 5px;
+    border-radius: 4px;
+    font-size: 0.9em;
+    /* border: 1px #2196f357 solid; */
 }
 
 .trusted {
     background-color: #F1F8FF; /* Green color for trusted tag */
+    background-color: #F1F8FF;
+    color: #0c3594d1;
+    font-weight: bold;
+    padding: 5px 10px;
+    margin-right: 5px;
+    border-radius: 4px;
+    font-size: 0.9em;
 }
 
 .firm-rating {
@@ -364,6 +378,11 @@ h2.num-text {
     margin: 0.4em auto;
     border-radius: 1.8em;
     text-align: center;
+    border: 1px #2196f357 solid;
+    background-color: #F1F8FF !important;
+    color: #0c3594d1;
+    font-weight: bold;
+    border-radius: 10px;
 }
 
 .details-btn {
@@ -454,7 +473,7 @@ h2.num-text {
 .about-parts h2 {
     font-size: 1.6em;
     font-weight: bold;
-    color: #1262FF;
+    color: #0c3594d1;
     margin: 0;
     width: 100%;
 }
@@ -476,7 +495,7 @@ h2.num-text {
 
 .about-us a {
     font-weight: bold;
-    color: #3c56f2e3;
+    color: #0c3594a3;
     display: inline-block;
     margin-top: -0.5em;
     font-size: 0.9em;
@@ -561,7 +580,7 @@ input#cog-input-auto-0, input#cog-input-auto-1, input#cog-1, input#cog-2, input#
 }
 
 form.😉.cog-cognito.cog-form.cog-3.is-default.cog-cognito--styled.cog-form--light-background.cog-cognito--protect-css * {
-    color: #00137dc9;
+    color: #0c3594d1;
     font-family: "Poppins", sans-serif !important;
 } 
 
@@ -749,7 +768,7 @@ h2.num-text.social-h2 {
     padding: 1.6em 1em;
     background-color: #F8FBFE; /* Adjust the color as necessary */
     border: none;
-    color: #050a30bd;
+    color: #0c3594d1;
     width: 100%;
     font-weight: 500;
     font-size: 1.4em;
@@ -766,7 +785,7 @@ h2.num-text.social-h2 {
 }
 
 .faq-question .num-rank {
-    background: #050a30e0
+    background: #0c3594;
 }
 
 .faq-answer .num-rank {
@@ -805,7 +824,7 @@ background-color: #233DFF;
 }
 
 .faq-answer p {
-    color: #65687d;
+    color: #0c3594d1;
     /* letter-spacing: -.01em; */
     margin-bottom: 0;
     font-size: 0.9em;
@@ -841,9 +860,9 @@ footer .container {
 
 footer h2 {
      /* Space between the disclaimer heading and text */
-    text-align: left;
-    color: #050A30;
-    font-weight: bold;
+     text-align: left;
+     color: #0c3594;
+     font-weight: bold;
 }
 
 footer p {
@@ -1536,4 +1555,11 @@ width: 85%;
     background-color: #050a30e3;
     border-radius: 5px;
     /* box-shadow: 0px 15px 40px 0px rgba(109, 141, 173, 0.55); */
+    border-radius: 4px;
+    /* box-shadow: 0px 10px 40px 0px rgba(109, 141, 173, 0.25); */
+    border: 1px #2196f357 solid;
+    background-color: #F1F8FF !important;
+    color: #0c3594d1;
+    font-weight: bold;
+    border-radius: 10px;
 }
