@@ -142,8 +142,9 @@ height: 18px;
 .report-padding {
     padding: 0 2em 2em 0;
     padding: 0 1em 1em 0;
-    background: #233dff;
+    background: #1262FF;
     border-radius: 0 60px 0 30px;
+    margin-bottom: 2em;
 }
 
 .report-bg {
@@ -283,9 +284,11 @@ p.report-desc {
   
   .progress-bar {
   
-    height: 15px;
-    background-color: #233DFF;
-    border-radius: 10px;
+height: 15px;
+  
+background-color: #1262FF;
+  
+border-radius: 10px;
   }
 
 .progress-bar.bar-1 {
@@ -321,4 +324,67 @@ span.percent-num {
 
 span.prop-name {
     color: #0c3594ad;
+    text-align: right;
+}
+
+p.name.name-header {
+    text-align: center;
+    margin-bottom: 1.6em;
+    font-size: 1.3em;
+}
+
+h2.num-text {
+    text-align: center;
+}
+
+@media (max-width: 1200px) { 
+    .report-description-trader {
+        width: 100%;
+    }
+
+    .user-logo.prop-patrol-icon {
+max-width: 25px;
+    }
+
+    .report-metrics {
+        /* flex: 2; */
+        /* padding-left: 20px; */
+        /* border-left: 1px solid #e0e0e0; */
+        width: 100%;
+        margin-top: 1.5em;
+        /* flex: 2; */
+        /* padding-left: 20px; */
+        /* border-left: 1px solid #e0e0e0; */
+        width: 100%;;
+    }
+
+    
+}
+
+
+@media (max-width: 1100px) {
+main.content-main {
+    padding: 1.5em 1em;
+}
+
+
+
+}
+
+@media (max-width: 900px) {
+
+.report-header {
+    display: flex;
+    flex-flow: row wrap;
+}
+
+.trade-info {
+    display: flex;
+    flex-flow: row wrap;
+    /* flex-grow: 2; */
+    width: 100%;
+    justify-content: left;
+    margin-top: 1em;
+}
+
 }

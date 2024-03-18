@@ -1390,6 +1390,13 @@ margin-left: auto;
     header nav {
         padding: 0em 2em;
         position: relative;
+
+        
+    }
+
+    .tweet-icon, .tag {
+        margin-right: 0.6em !important;
+        /* border: 1px #2196f357 solid; */
     }
 
     /* #cta-buttons a {
@@ -1480,7 +1487,7 @@ width: 100%;
     .phone-container p, .social-h2 {
    
 font-size: 1em;
-   
+
 width: 85%;
    
 }
@@ -1562,4 +1569,10 @@ width: 85%;
     color: #0c3594d1;
     font-weight: bold;
     border-radius: 10px;
+}
+
+
+
+span.tag.preferred {
+    margin: 0;
 }
