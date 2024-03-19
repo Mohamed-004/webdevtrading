@@ -606,7 +606,7 @@ button.el-button.cog-button--secondary.cog-upload__upload-button.el-button--defa
 }
 
 a.visit-btn:hover {
-    color: white;
+    color: #0c3594d1;
     opacity: 1;
 }
 
@@ -1395,7 +1395,7 @@ margin-left: auto;
     }
 
     .tweet-icon, .tag {
-        margin-right: 0.6em !important;
+        /* margin-right: 0.6em !important; */
         /* border: 1px #2196f357 solid; */
     }
 
