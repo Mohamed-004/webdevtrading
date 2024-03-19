@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /__pycache__/
+Disallow: /venv/
+Disallow: /app.py/
+Disallow: /requirements.txt/
+Disallow: /Procfile/

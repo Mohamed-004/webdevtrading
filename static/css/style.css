@@ -1139,6 +1139,66 @@ ul.dropdown-menu {
 background-color: #a7d4f682;
 }
 
+.feat-reports {
+    display: flex;
+    flex-flow: row nowrap;
+    /* align-items: center; */
+    width: 100%;
+    margin: 2.5em auto;
+    border: solid 1px #2196f357;
+    padding: 2em;
+    border-radius: 20px;
+    background: #ffffff87;
+    box-shadow: 0px 10px 40px 0px rgba(109, 141, 173, 0.25);
+}
+
+.feat-reports-img {
+    display: flex;
+    align-items: center;
+    /* justify-content: center; */
+    /* width: 20%; */
+}
+
+.feat-reports-img  img {
+    max-height: 90px;
+    border-radius: 50%;
+}
+
+.feat-reports .name {
+    margin: 0;
+    display: flex;
+    justify-content: space-between;
+}
+
+.feat-reports p.report-description-p {
+    color: #0c3594d1;
+    width: 60%;
+    /* line-height: 1.1em; */
+}
+
+.feat-reports span.status.tag {
+    max-width: fit-content;
+    font-size: 0.9em;
+    margin-top: 1em;
+    border: 1px #2196f357 solid;
+}
+
+
+
+.feat-reports-text {
+    flex-grow: 2;
+    margin-left: 1.5em;
+}
+
+span.second-name {
+    color: #0c3594ad;
+}
+
+.report-tags {
+    display: flex;
+    flex-flow: row wrap;
+}
+
 @media (max-width: 1600px) {
 
 .hero-flex-2 {
@@ -1259,6 +1319,40 @@ margin-left: auto;
     /* Adjustments for tablets and below */
     /* for desktop sizes use as reference */
     /* h1 header is 80 pixels */
+    
+    .feat-reports-text { 
+        width: 100%;
+        margin-left: 0;
+    }
+
+    .feat-reports {
+        padding: 1.3em;
+    }
+
+    .feat-reports .name {/* margin-bottom: 1em; */font-size: 1.1em;}
+
+    .feat-reports p.report-description-p {
+        color: #0c3594d1;
+        width: 100%;
+        margin: 0.6em 0;
+    }
+
+    .feat-reports-img {
+        width: 100%;
+        justify-content: center;
+        margin-bottom: 1em;
+        
+    }
+
+    .feat-reports-img img {
+        border: 1px #2196f357 solid;
+        height: 60px;
+    }
+
+    .feat-reports {
+        display: flex;
+        flex-flow: row wrap;
+    }
 
     form.😉.cog-cognito.cog-form.cog-3.is-default.cog-cognito--styled.cog-form--light-background.cog-cognito--protect-css {
         width: 90%;
