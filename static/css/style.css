@@ -1216,6 +1216,11 @@ span.second-name {
     font-weight: bold;
 }
 
+#kortana-img {
+    border-radius: 0%;
+    border: none;
+}
+
 @media (max-width: 1600px) {
 
 .hero-flex-2 {
