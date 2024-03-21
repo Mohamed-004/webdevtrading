@@ -174,10 +174,11 @@ height: 18px;
     position: relative;
 }
 
-.report-description-patrol .report-description-p{
+.report-description-patrol .report-description-p, .report-description-trader .report-description-p{
     font-size: 1.1em;
     color: #0c3594d1;
     font-weight: 500;
+    margin-top: 0.3em;
 }
 
 .report-description-patrol span{
@@ -337,6 +338,24 @@ h2.num-text {
     text-align: center;
 }
 
+p.name.small-header {
+    color: #0c3594ad;
+}
+
+.small-header-sect {
+    margin-top: 1.3em;
+}
+
+.svg-link {
+    display: flex;
+    align-items: center;
+}
+
+.case-header {
+    text-align: left;
+}
+
+
 @media (max-width: 1200px) { 
     .report-description-trader {
         width: 100%;
@@ -392,3 +411,4 @@ main.content-main {
 }
 
 }
+

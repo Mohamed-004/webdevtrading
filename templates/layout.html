@@ -93,7 +93,7 @@
           <li role="presentation"><a role="menuitem" tabindex="-1" href="{{ url_for('home') }}#about-ref">About</a></li>
           <li role="presentation" class="divider"></li>
           
-          <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Denied Payouts <br> (Soon)</a></li>   
+          <li role="presentation"><a role="menuitem" tabindex="-1" href="{{ url_for('home') }}#reports-payout">Denied Payouts </a></li>   
           <li role="presentation" class="divider"></li> 
           <li role="presentation"><a role="menuitem" tabindex="-1" href="https://discord.gg/TP33BZBC" target="_blank"> Discord</a></li>   
           <li role="presentation"><a role="menuitem" tabindex="-1" href="https://twitter.com/PropPatrol" target="_blank"> Twitter</a></li>   
@@ -105,7 +105,7 @@
                 <li><a href="{{ url_for('featured_firms') }}">Featured Props</a></li>
                 <li><a href="{{ url_for('home') }}#faq">FAQ</a></li>
                 <li><a href="{{ url_for('home') }}#about-ref">About</a></li>
-                <li><a href="#denied-payouts" class="special-2">Denied Payouts (Soon)</a></li>
+                <li><a href="{{ url_for('home') }}#reports-payout" class="special-2">Denied Payouts</a></li>
             </ul>
         </nav>
     </header>

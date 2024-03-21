@@ -1171,7 +1171,7 @@ background-color: #a7d4f682;
 }
 
 .feat-reports p.report-description-p {
-    color: #0c3594d1;
+    color: #0c3594e8;
     width: 60%;
     /* line-height: 1.1em; */
 }
@@ -1205,6 +1205,15 @@ span.second-name {
 
 .future .firm-name {
     margin-left: 1.2em;
+}
+
+.date-p {
+    margin-top: 0.4em;
+}
+
+.case-link {
+    color: #2195f3 !important;
+    font-weight: bold;
 }
 
 @media (max-width: 1600px) {
