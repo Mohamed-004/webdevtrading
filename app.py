@@ -27,5 +27,9 @@ def tos():
 def dei_20a():
     return render_template('dei_case_20a.html')
 
+@app.route('/reports/fast-forex-funding-30a')
+def fff_30a():
+    return render_template('fff_case_30a.html')
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
