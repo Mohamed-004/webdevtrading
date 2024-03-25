@@ -1237,6 +1237,34 @@ span.second-name {
     margin-bottom: 1.8em;
 }
 
+.feat-reports.resolved-green {
+
+    box-shadow: inset 0 4px 10px #4caf5087;
+}
+
+
+@media (min-width: 1600px) {
+
+    header nav { 
+      padding: 1em 10%;
+    }
+
+    #hero {
+        padding: 2em 10%;
+    }
+
+    main.content-main {
+        padding: 2em 10%;
+    }
+
+    #hero p {
+        position: relative;
+        top: -20px;
+
+    }
+
+}
+
 @media (max-width: 1600px) {
 
 .hero-flex-2 {

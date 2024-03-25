@@ -31,6 +31,10 @@ def dei_20a():
 def fff_30a():
     return render_template('fff_case_30a.html')
 
+@app.route('/reports/bespoke-funding-40a')
+def bsp_40a():
+    return render_template('bsp_case_40a.html')
+
 @app.route('/reports')
 def report_preview():
     return render_template('report_section.html')
