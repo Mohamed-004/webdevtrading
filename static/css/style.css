@@ -157,7 +157,7 @@ span.unline {
 }
 
 span.blue-text {
-    color: #233DFF;
+    color: #233dff;
 }
 
 #hero p {
@@ -1242,6 +1242,75 @@ span.second-name {
     box-shadow: inset 0 4px 10px #4caf5087;
 }
 
+.button-filter {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    margin-top: 1.3em;
+}
+
+
+.filter-btn {
+    padding: 10px 20px;
+    /* background-color: #4CAF50; */
+    color: white;
+    border: none;
+    display: flex;
+    flex-flow: row nowar;
+    align-items: center;
+    cursor: pointer;
+    justify-content: space-between;
+    transition: background-color 0.3s ease;
+    box-shadow: inset 0 2px 10px #03a9f442;
+    border: none;
+    color: #0c3594d1;
+    font-weight: bold;
+    padding: 1em 1.3em;
+}
+
+.filter-btn {
+    padding: 10px 20px;
+    /* background-color: #4CAF50; */
+    color: white;
+    border: none;
+    display: flex;
+    flex-flow: row nowar;
+    width: 121px;
+    align-items: center;
+    cursor: pointer;
+    justify-content: space-between;
+    transition: box-shadow 0.3s ease;
+    box-shadow: inset 0 2px 10px #03a9f442;
+    border: none;
+    color: #0c3594d1;
+    font-weight: bold;
+    padding: 1em 0.6em;
+}
+
+.filter-btn img {
+    /* margin-right: 1.4em; */
+}
+
+.filter-btn.UnResolved {
+    color: #e91e63;
+}
+
+.filter-btn.Resolved {
+    color: #4caf4f;
+}
+.filter-left {
+    border-radius: 10px 0 0 10px;
+}
+
+.filter-right {
+    border-radius: 0 10px 10px 0;
+}
+
+.filter-btn:hover {
+   /* Darker shade on hover */
+   box-shadow: inset 0 2px 10px #03a8f491;
+}
+
 
 @media (min-width: 1600px) {
 
@@ -1530,6 +1599,12 @@ margin-left: auto;
 }
 }
 
+@media(min-width:855px) {
+    .filter-btn {
+        padding: 1em 1.2em;
+    }
+}
+
 @media(max-width:855px) {
     /* span.unline::after { 
         content: '';
@@ -1540,6 +1615,12 @@ margin-left: auto;
         margin: 2em auto;
         margin-bottom: 3em;
     } 
+
+    .filter-btn {
+        width: 95px;
+    }
+
+    
 
 }
 
@@ -1715,6 +1796,10 @@ width: 85%;
     display: flex;
     flex-flow: row nowrap;
     justify-content: center;
+}
+
+.filter-left img {
+margin: 0;
 }
 
 .view-more-container.firm-mg-top  a.visit-btn {

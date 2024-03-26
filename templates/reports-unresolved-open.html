@@ -1,0 +1,103 @@
+{% extends "layout.html" %}
+
+{% block title %}
+<title> 
+    Prop Patrol | List of Reported Firms Closed Reports Unresolved</title>
+{% endblock %}
+
+{% block css %}    <link rel="stylesheet" href="{{ url_for('static', filename='css/cases.css') }}"> {% endblock %}
+
+
+{% block content %}
+
+
+<main class="content-main">
+
+
+    <h2 class="num-text">
+        Featured Reports</h2>
+
+<div class="feat-reports">
+    <div class="feat-reports-img">
+
+      <img src="{{ url_for('static', filename='images/uwm.jpg') }}" alt="UWM logo">
+    </div>
+
+    <div class="feat-reports-text">
+      <p class="name"> <span> Union Wealth Management</span> <span class="second-name">Unresolved</span></p>
+      <p class="report-description-p"> <i> <strong style="
+        font-weight: 500;"> Verified </strong>  payout denial</i> at <u>  Union Wealth Management</u>.  Union Wealth Management is currently cooperating with us, and we anticipate providing further insights as we continue our investigation.  </p>
+      <p class="report-description-p"><strong style="
+        font-weight: 500;"> Date Of Incident:</strong> 2024-03-05</p>
+          <p class="report-description-p case-link"> <a href="#">Report Reference # <strong style="
+            font-weight: 500;"> </strong> 60A</a></p>
+      
+      <div class="report-tags">
+
+          <!-- <span class="status tag ">$</span> -->
+          <span class="status tag ">Denied Payout</span>
+          <span class="status tag ">Reason: KYC</span>
+          <span class="status tag ">In Progress</span>
+      </div>
+    </div>
+
+  </div>
+
+
+
+
+
+  <div class="feat-reports">
+    <div class="feat-reports-img">
+
+      <img  id="kortana-img" src="{{ url_for('static', filename='images/kortana.png') }}" alt="kortana logo">
+    </div>
+
+    <div class="feat-reports-text">
+      <p class="name"> <span> Kortana</span> <span class="second-name">Unresolved</span></p>
+      <p class="report-description-p"> <i><strong style="
+        font-weight: 500;"> Verified </strong> payout denial</i> at <u> Kortana</u>. Further insights will follow as we examine Kortana's Perspective.  </p>
+     <p class="report-description-p"><strong style="
+      font-weight: 500;"> Date Of Incident:</strong> 2024-02-01</p>
+       <p class="report-description-p case-link"> <a href="#"> Report Reference # <strong style="
+        font-weight: 500;"> </strong> 70A</a></p>
+      <div class="report-tags">
+
+          <span class="status tag ">$9195</span>
+          <span class="status tag ">Duplicate IP's</span>
+          <span class="status tag ">In Progress</span>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="feat-reports">
+    <div class="feat-reports-img">
+
+      <img   src="{{ url_for('static', filename='images/tft.png') }}" alt="kortana logo">
+    </div>
+
+    <div class="feat-reports-text">
+      <p class="name"> <span> The Funded Trader</span> <span class="second-name">Unresolved</span></p>
+      <p class="report-description-p"> <i><strong style="
+        font-weight: 500;"> Verified </strong> payout denial</i> at <u> The Funded Trader</u>. Further insights will follow as we examine The Funded Trader's Perspective.  </p>
+     <p class="report-description-p"><strong style="
+      font-weight: 500;"> Date Of Incident:</strong> 2024-03-07</p>
+       <p class="report-description-p case-link"> <a href="#">Report Reference # <strong style="
+        font-weight: 500;"> </strong> 80A</a></p>
+      <div class="report-tags">
+
+          <span class="status tag ">$226,591</span>
+          <span class="status tag ">Copy Trading</span>
+          <span class="status tag ">In Progress</span>
+      </div>
+    </div>
+
+  </div>
+
+
+
+  </main>
+
+
+          {% endblock %}

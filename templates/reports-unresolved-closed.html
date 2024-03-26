@@ -1,0 +1,106 @@
+{% extends "layout.html" %}
+
+{% block title %}
+<title> 
+    Prop Patrol | List of Reported Firms Closed Reports Unresolved</title>
+{% endblock %}
+
+{% block css %}    <link rel="stylesheet" href="{{ url_for('static', filename='css/cases.css') }}"> {% endblock %}
+
+
+{% block content %}
+
+
+<main class="content-main">
+
+
+    <h2 class="num-text">
+        Featured Reports</h2>
+    
+    
+        <div class="feat-reports red-report" id="reports-payout">
+          <div class="feat-reports-img">
+    
+            <img src="{{ url_for('static', filename='images/dei.jpg') }}" alt="DEI funded logo">
+          </div>
+    
+          <div class="feat-reports-text">
+            <p class="name"> <span> DEI Funded</span> <span class="second-name">Unresolved</span></p>
+            <p class="report-description-p"> <i> <strong style="
+              font-weight: 500;"> Verified </strong>  Unjustified Account Breach</i> at <u> DEI Funded</u>.  Upon further examination of DEI Funded's it became clear that no cooperation was forthcoming from their side. Consequently, we compiled a <strong> case book</strong> to meticulously document the situation.  </p>
+    
+            <!-- <p class="report-description-p"><strong style="
+              font-weight: 500;"> Date Of Incident:</strong> 2024-03-19</p> -->
+               <p class="report-description-p "><strong style="
+                font-weight: 500;"> Date Of Incident:</strong> 2024-03-19</p>
+                <p class="report-description-p case-link"> <a href="{{url_for('dei_20a')}}"> <strong style="
+                    font-weight: 500;"> Case Book:</strong> 20A</a></p>
+            <div class="report-tags">
+    
+                <!-- <span class="status tag ">$</span> -->
+                <span class="status tag ">Manual Breach</span>
+                <span class="status tag ">Closed</span>
+            </div>
+            <a href="" class="case-read"></a>
+          </div>
+    
+        </div>
+    
+        
+        <div class="feat-reports red-report">
+            <div class="feat-reports-img">
+      
+              <img src="{{ url_for('static', filename='images/fastforex.png') }}" alt="fast forex funds logo">
+            </div>
+      
+            <div class="feat-reports-text">
+              <p class="name"> <span> Fast Forex Funding</span> <span class="second-name">Unresolved</span></p>
+              <p class="report-description-p"> <i> <strong style="
+                font-weight: 500;"> Verified </strong>  Unjustified  Declined Payout</i> at <u> Fast Forex Funding</u>.  Upon further examination of Fast Forex Funding, it became clear that no cooperation was forthcoming from their side. Consequently, we compiled a <strong> case book</strong> to meticulously document the situation.  </p>
+             <p class="report-description-p"><strong style="
+              font-weight: 500;"> Date Of Incident:</strong> 2024-03-07</p>
+              <p class="report-description-p case-link"> <a href="{{url_for('fff_30a')}}"> <strong style="
+                font-weight: 500;"> Case Book:</strong> 30A</a></p>
+              <div class="report-tags">
+      
+                  <span class="status tag ">$9000</span>
+                  <span class="status tag ">Duplicate IP's</span>
+                  <span class="status tag ">Closed</span>
+              </div>
+            </div>
+      
+          </div>
+    
+          <div class="feat-reports  red-report">
+            <div class="feat-reports-img">
+    
+              <img src="{{ url_for('static', filename='images/bespoke.png') }}" alt="Bespoke logo">
+            </div>
+    
+            <div class="feat-reports-text">
+              <p class="name"> <span> Bespoke Funding Program</span> <span class="second-name">Unresolved</span></p>
+              <p class="report-description-p"> <i> <strong style="
+                font-weight: 500;"> Verified </strong>  Account Ban</i> at <u> Bespoke Funding Program</u>.  Upon further examination of Bespoke Funding Program, it became clear that no cooperation was forthcoming from their side. Consequently, we compiled a <strong> case book</strong> to meticulously document the situation. </p>
+              <p class="report-description-p"><strong style="
+                font-weight: 500;"> Date Of Incident:</strong> 2024-03-19</p>
+    
+    <p class="report-description-p case-link"> <a href="{{url_for('bsp_40a')}}"> <strong style="
+      font-weight: 500;"> Case Book:</strong> 40A</a></p>
+              
+              <div class="report-tags">
+    
+                  <!-- <span class="status tag ">$</span> -->
+                  <span class="status tag ">Account Banned</span>
+                  <span class="status tag ">800k</span>
+                  <span class="status tag ">Closed</span>
+              </div>
+            </div>
+    
+          </div>
+
+       
+
+
+          </main>
+
+          {% endblock %}

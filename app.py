@@ -35,9 +35,21 @@ def fff_30a():
 def bsp_40a():
     return render_template('bsp_case_40a.html')
 
-@app.route('/reports')
-def report_preview():
-    return render_template('report_section.html')
+# @app.route('/reports')
+# def report_preview():
+#     return render_template('report_section.html')
+
+@app.route('/reports-unresolved-closed')
+def report_preview_unresolved():
+    return render_template('reports-unresolved-closed.html')
+
+@app.route('/reports-unresolved-open')
+def report_preview_unresolved_open():
+    return render_template('reports-unresolved-open.html')
+
+@app.route('/reports-resolved')
+def report_preview_resolved():
+    return render_template('reports-resolved.html')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
