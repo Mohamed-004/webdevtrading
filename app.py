@@ -35,6 +35,10 @@ def fff_30a():
 def bsp_40a():
     return render_template('bsp_case_40a.html')
 
+@app.route('/reports/uwm-60a')
+def uwm_60a():
+    return render_template('uwm_case_60a.html')
+
 # @app.route('/reports')
 # def report_preview():
 #     return render_template('report_section.html')

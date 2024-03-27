@@ -2,7 +2,7 @@
 
 {% block title %}
 <title> 
-    Prop Patrol | List of Reported Firms Closed Reports Unresolved</title>
+  Prop Patrol | List of Firms with Closed Reports Remaining Unresolved</title>
 {% endblock %}
 
 {% block css %}    <link rel="stylesheet" href="{{ url_for('static', filename='css/cases.css') }}"> {% endblock %}
@@ -97,6 +97,33 @@
             </div>
     
           </div>
+
+          <div class="feat-reports red-report">
+            <div class="feat-reports-img">
+        
+              <img src="{{ url_for('static', filename='images/uwm.jpg') }}" alt="UWM logo">
+            </div>
+        
+            <div class="feat-reports-text ">
+              <p class="name"> <span> Union Wealth Management</span> <span class="second-name">Unresolved</span></p>
+              <p class="report-description-p"> <i> <strong style="
+                font-weight: 500;"> Verified </strong>  payout denial</i> at <u>  Union Wealth Management</u>.   Union Wealth Management initially cooperated but failed to meet their commitments, ceasing to provide further insights, which led us to compile a comprehensive case against them. </p>
+              <p class="report-description-p"><strong style="
+                font-weight: 500;"> Date Of Incident:</strong> 2024-03-05</p>
+                  <p class="report-description-p case-link"> <a href="{{url_for('uwm_60a')}}">Report Reference # <strong style="
+                    font-weight: 500;"> </strong> 60A</a></p>
+              
+              <div class="report-tags">
+        
+                  <!-- <span class="status tag ">$</span> -->
+                  <span class="status tag ">Denied Payout</span>
+                  <span class="status tag ">Reason: KYC</span>
+                  <span class="status tag ">Closed</span>
+              </div>
+            </div>
+        
+          </div>
+        
 
        
 
