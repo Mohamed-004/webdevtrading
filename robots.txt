@@ -5,3 +5,11 @@ Disallow: /venv/
 Disallow: /app.py/
 Disallow: /requirements.txt/
 Disallow: /Procfile/
+Disallow: /static/images/bespoke.png
+Disallow: /static/images/5ers.png
+Disallow: /static/images/kortana.png
+Disallow: /static/images/FundedNext.png
+Disallow: /static/images/fastforex.png
+Disallow: /static/images/topstep.png
+Disallow: /static/images/uwm.png
+Disallow: /static/images/tft.png
