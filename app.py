@@ -1,7 +1,11 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, send_from_directory
 
 app = Flask(__name__)
 app.config['DEBUG'] = True
+
+@app.route('/robots.txt')
+def static_from_root():
+    return send_from_directory(app.static_folder, 'robots.txt')
 
 @app.route('/')
 def home():
