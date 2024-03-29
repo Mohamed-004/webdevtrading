@@ -1821,3 +1821,9 @@ margin: 0;
 span.tag.preferred {
     margin: 0;
 }
+
+.blacklisted.tag {
+    background-color: #050a30d9 !important;
+    color: #ffffff8c;
+    border: none;
+}

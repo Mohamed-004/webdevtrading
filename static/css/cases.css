@@ -412,3 +412,9 @@ main.content-main {
 
 }
 
+
+.blacklisted.tag {
+    background-color: #050a30d9 !important;
+    color: #ffffff8c;
+    border: none;
+}

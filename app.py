@@ -43,6 +43,11 @@ def bsp_40a():
 def uwm_60a():
     return render_template('uwm_case_60a.html')
 
+@app.route('/reports/kortana-70a')
+def kortana_70a():
+    return render_template('kor_case_70a.html')
+
+
 # @app.route('/reports')
 # def report_preview():
 #     return render_template('report_section.html')
