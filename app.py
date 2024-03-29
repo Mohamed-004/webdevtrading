@@ -47,6 +47,11 @@ def uwm_60a():
 def kortana_70a():
     return render_template('kor_case_70a.html')
 
+@app.route('/reports/mff-90a')
+def mff_90a():
+    return render_template('mff_case_90a.html')
+
+
 
 # @app.route('/reports')
 # def report_preview():
