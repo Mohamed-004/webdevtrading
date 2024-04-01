@@ -1,0 +1,530 @@
+{% extends "layout.html" %}
+{% block title %}
+<title>Prop Patrol | Access Case Report Metrics</title>
+{% endblock %}
+
+{% block css %}  
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/firms-look.css') }}"> 
+{% endblock %}
+
+{% block content %}
+
+<main class="content-main">
+
+
+<section id="firm-look-container">
+
+    <h2 class="num-text">
+        View Firm's <br> <span class="report-black"> Case Report Metrics</span></h2>
+
+           <!-- beginning of first top dei info container -->
+
+        <div class="firm-info-cont">
+            <div class="warning-div">
+                <img src="{{ url_for('static', filename='images/warning.png') }}" alt="Warning Icon">
+            </div>
+            <div class="firm-info-top uncooperative-color">
+            <div class="firm-img-cont">
+                <img src="{{ url_for('static', filename='images/dei.jpg') }}" alt="DEI funded logo">
+                <p class="name"> <span class="big-name"> DEI Funded</span> <br> <span class="second-name">Uncooperative Firm</span> <br> <span class="third">#20A</span> 
+                 </p>
+               
+            </div>
+
+     
+
+            <div class="firm-info-symbol">
+                <span class="sign-toggle">+</span>
+            </div>
+        </div>
+
+        <div class="firm-info-bottom">
+            <p class="name small-header">Compiled Reports:</p>
+
+            <ul>
+                <li class="report-description-p"><a href="{{url_for('dei_20a')}}"> Case #20A</a></li>
+            </ul>
+
+            <p class="name sepr">DEI Funded<span class="prop-name">Prop Firm  Metrics </span></p>
+
+            <div class="metrics-bars">
+                <div class="metric">
+                    <p class="name met-label">Transparency <span class="percent-num"> (4%)</span></p>
+                    <div class="progress-container">
+
+                    <div class="progress-bar bar-1" id="myBar1" style="
+width: 4%;
+"></div>
+                    </div>
+                </div>
+                <div class="metric">
+                    <p class="name met-label">Dishonesty <span class="percent-num">(77%) </span></p>
+                    <div class="progress-container">
+                        <div class="progress-bar bar-2" id="myBar1" style="
+                        width: 77%;"></div>
+                      </div>
+                </div>
+                <div class="metric">
+                    <p class="name met-label">Recommendation   <span class="percent-num">(2%)</span></p>
+                    <div class="progress-container">
+                        <div class="progress-bar bar-3" id="myBar1" style="
+width: 2%;
+"></div>
+                      </div>
+                </div>
+            </div>
+            <div class="tags-stats">
+
+                <span class=" tag" >Intentional Account Breach</span> 
+                <span class=" tag unrecommended" >Highly Unrecommended</span> 
+            </div>
+            <a class="visit-btn view-more" href="{{url_for('dei_20a')}}" target="_blank">Learn More</a>
+        </div>
+    </div>
+
+    <!-- end of first top dei info container -->
+
+    <!-- begninning of fast forex funding container -->
+
+    <div class="firm-info-cont ">
+
+        <div class="firm-info-top uncooperative-color">
+            <div class="warning-div">
+                <img src="{{ url_for('static', filename='images/warning.png') }}" alt="Warning Icon">
+            </div>
+        <div class="firm-img-cont">
+            <img src="{{ url_for('static', filename='images/fastforex.png') }}" alt="Fast Forex Funding">
+            <p class="name"> <span class="big-name"> Fast Forex Funding</span> <br> <span class="second-name">Uncooperative Firm</span> <br> <span class="third">#30A</span> 
+             </p>
+           
+        </div>
+
+ 
+
+        <div class="firm-info-symbol">
+            <span class="sign-toggle">+</span>
+        </div>
+    </div>
+
+    <div class="firm-info-bottom">
+        <p class="name small-header">Compiled Reports:</p>
+
+        <ul>
+            <li class="report-description-p"><a href="{{url_for('fff_30a')}}"> Case #30A</a></li>
+        </ul>
+
+        <p class="name sepr">Fast Forex Funding<span class="prop-name">Prop Firm  Metrics </span></p>
+
+        <div class="metrics-bars">
+            <div class="metric">
+                <p class="name met-label">Transparency <span class="percent-num"> (10%)</span></p>
+                <div class="progress-container">
+
+                <div class="progress-bar bar-1" id="myBar1" style="
+width: 10%;
+"></div>
+                </div>
+            </div>
+            <div class="metric">
+                <p class="name met-label">Cooperation <span class="percent-num">(3%) </span></p>
+                <div class="progress-container">
+                    <div class="progress-bar bar-2" id="myBar1" style="
+                    width: 3%;"></div>
+                  </div>
+            </div>
+            <div class="metric">
+                <p class="name met-label">Recommendation   <span class="percent-num">(5%)</span></p>
+                <div class="progress-container">
+                    <div class="progress-bar bar-3" id="myBar1" style="
+width: 5%;
+"></div>
+                  </div>
+            </div>
+        </div>
+        <div class="tags-stats">
+
+            <span class=" tag" >Unjustified Declined Payout</span> 
+            <span class=" tag unrecommended" >Highly Unrecommended</span> 
+        </div>
+        <a class="visit-btn view-more" href="{{url_for('fff_30a')}}" target="_blank">Learn More</a>
+    </div>
+</div>
+
+<!-- fast forex ending -->
+
+<!--    beginning of bespoke  -->
+
+<div class="firm-info-cont ">
+
+    <div class="firm-info-top uncooperative-color">
+        <div class="warning-div">
+            <img src="{{ url_for('static', filename='images/warning.png') }}" alt="Warning Icon">
+        </div>
+    <div class="firm-img-cont">
+        <img src="{{ url_for('static', filename='images/bespoke.png') }}" alt="Bespoke Funding Program">
+        <p class="name"> <span class="big-name"> Bespoke Funding Program</span> <br> <span class="second-name">Uncooperative Firm</span> <br> <span class="third">#40A</span> 
+         </p>
+       
+    </div>
+
+
+
+    <div class="firm-info-symbol">
+        <span class="sign-toggle">+</span>
+    </div>
+</div>
+
+<div class="firm-info-bottom">
+    <p class="name small-header">Compiled Reports:</p>
+
+    <ul>
+        <li class="report-description-p"><a href="{{url_for('bsp_40a')}}"> Case #40A</a></li>
+    </ul>
+
+    <p class="name sepr">Bespoke Funding Program<span class="prop-name">Prop Firm  Metrics </span></p>
+
+    <div class="metrics-bars">
+        <div class="metric">
+            <p class="name met-label">Transparency <span class="percent-num"> (10%)</span></p>
+            <div class="progress-container">
+
+            <div class="progress-bar bar-1" id="myBar1" style="
+width: 10%;
+"></div>
+            </div>
+        </div>
+        <div class="metric">
+            <p class="name met-label">Cooperation <span class="percent-num">(3%) </span></p>
+            <div class="progress-container">
+                <div class="progress-bar bar-2" id="myBar1" style="
+                width: 3%;"></div>
+              </div>
+        </div>
+        <div class="metric">
+            <p class="name met-label">Recommendation   <span class="percent-num">(5%)</span></p>
+            <div class="progress-container">
+                <div class="progress-bar bar-3" id="myBar1" style="
+width: 5%;
+"></div>
+              </div>
+        </div>
+    </div>
+    <div class="tags-stats">
+
+        <span class=" tag" >Trader Banned</span> 
+        <span class=" tag unrecommended" >Highly Unrecommended</span> 
+    </div>
+    <a class="visit-btn view-more" href="{{url_for('bsp_40a')}}" target="_blank">Learn More</a>
+</div>
+</div>
+
+<!-- end of bespoke -->
+
+<!-- beginning of funded next -->
+<div class="firm-info-cont">
+
+    <div class="firm-info-top">
+        <!-- <div class="warning-div">
+            <img src="{{ url_for('static', filename='images/warning.png') }}" alt="Warning Icon">
+        </div> -->
+    <div class="firm-img-cont">
+        <img src="{{ url_for('static', filename='images/FundedNext.png') }}" alt="Funded Next">
+        <p class="name"> <span class="big-name"> Funded Next</span> <br> <span class="second-name">Cooperative Firm</span> <br> <span class="third">#50A</span> 
+         </p>
+       
+    </div>
+
+
+
+    <div class="firm-info-symbol">
+        <span class="sign-toggle">+</span>
+    </div>
+</div>
+
+<div class="firm-info-bottom">
+    <p class="name small-header">Compiled Reports:</p>
+
+    <ul>
+        <li class="report-description-p"> Case #50A</li>
+    </ul>
+
+    <p class="name sepr">Funded Next<span class="prop-name">Prop Firm  Metrics </span></p>
+
+    <div class="metrics-bars">
+        <div class="metric">
+            <p class="name met-label">Transparency <span class="percent-num"> (80%)</span></p>
+            <div class="progress-container">
+
+            <div class="progress-bar bar-1" id="myBar1" style="
+width: 80%;
+"></div>
+            </div>
+        </div>
+        <div class="metric">
+            <p class="name met-label">Cooperation <span class="percent-num">(80%) </span></p>
+            <div class="progress-container">
+                <div class="progress-bar bar-2" id="myBar1" style="
+                width: 80%;"></div>
+              </div>
+        </div>
+        <!-- <div class="metric">
+            <p class="name met-label">Recommendation   <span class="percent-num">(5%)</span></p>
+            <div class="progress-container">
+                <div class="progress-bar bar-3" id="myBar1" style="
+width: 5%;
+"></div>
+              </div>
+        </div> -->
+    </div>
+    <div class="tags-stats">
+        <span class=" tag" >Server Error</span> 
+        <span class=" tag resolved-bg-tag" >Resolved</span> 
+        <!-- <span class=" tag unrecommended" >Highly Unrecommended</span>  -->
+    </div>
+    <a class="visit-btn view-more" href="https://x.com/PropPatrol/status/1772306993270653228?s=20" target="_blank">Proof of Resolution</a>
+</div>
+</div>
+
+
+
+
+<!-- end of funded next -->
+
+<!-- beginning of union wealth management -->
+
+
+<div class="firm-info-cont ">
+
+    <div class="firm-info-top uncooperative-color">
+        <div class="warning-div">
+            <img src="{{ url_for('static', filename='images/warning.png') }}" alt="Warning Icon">
+        </div>
+    <div class="firm-img-cont">
+        <img src="{{ url_for('static', filename='images/uwm.jpg') }}" alt="UWM Logo">
+        <p class="name"> <span class="big-name"> Union Wealth Management</span> <br> <span class="second-name">Dishonest Firm</span> <br> <span class="third">#60A</span> 
+         </p>
+       
+    </div>
+
+
+
+    <div class="firm-info-symbol">
+        <span class="sign-toggle">+</span>
+    </div>
+</div>
+
+<div class="firm-info-bottom">
+    <p class="name small-header">Compiled Reports:</p>
+
+    <ul>
+        <li class="report-description-p"><a href="{{url_for('uwm_60a')}}"> Case #60A</a></li>
+    </ul>
+
+    <p class="name sepr">Union Wealth Management<span class="prop-name">Prop Firm  Metrics </span></p>
+
+    <div class="metrics-bars">
+        <div class="metric">
+            <p class="name met-label">Cooperation <span class="percent-num"> (50%)</span></p>
+            <div class="progress-container">
+
+            <div class="progress-bar bar-1" id="myBar1" style="
+width: 50%;
+"></div>
+            </div>
+        </div>
+        <div class="metric">
+            <p class="name met-label">Dishonesty <span class="percent-num">(95%) </span></p>
+            <div class="progress-container">
+                <div class="progress-bar bar-2" id="myBar1" style="
+                width: 95%;"></div>
+              </div>
+        </div>
+        <!-- <div class="metric">
+            <p class="name met-label">Recommendation   <span class="percent-num">(20%)</span></p>
+            <div class="progress-container">
+                <div class="progress-bar bar-3" id="myBar1" style="
+width: 20%;
+"></div>
+              </div>
+        </div> -->
+    </div>
+    <div class="tags-stats">
+
+        <span class=" tag" >Denied Payout</span> 
+        <span class=" tag unrecommended" >Highly Unrecommended</span> 
+    </div>
+    <a class="visit-btn view-more" href="{{url_for('uwm_60a')}}" target="_blank">Learn More</a>
+</div>
+</div>
+
+<!-- end of union wealth management -->
+
+<!-- beginning of kortana -->
+
+
+<div class="firm-info-cont ">
+
+    <div class="firm-info-top uncooperative-color">
+        <div class="warning-div">
+            <img src="{{ url_for('static', filename='images/warning.png') }}" alt="Warning Icon">
+        </div>
+    <div class="firm-img-cont">
+        <img src="{{ url_for('static', filename='images/kortana.png') }}" alt="Kortana Logo">
+        <p class="name"> <span class="big-name"> Kortana</span> <br> <span class="second-name">Black-Listed Firm</span> <br> <span class="third">#70A</span> 
+         </p>
+       
+    </div>
+
+
+
+    <div class="firm-info-symbol">
+        <span class="sign-toggle">+</span>
+    </div>
+</div>
+
+<div class="firm-info-bottom">
+    <p class="name small-header">Compiled Reports:</p>
+
+    <ul>
+        <li class="report-description-p"><a href="{{url_for('kortana_70a')}}"> Case #70A</a></li>
+    </ul>
+
+    <p class="name sepr">Kortana<span class="prop-name">Prop Firm  Metrics </span></p>
+
+    <div class="metrics-bars">
+        <div class="metric">
+            <p class="name met-label">Transparency <span class="percent-num"> (10%)</span></p>
+            <div class="progress-container">
+
+            <div class="progress-bar bar-1" id="myBar1" style="
+width: 10%;
+"></div>
+            </div>
+        </div>
+        <div class="metric">
+            <p class="name met-label">Dishonesty <span class="percent-num">(85%) </span></p>
+            <div class="progress-container">
+                <div class="progress-bar bar-2" id="myBar1" style="
+                width: 95%;"></div>
+              </div>
+        </div>
+        <!-- <div class="metric">
+            <p class="name met-label">Recommendation   <span class="percent-num">(20%)</span></p>
+            <div class="progress-container">
+                <div class="progress-bar bar-3" id="myBar1" style="
+width: 20%;
+"></div>
+              </div>
+        </div> -->
+    </div>
+    <div class="tags-stats">
+
+        <span class=" tag" >Denied Payout(s)</span> 
+        <span class=" tag" >6+ Incidents</span> 
+        <span class=" tag unrecommended" >Highly Unrecommended</span> 
+        <span class=" tag blacklisted" >Black-Listed</span> 
+    </div>
+    <a class="visit-btn view-more" href="{{url_for('kortana_70a')}}" target="_blank">Learn More</a>
+</div>
+</div>
+
+
+<!-- end of kortana -->
+
+<!-- beginning of my funded fx -->
+
+<div class="firm-info-cont ">
+
+    <div class="firm-info-top ">
+        <!-- <div class="warning-div">
+            <img src="{{ url_for('static', filename='images/warning.png') }}" alt="Warning Icon">
+        </div> -->
+    <div class="firm-img-cont">
+        <img src="{{ url_for('static', filename='images/mffx.png') }}" alt="My Funded FX Logo">
+        <p class="name"> <span class="big-name"> My Funded FX</span> <br> <span class="second-name">Cooperative Firm</span> <br> <span class="third">#90A</span> 
+         </p>
+       
+    </div>
+
+
+
+    <div class="firm-info-symbol">
+        <span class="sign-toggle">+</span>
+    </div>
+</div>
+
+<div class="firm-info-bottom">
+    <p class="name small-header">Compiled Reports:</p>
+
+    <ul>
+        <li class="report-description-p"><a href="{{url_for('mff_90a')}}"> Case #90A</a></li>
+    </ul>
+
+    <p class="name sepr">My Funded FX<span class="prop-name">Prop Firm  Metrics </span></p>
+
+    <div class="metrics-bars">
+        <div class="metric">
+            <p class="name met-label">Cooperation <span class="percent-num"> (90%)</span></p>
+            <div class="progress-container">
+
+            <div class="progress-bar bar-1" id="myBar1" style="
+width: 90%;
+"></div>
+            </div>
+        </div>
+        <div class="metric">
+            <p class="name met-label">Honesty <span class="percent-num">(80%) </span></p>
+            <div class="progress-container">
+                <div class="progress-bar bar-2" id="myBar1" style="
+                width: 90%;"></div>
+              </div>
+        </div>
+        <!-- <div class="metric">
+            <p class="name met-label">Recommendation   <span class="percent-num">(20%)</span></p>
+            <div class="progress-container">
+                <div class="progress-bar bar-3" id="myBar1" style="
+width: 20%;
+"></div>
+              </div>
+        </div> -->
+    </div>
+    <div class="tags-stats">
+
+        <span class=" tag" >Credentials Unprovided</span> 
+        <span class=" tag resolved-bg-tag" >Case Dismissed</span> 
+    </div>
+    <a class="visit-btn view-more" href="{{url_for('mff_90a')}}" target="_blank">Learn More</a>
+</div>
+</div>
+
+<!-- end of my funded fx -->
+     
+</section>
+
+
+</main>
+{% endblock %}
+
+
+{% block script %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('.firm-info-top').click(function() {
+        var answer = $(this).next('.firm-info-bottom');
+        var toggle = $(this).find('.sign-toggle');
+
+        // Check if the answer is already displayed as flex to toggle
+        if (answer.css('display') === 'flex') {
+            answer.slideUp();
+            toggle.text('+');
+        } else {
+            answer.slideDown().css('display', 'flex');
+            toggle.text('-');
+        }
+    });
+});
+</script>
+
+{% endblock %}
+

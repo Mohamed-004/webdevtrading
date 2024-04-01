@@ -69,5 +69,9 @@ def report_preview_unresolved_open():
 def report_preview_resolved():
     return render_template('reports-resolved.html')
 
+@app.route('/view-reports')
+def view_firm_reports():
+    return render_template('reports-stats.html')
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)

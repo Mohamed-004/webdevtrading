@@ -3,7 +3,9 @@
 <title>Prop Patrol - Home | Ensuring Fair Play in Prop Trading</title>
 {% endblock %}
 
-{% block css %}    <link rel="stylesheet" href="{{ url_for('static', filename='css/cases.css') }}"> {% endblock %}
+{% block css %}    <link rel="stylesheet" href="{{ url_for('static', filename='css/cases.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/temp-index-stat.css') }}">
+{% endblock %}
 
 {% block content %}
  
@@ -109,6 +111,11 @@
         </div>
 
       </div>
+
+      <div class="view-more-container firm-mg-top">
+
+        <a class="visit-btn view-more" href="{{url_for('view_firm_reports')}}" target="_blank">View Reports</a>
+      </div>
       
       
 
@@ -211,12 +218,122 @@
             </div>
             <div class="view-more-container firm-mg-top">
 
-              <a class="visit-btn view-more" href="{{url_for('featured_firms')}}#fundednext-logo" target="_blank">View More</a>
+              <!-- <a class="visit-btn view-more" href="{{url_for('featured_firms')}}#fundednext-logo" target="_blank">View More</a> -->
             </div>
 
       </div>
 
+      <h2 class="num-text">
+      <span class="blacklisted-h2">   Black-Listed</span> <br> <span class="report-black"> Firms</span></h2>
+
+      <div class="firm-list" id="firm-link">
+        <!-- Example of a single firm entry -->
+        <div class="firm">
+          <div class="num-rank blacklisted-circle">1</div>
+          <div class="firm-detail-1 firm-details firm-sz">
+            
+   
+                
+              <div class="firm-ranking firm-pic">   <img src="{{ url_for('static', filename='images/kortana.png') }}" alt=""></div>
+           
+  
+                <!-- <div class="firm-name ">Coming Soon</div> -->
+                </div>
+  
+                <div class="firm-tags firm-sz">
+                    <span class="tag preferred blacklisted">Black-Listed</span>
+                    <!-- <span class="tag trusted">MQL License</span> -->
+                </div>
+          
+                <div class="firm-rating firm-sz">
+                  <!-- <img src="{{ url_for('static', filename='images/proppatrolplus.png') }}" alt="Prop Patrol Regulated"> -->
+                  <span class="tag preferred">Case #70A</span>
+                </div>
+      
+            <div class="firm-actions firm-sz">
+                <a class="visit-btn" href="{{url_for('kortana_70a')}}" target="_blank">Learn More</a>
+                <!-- <a class="details-btn">View Details</a> -->
+            </div>
+          </div>
+
+          </div>
+
       <!-- <main> -->
+
+        <h2 class="num-text">
+          View Firm's <br> <span class="report-black"> Case Report Metrics</span></h2>
+
+        <div class="stats-box">
+          <!-- <div class="blur-box"> -->
+          </div>
+
+          <div class="stats-patrol-container">
+          
+
+          <!-- <div class="stats-view-text">
+            <p class="name">View Firm's Stats</p>
+            <p class="name stat-small-text">Get better highlights and statistics  for all the firms with reported cases!</p>
+          
+            <img src="{{ url_for('static', filename='images/stat-view-full.png') }}" alt="Stat Outlook second Image">
+          </div> -->
+
+          <div class="firm-info-cont">
+
+            <div class="firm-info-top">
+            <div class="firm-img-cont">
+                <img src="{{ url_for('static', filename='images/dei.jpg') }}" alt="DEI funded logo">
+                <p class="name"> <span class="big-name"> DEI Funded</span> <br> <span class="second-name">Uncooperative Firm</span> <br> <span class="third">#20A</span> 
+                 </p>
+               
+            </div>
+
+            <!-- <div class="firm-info-text">
+              
+            </div> -->
+
+          
+        </div>
+
+        <div class="firm-info-bottom">
+            <p class="name sepr">DEI Funded<span class="prop-name">Prop Firm  Metrics </span></p>
+
+            <div class="metrics-bars">
+                <div class="metric">
+                    <p class="name met-label">Transparency <span class="percent-num"> (4%)</span></p>
+                    <div class="progress-container">
+
+                    <div class="progress-bar bar-1" id="myBar1" style="
+width: 4%;
+"></div>
+                    </div>
+                </div>
+                <div class="metric">
+                    <p class="name met-label">Dishonesty <span class="percent-num">(77%) </span></p>
+                    <div class="progress-container">
+                        <div class="progress-bar bar-2" id="myBar1" style="
+                        width: 77%;"></div>
+                      </div>
+                </div>
+                <div class="metric">
+                    <p class="name met-label">Recommendation   <span class="percent-num">(2%)</span></p>
+                    <div class="progress-container">
+                        <div class="progress-bar bar-3" id="myBar1" style="
+width: 2%;
+"></div>
+                      </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="view-more-container firm-mg-top">
+
+          <a class="visit-btn view-more" href="{{url_for('view_firm_reports')}}" target="_blank">Learn More</a>
+        </div>
+    </div>
+
+          </div>
+        </div>
 
     
         
@@ -227,7 +344,7 @@
         <!-- <div class="line-animated "> </div> -->
     
     <h2 class="num-text" id="about-ref">
-      How We Help</h2>
+      <!-- How We Help</h2> -->
        <!-- <div class="line-animated second-line"></div> -->
     </div>
 
