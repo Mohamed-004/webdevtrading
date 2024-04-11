@@ -3,9 +3,94 @@
 <title>PropSurance - Home | User Dashboard</title>
 {% endblock %}
 
+{% block css %}    
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dash.css') }}">
+{% endblock %}
 
 {% block content %}
 
-<p>Hello this worked!!</p>
+{% if unverified_email %}
+        <p>Your email is not verified. Please check your inbox and verify your email.</p>
+        {% else  %}
+        <!-- <p>Your email is  verified.</p> -->
+    {% endif %}
+
+<main class="content-main">
+
+
+    <div id="dashboard-container">
+        <!-- prop surance status -->
+        <div class="board-cont">
+            <div class="text-img">
+                <p>PropSurance Status</p>
+                <img src="{{ url_for('static', filename='images/info.png') }}" alt="Info Icon">
+            </div>
+            <p class="header-text-board">
+                Un-Insured
+            </p>
+            <div class="dropdown header-text-under">
+                <button class="btn btn-primary dropdown-toggle" id="menu4" type="button" data-toggle="dropdown">Get Insured
+                <span class="caret"></span></button>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+                  <li role="presentation"><a role="menuitem" tabindex="-1" >Ftmo</a></li>
+                  <li role="presentation"><a role="menuitem" tabindex="-1" >5%ers</a></li>
+                </ul>
+              </div>
+        </div>
+    
+
+    <!-- total accounts -->
+    <div class="board-cont">
+        <div class="text-img">
+            <p>Insured Accounts</p>
+            <img src="{{ url_for('static', filename='images/profilepic.png') }}" alt="Profile Icon">
+        </div>
+        <p class="header-text-board">
+            0 Account(s)
+        </p>
+      
+            <div class="dropdown header-text-under">
+                <button class="btn btn-primary dropdown-toggle" id="menu1" type="button" data-toggle="dropdown">Accounts
+                <span class="caret"></span></button>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+                  <li role="presentation"><a role="menuitem" tabindex="-1" >No Accounts</a></li>
+                  
+                </ul>
+              </div>
+        
+    </div>
+
+
+    <div class="board-cont">
+        <div class="text-img">
+            <p>PropSurance Rewards</p>
+            <img src="{{ url_for('static', filename='images/rewards.png') }}" alt="Info Icon">
+        </div>
+        <p class="header-text-board">
+            Perks
+        </p>
+        <div class="dropdown header-text-under">
+            <button class="btn btn-primary dropdown-toggle" id="menu3" type="button" data-toggle="dropdown">Rewards
+            <span class="caret"></span></button>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+              <li role="presentation"><a role="menuitem" tabindex="-1" >No Accounts</a></li>
+              
+            </ul>
+          </div>
+    </div>
+
+
+    <!-- Update Us on Account -->
+
+    <!-- update status -->
+
+    <!-- File a Claim -->
+
+</div>
+
+<a href="https://buy.stripe.com/test_3cs5kC9CM6Z79ry144?prefilled_email={{user_email}}">Purchase 50k FTMO</a>
+
+</main>
+
 
 {% endblock %}

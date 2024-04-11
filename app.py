@@ -4,11 +4,15 @@ from firebase_admin import credentials, auth, db, firestore
 from flask import Flask, render_template, send_from_directory, jsonify, request, url_for, redirect, session
 from urllib.parse import quote_plus, urlencode
 import requests
-import secrets
+import stripe 
+
+stripe.api_key = 'sk_test_51Oyi2xP649Efo4kCYt2kWsW0hPJjptfuWapRJB8ZMCHvhfI4HJF0FuAdEaNJ6JzbQVp0pj1BBOsMEQwf4XJvQSRA00ELDbyNAC'
 
 app = Flask(__name__)
 app.secret_key = '1799d3118e5549432de9b191ba8003c8826585499ebba1974de60d36c8c2c2e6'
 app.config['DEBUG'] = True
+
+endpoint_secret = 'whsec_5943b6c6ce120203812d73889dcc757cd73be09a7d93150736be55b115ca5d68'
 
 cred = credentials.Certificate('static/prop-patrol24-firebase-adminsdk-i50kg-5fe571bc7b.json')
 firebase_admin.initialize_app(cred)
@@ -26,10 +30,14 @@ oauth.register(
 
 @app.route("/callback", methods=["GET", "POST"])
 def callback():
-    token = oauth.proppatrol.authorize_access_token()
+    try:
+        token = oauth.proppatrol.authorize_access_token()
+    except Exception as err:
+        return "Please validate your email"
+    
     user_info = {
     "email": token["userinfo"]["email"],
-    "email_verified": token["userinfo"]["email_verified"]
+    "email_verified": str(token["userinfo"]["email_verified"])
 }
 
 # Store the extracted user information in the session
@@ -75,21 +83,63 @@ def logout():
 @app.route("/dashboard")
 def dashboard():
     # Check if user is authenticated
+    user_info = False
+    user_data = False
+    user_validated_email = 0
+    user_info = session.get("user")
+    user_email = 0
+    # token = oauth.proppatrol.authorize_access_token()
+    # user_info_full = token
     try:
-        user_info = session.get("user")
         user_email = user_info['email']
+        user_validated_email = user_info["email_verified"]
         user_data= db.collection("users").where(field_path="email", op_string="==", value=user_email).get()
+        if not user_info or not user_data:
+        # Redirect to login page if user is not authenticated or email is not verified
+            
+            return redirect(url_for("login"))
     except:
+        
         pass
     # print(user_data + " the value for user data came")
-    if not user_info or not user_data:
-        # Redirect to login page if user is not authenticated or email is not verified
-        return redirect(url_for("login"))
+    
+    if  user_validated_email == "False":
+        return render_template("dashboard.html", session=user_info, unverified_email=True)
+        
     # firebase_user_data = list(user_data.values())[0]
     
-    return render_template("dashboard.html", session=user_info)
+    return render_template("dashboard.html", session=user_info, user_email=user_email)
 
 
+@app.route('/webhook', methods=['POST'])
+def webhook():
+    event = None
+    payload = request.data
+    sig_header = request.headers['STRIPE_SIGNATURE']
+
+    try:
+        event = stripe.Webhook.construct_event(
+            payload, sig_header, endpoint_secret
+        )
+    except ValueError as e:
+        # Invalid payload
+        raise e
+    except stripe.error.SignatureVerificationError as e:
+        # Invalid signature
+        raise e
+
+    # Handle the event
+    if event['type'] == 'checkout.session.async_payment_succeeded':
+      session = event['data']['object']
+      print(session)
+    elif event['type'] == 'payment_intent.succeeded':
+      payment_intent = event['data']['object']
+      print(payment_intent)
+    # ... handle other event types
+    else:
+      print('Unhandled event type {}'.format(event['type']))
+
+    return jsonify(success=True)
 
 @app.route('/robots.txt')
 def static_from_root():
