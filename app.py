@@ -5,6 +5,7 @@ from flask import Flask, render_template, send_from_directory, jsonify, request,
 from urllib.parse import quote_plus, urlencode
 import requests
 import stripe 
+import json
 
 stripe.api_key = 'sk_test_51Oyi2xP649Efo4kCYt2kWsW0hPJjptfuWapRJB8ZMCHvhfI4HJF0FuAdEaNJ6JzbQVp0pj1BBOsMEQwf4XJvQSRA00ELDbyNAC'
 
@@ -45,7 +46,14 @@ def callback():
     user = oauth.proppatrol.parse_id_token(token,nonce=session.get("nonce"))
  
     try:
-        firebase_user = auth.get_user_by_email(user['email'])
+        user_doc_ref = db.collection('users').document(user['email'])
+        user_doc = user_doc_ref.get()
+
+        if user_doc.exists:
+            return redirect(url_for('dashboard'))
+        else:
+            # No document found for the provided email
+            return jsonify({"error": "User not found"}), 404
     except auth.UserNotFoundError:
         # User not found in Firebase Authentication, create new user
         user_ref = db.collection('users').document(user['email'])
@@ -88,12 +96,19 @@ def dashboard():
     user_validated_email = 0
     user_info = session.get("user")
     user_email = 0
+    uid = 0
     # token = oauth.proppatrol.authorize_access_token()
     # user_info_full = token
     try:
         user_email = user_info['email']
         user_validated_email = user_info["email_verified"]
         user_data= db.collection("users").where(field_path="email", op_string="==", value=user_email).get()
+        for user_doc in user_data:
+            # Check if the document exists
+            user_info = user_doc.to_dict() 
+            uid = user_info['uid']
+            # if user_doc.exists:
+            #     print(f"User ID: {user_doc.id}")
         if not user_info or not user_data:
         # Redirect to login page if user is not authenticated or email is not verified
             
@@ -103,12 +118,14 @@ def dashboard():
         pass
     # print(user_data + " the value for user data came")
     
-    if  user_validated_email == "False":
-        return render_template("dashboard.html", session=user_info, unverified_email=True)
         
     # firebase_user_data = list(user_data.values())[0]
     
     return render_template("dashboard.html", session=user_info, user_email=user_email)
+
+
+
+
 
 
 @app.route('/webhook', methods=['POST'])
@@ -129,13 +146,110 @@ def webhook():
         raise e
 
     # Handle the event
-    if event['type'] == 'checkout.session.async_payment_succeeded':
-      session = event['data']['object']
-      print(session)
-    elif event['type'] == 'payment_intent.succeeded':
-      payment_intent = event['data']['object']
-      print(payment_intent)
-    # ... handle other event types
+    if event['type'] == 'invoice.payment_succeeded':
+        payment_intent = event['data']['object']  # The payment intent object
+        customer_id = payment_intent['customer']
+
+        # Fetch the customer details from Stripe
+        customer = stripe.Customer.retrieve(customer_id)
+
+        # Query Firestore for the user document by email
+        users_query = db.collection("users").where("email", "==", customer.email).get()
+        prop_count = 0
+        
+
+        uid = 0
+        account_size = 0
+        for user_doc in users_query:
+            if user_doc.exists:
+                user_info = user_doc.to_dict()
+                uid = user_info.get('uid', 0)
+                user_ref = db.collection('users').document(customer.email)
+                
+
+                # Fetch document to check if 'propsurance-count' exists
+                user_doc_snapshot = user_ref.get()
+                if user_doc_snapshot.exists:
+                    user_data = user_doc_snapshot.to_dict()
+                    try:
+                        prop_count = int(user_data.get('propsurance_count')) + 1
+                    except:
+                        prop_count = 0 
+                
+                if 'ftmo50' in event['data']['object']["lines"]["data"][0]["price"]["nickname"]:
+                    account_size = 50000
+                
+                 
+
+                updated_data = { 'account' + str(prop_count) :  {
+                    'propsurance_count': str(prop_count),
+                    'invoice_url': event['data']['object']["hosted_invoice_url"],
+                    'account_size': str(account_size), 'customer-purchase-id': customer_id
+              }, 'propsurance_count' : str(prop_count)  }
+                    # Assuming you want to append to 'prop-firm-details' instead of resetting it
+                    # 'prop-firm-details': firestore.ArrayUnion([new_prop_firm_detail]),
+                
+
+                # Update Firestore document
+                user_ref.update(updated_data)
+                print('Updated the database')
+
+                # Optionally update the customer metadata in Stripe
+                stripe.Customer.modify(
+                    customer_id,
+                    metadata={
+                        'uid': uid,
+                        'propsurance-count': prop_count,
+                    }
+                )
+         
+    if event['type'] == 'checkout.session.completed':
+        payment_intent = event['data']['object']  # The payment intent object
+        customer_id = payment_intent['customer']
+        prop_count = 0
+        # Fetch the customer details from Stripe
+        customer = stripe.Customer.retrieve(customer_id)
+
+        # Query Firestore for the user document by email
+        users_query = db.collection("users").where("email", "==", customer.email).get()
+
+        for user_doc in users_query:
+            if user_doc.exists:
+                user_info = user_doc.to_dict()
+                uid = user_info.get('uid', 0)
+                user_ref = db.collection('users').document(customer.email)
+
+                # Fetch document to check if 'propsurance-count' exists
+                user_doc_snapshot = user_ref.get()
+                if user_doc_snapshot.exists: 
+                    user_data = user_doc_snapshot.to_dict()
+                    try:
+                        prop_count = int(user_data.get('propsurance_count')) + 1
+                    except:
+                        prop_count = 0 
+
+                # else:
+                     # Starting count if it doesn't exist    
+                
+                phase_value = payment_intent["custom_fields"][0]["dropdown"]["value"]
+                mt4mt5_investor_id = payment_intent["custom_fields"][1]["text"]["value"]
+
+                # Extracting MT4/MT5 Investor Password
+                mt4mt5_investor_password = payment_intent["custom_fields"][2]["text"]["value"] 
+
+                
+                
+                      
+                updated_data = { 'account_info' + str(prop_count) :  {
+                       "account_status" : phase_value,
+                    'investor_id' : mt4mt5_investor_id,
+                'investor_password' : mt4mt5_investor_password
+                  }
+                }
+                      
+                user_ref.update(updated_data)
+
+    
     else:
       print('Unhandled event type {}'.format(event['type']))
 
