@@ -75,3 +75,231 @@ div#dashboard-container {
     background: #233DFF !important;
     border-color: #ffffff00 !important;
 }
+
+.metrics-bar {
+    padding: 2em;
+    background: white;
+    margin-top: 2.5em;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(128, 128, 128, 0.116);
+    position: relative;
+}
+
+
+p.remaining, a.remaining {
+    max-width: 100%;
+    font-size: 1em;
+    font-weight: bold;
+    color: #0c3594d1;
+    text-align: center;
+    margin-bottom: 0.3em;
+    font-size: 1em;
+    font-weight: bold;
+    color: #0c3594a6;
+    text-align: center;
+    width: max-content;
+    margin: 2em auto 0;
+    background-color: #f1f8ff;
+    padding: 1em;
+    border-radius: 10px;
+}
+
+
+
+.coverage-p {
+    font-size: 1.1em;
+    color: #0c3594a6;
+    font-weight: 500;
+}
+
+#hero {
+    display: none;
+}
+
+header nav {
+padding-top: 0;
+padding-bottom: 0;
+}
+
+.firm-list {
+    padding: 0;
+}
+
+.report-details .tag {
+    font-weight: bold;
+    padding: 5px 10px;
+    margin-right: 5px;
+    border-radius: 10px;
+    background-color: #F1F8FF !important;
+    font-size: 1.1em;
+    width: max-content;
+    color: #0c3594a6;
+}
+
+.dropdown.header-text-under.account-dropdown {
+    height: 0;
+}
+
+#firm-account-info p.name.met-label   {
+margin-top: 2em;
+}
+
+#firm-account-info .name.sepr {
+margin-bottom: 3em;
+}
+
+button#account-firm-btn {
+    width: 180px;
+    background: #0c3594d1 !important;
+    border-color: transparent!important;
+}
+
+#account-dropdown.header-text-under.dropdown ul.dropdown-menu {
+    max-width: 180px;
+    min-width: 180px;
+}
+
+.remaining.hazard {
+    background: #ffc107;
+    color: #00000082;
+    border: none;
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    border-left: 0.5rem solid rgb(248, 214, 38);
+    background-color: rgb(254, 242, 179);
+}
+
+.hazard-div {
+    text-align: center;
+}
+
+.hazard-icon-div {
+    display: flex;
+    margin-right: 0.6em;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    max-width: 500px;
+    margin: 20px auto;
+    padding: 2em;
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0px 10px 40px 0px rgba(109, 141, 173, 0.25);
+}
+
+form input[type='text'],
+form input[type='password'] {
+    font-weight: bold;
+    margin-bottom: 1em; /* Adjust as needed */
+    padding: 0.5em;
+    border: 1px solid #a7d4f6d9;
+    border-radius: 4px;
+    background: white;
+    outline: none;
+    color: #050A30;
+    font-size: 1em; /* Adjust size as needed */
+}
+
+form input[type='submit'] {
+    padding: 0.5em;
+    border: none;
+    border-radius: 4px;
+    background: #0c3594; /* Match this to your button colors */
+    color: white;
+    font-weight: bold;
+    text-transform: uppercase; /* Optional style */
+    cursor: pointer; /* Makes it clear the button is clickable */
+    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+}
+
+form input[type='submit']:hover {
+    background: #0a214c; /* Darker shade for hover effect */
+}
+
+form label {
+    color: #0c3594d1;
+    margin-bottom: 0.5em; /* Space between label and input */
+    font-weight: bold; /* Optional style */
+}
+
+h2.form-h2 {
+    font-size: 1.3em;
+    /* opacity: 0.8; */
+    color: #0c3594d1;
+    font-weight: bold;
+    text-align: center;
+}
+
+form input[type='text'][readonly] {
+    font-weight: bold;
+    padding: 10px;
+    margin-bottom: 15px; /* Adds space below the input */
+    border-radius: 4px;
+    border: 1px solid #a7d4f6d9;
+    background: #f0f4f7; /* Light background color indicates read-only */
+    color: #0c35948a; /* Text color matches your theme */
+    cursor: not-allowed; /* Indicates the field is not interactive */
+    pointer-events: none; /* Prevents the field from receiving pointer events */
+    padding-left: 35px;
+}
+
+form input[type='text'][readonly]::placeholder {
+    color: #0c3594d1;
+    opacity: 0.4; /* Make placeholder fully visible */
+}
+
+.form-icon-cont {
+    position: relative;
+    /* padding-left: 10px; */
+}
+
+.form-icon svg {
+    position: absolute;
+    top: 8px;
+    left: 5px;
+    opacity: 0.6;
+}
+
+/* Container for the select to position the custom arrow */
+.select-container {
+    position: relative;
+    width: 100%;
+    max-width: 500px; /* Adjust based on your form width */
+    margin: 20px auto;
+}
+
+/* Style for the select element */
+select {
+    width: 100%;
+    padding: 10px 15px;
+    margin-bottom: 15px; /* Space below the select */
+    /* background-color: #f0f4f7; */
+    border: 2px solid #a7d4f6d9;
+    border-radius: 5px;
+    color: #0c3594d1;
+    outline: none;
+    -webkit-appearance: none; /* Removes default style in WebKit browsers */
+    -moz-appearance: none; /* Removes default style in Firefox */
+    appearance: none; /* Removes default style */
+    font-weight: bold;
+    cursor: pointer;
+    padding-left: 35px;
+}
+
+/* Custom arrow */
+
+
+/* Optional: Style for option elements */
+option {
+    padding: 10px;
+}
+
+
+#arrow-select {
+    position: absolute;
+    top: 12px;
+    left: 8px;
+}

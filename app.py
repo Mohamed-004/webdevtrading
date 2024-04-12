@@ -1,17 +1,20 @@
 from authlib.integrations.flask_client import OAuth
 import firebase_admin
 from firebase_admin import credentials, auth, db, firestore
-from flask import Flask, render_template, send_from_directory, jsonify, request, url_for, redirect, session
+from flask import Flask, render_template, send_from_directory, jsonify, request, url_for, redirect, session, flash, abort
+from flask_wtf.csrf import CSRFProtect, validate_csrf
+from wtforms import ValidationError
 from urllib.parse import quote_plus, urlencode
-import requests
 import stripe 
-import json
+
 
 stripe.api_key = 'sk_test_51Oyi2xP649Efo4kCYt2kWsW0hPJjptfuWapRJB8ZMCHvhfI4HJF0FuAdEaNJ6JzbQVp0pj1BBOsMEQwf4XJvQSRA00ELDbyNAC'
 
 app = Flask(__name__)
 app.secret_key = '1799d3118e5549432de9b191ba8003c8826585499ebba1974de60d36c8c2c2e6'
+app.config['WTF_CSRF_SECRET_KEY'] =   'Dv1vKfzX6Eo5h_C9cSbX4Q'
 app.config['DEBUG'] = True
+csrf = CSRFProtect(app)
 
 endpoint_secret = 'whsec_5943b6c6ce120203812d73889dcc757cd73be09a7d93150736be55b115ca5d68'
 
@@ -31,41 +34,30 @@ oauth.register(
 
 @app.route("/callback", methods=["GET", "POST"])
 def callback():
-    try:
-        token = oauth.proppatrol.authorize_access_token()
-    except Exception as err:
-        return "Please validate your email"
-    
+    token = oauth.proppatrol.authorize_access_token()
     user_info = {
     "email": token["userinfo"]["email"],
-    "email_verified": str(token["userinfo"]["email_verified"])
+    "email_verified": token["userinfo"]["email_verified"]
 }
 
 # Store the extracted user information in the session
     session["user"] = user_info
     user = oauth.proppatrol.parse_id_token(token,nonce=session.get("nonce"))
- 
-    try:
-        user_doc_ref = db.collection('users').document(user['email'])
-        user_doc = user_doc_ref.get()
 
-        if user_doc.exists:
-            return redirect(url_for('dashboard'))
-        else:
-            # No document found for the provided email
-            return jsonify({"error": "User not found"}), 404
-    except auth.UserNotFoundError:
-        # User not found in Firebase Authentication, create new user
-        user_ref = db.collection('users').document(user['email'])
-        user_ref.set({
-        'uid': user['sub'],  # Assuming sub field contains UID
-        'name': user.get('name', ''),
-        'email': user['email'],
-        # Add other user information as needed
-    })
     
+    user_ref = db.collection('users').document(user['email'])
+    user_check_exist = db.collection('users').document(user['email']).get()
+    if not user_check_exist.exists:
+        user_ref.set({
+            'uid': user['sub'],  # Assuming sub field contains UID
+            'name': user.get('name', ''),
+            'email': user['email'],
+            # Add other user information as needed
+        })
+        return redirect(url_for('dashboard'))
+    else:
+        return redirect(url_for('dashboard'))
     return redirect(url_for('dashboard'))
-
 
 
 @app.route("/login")
@@ -88,6 +80,86 @@ def logout():
         )
     )
 
+
+@app.route('/dashboard/validate/', methods=['GET', 'POST'])
+def submit_mt_account():
+    # Check if user is authenticated
+    
+    if 'user' not in session:
+        return redirect(url_for("login"))
+    user_info = session.get("user")
+    user_email = user_info['email']
+    
+    user_data = db.collection('users').document(user_email).get()
+    account_info_user = 0
+    account_more_info_user = 0
+    user_name = 0
+    num_of_accounts = 0
+    account_insured = 0
+    propsurance_count = 0
+    prop_name = 0
+    accounts = []
+
+    if user_data.exists:
+        user_data = user_data.to_dict()
+        user_name = user_data.get('user_name', '')
+        num_of_accounts = int(user_data.get('propsurance_count', 0)) + 1
+
+        for i in range(num_of_accounts):
+            account_key = f'account{i}'
+            account_more_info_key = f'account{i}.account_info'
+            if account_key in user_data:
+                account_info = user_data[account_key]
+                account_more_info_ = user_data[account_more_info_key]
+                print(account_info)
+                # Assuming account_info includes 'status', 'investor_id', 'prop_firm_name'
+                accounts.append({
+                    'id': i,
+                    'name': account_info.get('prop_firm_name', f'Account {i}'),
+                    'investor_id': account_more_info_.get('investor_id', ''),
+                    'investor_password': account_more_info_.get('investor_password', ''),
+                    'status': account_info.get('status', ''),
+                    'account_size': account_info.get('account_size', '')
+                })
+
+    # POST request handling
+    if request.method == 'POST':
+        try:
+            validate_csrf(request.form.get('csrf_token'))
+        except  ValidationError:
+            # Handle the CSRF validation failure
+            abort(400, description='CSRF token error')
+
+        mt_account = request.form['mt_account']
+        password = request.form['password']
+        server = request.form['server']
+        user_email = session['user']['email']
+
+        
+    
+    # Update user data in database
+        try:
+            user_ref = db.collection('users').document(user_email)
+            mt_account_key = f'mt_account_{prop_count}'
+
+# Specify the fields you want to update using dot notation
+            update_data = {
+                f'{mt_account_key}.status': 'new_status',  # Replace 'new_status' with the actual status value
+                f'{mt_account_key}.trader_info': 'new_trader_info',  # Replace 'new_trader_info' with actual trader info
+                # If updating the mt_account, password, and server as well:
+                f'{mt_account_key}.mt_account': mt_account,
+                f'{mt_account_key}.password': password,
+                f'{mt_account_key}.server': server,
+            }
+            flash('Awaiting Validation.')
+        except Exception as err:
+            # pass
+            flash('Error updating MT account information.')
+            print(err)  # Consider logging the error
+
+    return render_template("validate_trader_info.html", accounts=accounts)
+
+
 @app.route("/dashboard")
 def dashboard():
     # Check if user is authenticated
@@ -95,27 +167,84 @@ def dashboard():
     user_data = False
     user_validated_email = 0
     user_info = session.get("user")
-    user_email = 0
     uid = 0
+    # user info
+    user_email = 0
+    user_name = 0
+    num_of_accounts = 0
+    account_size =0
+    account_percentage = 0
+    remaining_size = 0
+    insured_accounts = []
+
+    account_insured = False
     # token = oauth.proppatrol.authorize_access_token()
     # user_info_full = token
     try:
         user_email = user_info['email']
         user_validated_email = user_info["email_verified"]
-        user_data= db.collection("users").where(field_path="email", op_string="==", value=user_email).get()
-        for user_doc in user_data:
-            # Check if the document exists
-            user_info = user_doc.to_dict() 
-            uid = user_info['uid']
-            # if user_doc.exists:
-            #     print(f"User ID: {user_doc.id}")
+        user_data = db.collection('users').document(user_email).get()
+
+        if user_data.exists:
+            user_data = user_data.to_dict()
+
+            if int(user_data['propsurance_count']) >= 0 :
+                user_name = user_data['user_name']
+                num_of_accounts = int(user_data['propsurance_count']) + 1
+                
+                account_insured = True               
+
+                for i in range(0, int(user_data['propsurance_count']) + 1):
+                    account_info = user_data['account' +  str(i) ]
+                    account_more_info = user_data['account' +  str(i) + '.account_info' ]
+                    account_size += account_info['account_size']
+                    trade_status = ''
+                    
+                    if account_more_info['account_status'] == 'phase2':
+                        trade_status = 'Phase 2'
+                    elif account_more_info['account_status'] == 'phase1':
+                        trade_status = 'Phase 1'
+                    else:
+                        trade_status = 'Live Account'
+
+                   
+
+                    prop_firm_info = {
+                        'name': account_info['prop_firm_name'],
+                        'account_size' : account_info['account_size'],
+                        'account_url_fix' : str( i),
+                        'account_status':  account_info['status'],
+                        'phase_status' : trade_status
+                    }
+
+                    insured_accounts.append(prop_firm_info)
+
+                account_percentage = int((account_size / 200000) * 100)
+                remaining_size = 200000 - account_size
+                    
+                    
+    
+
+        # for user_doc in user_data:
+        #     # Check if the document exists
+        #     user_info = user_doc.to_dict() 
+        #     user_data_dict = user_doc.to_dict() 
+            
+
+        #     print(user_data_dict)
+            
+            
         if not user_info or not user_data:
         # Redirect to login page if user is not authenticated or email is not verified
-            
             return redirect(url_for("login"))
-    except:
         
+    except Exception as err:
         pass
+        # raise err
+        
+
+    if account_insured:
+        return render_template("dashboard.html", session=user_info, user_email=user_email, user_name=user_name, account_insured=True, num_of_accounts = num_of_accounts, insured_accounts =insured_accounts, account_percentage=account_percentage, remaining_size=remaining_size, account_size=account_size )
     # print(user_data + " the value for user data came")
     
         
@@ -154,55 +283,93 @@ def webhook():
         customer = stripe.Customer.retrieve(customer_id)
 
         # Query Firestore for the user document by email
-        users_query = db.collection("users").where("email", "==", customer.email).get()
+        users_query = db.collection('users').document(customer.email).get()
+        print(users_query)
         prop_count = 0
         
 
         uid = 0
         account_size = 0
-        for user_doc in users_query:
-            if user_doc.exists:
-                user_info = user_doc.to_dict()
-                uid = user_info.get('uid', 0)
-                user_ref = db.collection('users').document(customer.email)
-                
+        prop_firm_name = 0
+    
+        if users_query:
 
-                # Fetch document to check if 'propsurance-count' exists
-                user_doc_snapshot = user_ref.get()
-                if user_doc_snapshot.exists:
-                    user_data = user_doc_snapshot.to_dict()
-                    try:
-                        prop_count = int(user_data.get('propsurance_count')) + 1
-                    except:
-                        prop_count = 0 
-                
+            for user_doc in users_query:
+                if user_doc.exists:
+                    user_info = user_doc.to_dict()
+                    uid = user_info.get('uid', 0)
+                    user_ref = db.collection('users').document(customer.email)
+                    
+
+                    # Fetch document to check if 'propsurance-count' exists
+                    user_doc_snapshot = user_ref.get()
+                    if user_doc_snapshot.exists:
+                        user_data = user_doc_snapshot.to_dict()
+                        try:
+                            prop_count = int(user_data.get('propsurance_count')) + 1
+                        except:
+                            prop_count = 0 
+                    
+                    if 'ftmo50' in event['data']['object']["lines"]["data"][0]["price"]["nickname"]:
+                        account_size = 50000
+                        prop_firm_name = 'FTMO'
+                    
+                    
+                    # update_data = {
+            #     f'{mt_account_key}.status': 'new_status',  # Replace 'new_status' with the actual status value
+            #     f'{mt_account_key}.trader_info': 'new_trader_info',  # Replace 'new_trader_info' with actual trader info
+            #     # If updating the mt_account, password, and server as well:
+            #     f'{mt_account_key}.mt_account': mt_account,
+            #     f'{mt_account_key}.password': password,
+            #     f'{mt_account_key}.server': server,
+            # }
+                    
+                    updated_data = { 'account' + str(prop_count) :  {
+                        'propsurance_count': str(prop_count),
+                        'invoice_url': event['data']['object']["hosted_invoice_url"],
+                        'account_size': (account_size), 'customer-purchase-id': customer_id, 
+                        'prop_firm_name' : prop_firm_name,
+                        'status': 'pending', 'server': '', 'trading_account_type': ''
+                }, 'propsurance_count' : str(prop_count), 'user_name': event['data']['object']["customer_name"],
+                    'phone_numer': event['data']['object']["customer_phone"]  }
+                        # Assuming you want to append to 'prop-firm-details' instead of resetting it
+                        # 'prop-firm-details': firestore.ArrayUnion([new_prop_firm_detail]),
+                    
+
+                    # Update Firestore document
+                    user_ref.update(updated_data)
+                    
+
+                    # Optionally update the customer metadata in Stripe
+                    stripe.Customer.modify(
+                        customer_id,
+                        metadata={
+                            'uid': uid,
+                            'propsurance-count': prop_count,
+                        }
+                    )
+        else:
                 if 'ftmo50' in event['data']['object']["lines"]["data"][0]["price"]["nickname"]:
-                    account_size = 50000
-                
-                 
+                        account_size = 50000
+                        prop_firm_name = 'FTMO'
 
-                updated_data = { 'account' + str(prop_count) :  {
-                    'propsurance_count': str(prop_count),
-                    'invoice_url': event['data']['object']["hosted_invoice_url"],
-                    'account_size': str(account_size), 'customer-purchase-id': customer_id
-              }, 'propsurance_count' : str(prop_count)  }
-                    # Assuming you want to append to 'prop-firm-details' instead of resetting it
-                    # 'prop-firm-details': firestore.ArrayUnion([new_prop_firm_detail]),
-                
+                user_ref = db.collection('users').document(customer.email)
+            #     user_ref.set({
+            #     'uid': user['sub'],  # Assuming sub field contains UID
+            #     'name': user.get('name', ''),
+            #     'email': user['email'],
+            #     # Add other user information as needed
+            # })
+                print('set the new user different email')
+                user_ref.set({ 'account_' + event['data']['object']["id"] :  {
+                                'invoice_url': event['data']['object']["hosted_invoice_url"],
+                    'account_size': (account_size), 'customer-purchase-id': customer_id, 
+                    'prop_firm_name' : prop_firm_name,
+                   
+              }, 'email' : customer.email,  'user_name': event['data']['object']["customer_name"],
+                   'phone_numer': event['data']['object']["customer_phone"]  }, merge=True)
+            
 
-                # Update Firestore document
-                user_ref.update(updated_data)
-                print('Updated the database')
-
-                # Optionally update the customer metadata in Stripe
-                stripe.Customer.modify(
-                    customer_id,
-                    metadata={
-                        'uid': uid,
-                        'propsurance-count': prop_count,
-                    }
-                )
-         
     if event['type'] == 'checkout.session.completed':
         payment_intent = event['data']['object']  # The payment intent object
         customer_id = payment_intent['customer']
@@ -213,6 +380,7 @@ def webhook():
         # Query Firestore for the user document by email
         users_query = db.collection("users").where("email", "==", customer.email).get()
 
+        
         for user_doc in users_query:
             if user_doc.exists:
                 user_info = user_doc.to_dict()
@@ -221,15 +389,16 @@ def webhook():
 
                 # Fetch document to check if 'propsurance-count' exists
                 user_doc_snapshot = user_ref.get()
+                user_data = 0
                 if user_doc_snapshot.exists: 
                     user_data = user_doc_snapshot.to_dict()
                     try:
                         prop_count = int(user_data.get('propsurance_count')) + 1
                     except:
-                        prop_count = 0 
+                        pass
 
                 # else:
-                     # Starting count if it doesn't exist    
+                    # Starting count if it doesn't exist    
                 
                 phase_value = payment_intent["custom_fields"][0]["dropdown"]["value"]
                 mt4mt5_investor_id = payment_intent["custom_fields"][1]["text"]["value"]
@@ -238,20 +407,26 @@ def webhook():
                 mt4mt5_investor_password = payment_intent["custom_fields"][2]["text"]["value"] 
 
                 
-                
-                      
-                updated_data = { 'account_info' + str(prop_count) :  {
-                       "account_status" : phase_value,
-                    'investor_id' : mt4mt5_investor_id,
-                'investor_password' : mt4mt5_investor_password
-                  }
-                }
-                      
-                user_ref.update(updated_data)
+                account_info_key = f'account{prop_count}.account_info'
 
+                # Prepare the account info data
+                account_info_data = {
+                    'propsurance_count': prop_count,
+                    'account_status': phase_value,
+                    'investor_id': mt4mt5_investor_id,
+                    'investor_password': mt4mt5_investor_password
+                }
+
+                # Use .set() with merge=True to update the specific field, creating the document if it doesn't exist
+                user_ref.set({
+                    account_info_key: account_info_data
+                }, merge=True)
+
+        
     
     else:
-      print('Unhandled event type {}'.format(event['type']))
+        pass
+    #   print('Unhandled event type {}'.format(event['type']))
 
     return jsonify(success=True)
 

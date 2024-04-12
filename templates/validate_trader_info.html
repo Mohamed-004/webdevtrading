@@ -1,0 +1,68 @@
+{% extends "layout.html" %}
+{% block title %}
+<title>PropSurance - Validate Account</title>
+{% endblock %}
+
+{% block css %}    
+<link rel="stylesheet" href="{{ url_for('static', filename='css/cases.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dash.css') }}">
+{% endblock %}
+
+{% block content %}
+
+
+
+
+<h2 class="form-h2">Account Information</h2>
+<form id="form-validation" action="{{ url_for('submit_mt_account') }}" method="post">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+
+    <label for="account_select">Select Account:</label>
+    <div class="select-container">
+        <svg id="arrow-select" width="16px" height="20px" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M903.232 256l56.768 50.432L512 768 64 306.432 120.768 256 512 659.072z" fill="#0c35948a"></path></g></svg>    
+    <select name="account_select" id="account_select" onchange="updateForm(this)">
+       
+        {% for account in accounts %}
+            <option value="{{ account.id }}" {% if loop.first %}selected{% endif %}>
+                {{ account.name }} {{account.account_size}}
+            </option>
+        {% endfor %}
+    </select>
+</div>
+    <label for="mt_account">Read Only/Investor ID</label>
+    <div class="form-icon-cont">
+    <div class="form-icon"> <svg width="25px" height="25px" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M15 7L18 10M10 12L7 15L6 19L10 18L13 15M12 10L17 5L20 8L15 13M19 19L5 5" stroke="#0c3594d1" stroke-width="1.2"></path> </g></svg></div> </div>
+    <input type="text" id="mt_account" name="mt_account" value="{{ accounts[0].investor_id }}" readonly required><br>
+    <label for="password" >Investor Password:</label>
+
+    <div class="form-icon-cont">
+
+        <div class="form-icon"> <svg width="25px" height="25px" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M15 7L18 10M10 12L7 15L6 19L10 18L13 15M12 10L17 5L20 8L15 13M19 19L5 5" stroke="#0c3594d1" stroke-width="1.2"></path> </g></svg></div>
+    </div>
+    <input type="text" id="password" name="password" value="{{ accounts[0].investor_password }}" readonly required><br>
+    <label for="server">Server:</label>
+    <input type="text" id="server" name="server" required><br>
+    <input type="submit" value="Submit">
+</form>
+
+
+{%  endblock %}
+
+{% block script %}
+
+<script>
+    function updateForm(select) {
+        var selectedAccount = {{ accounts|tojson }};
+        print(selectedAccount)
+        var accountInfo = selectedAccount.find(acc => acc.id == select.value);
+        // Ensure accountInfo is not undefined
+        if (accountInfo) {
+            document.getElementById("mt_account").value = accountInfo.investor_id || '';
+            document.getElementById("password").value = accountInfo.investor_password || '';
+            // Update the "Server" field if needed
+            // document.getElementById("server").value = accountInfo.server || '';
+        }
+    }
+</script>
+
+{% endblock %}

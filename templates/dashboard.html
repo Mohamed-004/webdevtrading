@@ -4,6 +4,7 @@
 {% endblock %}
 
 {% block css %}    
+<link rel="stylesheet" href="{{ url_for('static', filename='css/cases.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/dash.css') }}">
 {% endblock %}
 
@@ -26,13 +27,19 @@
                 <img src="{{ url_for('static', filename='images/info.png') }}" alt="Info Icon">
             </div>
             <p class="header-text-board">
-                Un-Insured
+
+                {% if account_insured %}
+            Insured
+        {% else %}
+            Un-Insured
+        {% endif %}
             </p>
             <div class="dropdown header-text-under">
                 <button class="btn btn-primary dropdown-toggle" id="menu4" type="button" data-toggle="dropdown">Get Insured
                 <span class="caret"></span></button>
                 <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
                   <li role="presentation"><a role="menuitem" tabindex="-1" >Ftmo</a></li>
+                  <li role="presentation" class="divider"></li>
                   <li role="presentation"><a role="menuitem" tabindex="-1" >5%ers</a></li>
                 </ul>
               </div>
@@ -46,14 +53,39 @@
             <img src="{{ url_for('static', filename='images/profilepic.png') }}" alt="Profile Icon">
         </div>
         <p class="header-text-board">
-            0 Account(s)
+        {% if num_of_accounts %}
+            {% if num_of_accounts == 1 %}
+            {{ num_of_accounts }} Account
+             {% elif num_of_accounts > 1 %}
+            {{ num_of_accounts }} Accounts
+            {% endif %}
+        {% else %}
+            0 Accounts
+        {% endif %}
         </p>
       
             <div class="dropdown header-text-under">
                 <button class="btn btn-primary dropdown-toggle" id="menu1" type="button" data-toggle="dropdown">Accounts
                 <span class="caret"></span></button>
                 <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
-                  <li role="presentation"><a role="menuitem" tabindex="-1" >No Accounts</a></li>
+                    {% if insured_accounts %}
+                   
+                    {% for account in insured_accounts %}
+                        {% if account['account_url_fix'] %}
+                         
+                            <li role="presentation">
+                                <a role="menuitem" tabindex="-1" href="{{ url_for('dashboard', account_number=account['account_number']) }}">
+                                    {{account['name']}} <br> {{ account['account_size'] }} 
+                                </a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                    {% if not insured_accounts %}
+                        <li role="presentation"><a role="menuitem" tabindex="-1">No Accounts</a></li>
+                    {% endif %}
+                {% else %}
+                    <li role="presentation"><a role="menuitem" tabindex="-1">No Accounts</a></li>
+                {% endif %}
                   
                 </ul>
               </div>
@@ -63,7 +95,7 @@
 
     <div class="board-cont">
         <div class="text-img">
-            <p>PropSurance Rewards</p>
+            <p>PropSurance Awards</p>
             <img src="{{ url_for('static', filename='images/rewards.png') }}" alt="Info Icon">
         </div>
         <p class="header-text-board">
@@ -85,11 +117,92 @@
     <!-- update status -->
 
     <!-- File a Claim -->
-
 </div>
 
 
-    <a href="https://buy.stripe.com/test_3cs5kC9CM6Z79ry144?prefilled_email={{user_email }}">Purchase 50k FTMO</a>
+{% if insured_accounts %}
+<div class="metrics-bar">
+    <div class="metrics-bars">
+        <p class="name sepr">Prop Firm Coverage<span class="prop-name">200k Max </span></p>
+        <ul>
+
+            <li class="coverage-p">Total Insured Accounts: ${{account_size}}</li>
+        </ul>
+        <div class="metric">
+                    <p class="name met-label"><span class="percent-num">{{account_percentage}}% </span></p>
+                    <div class="progress-container">
+        
+                    <div class="progress-bar bar-1" id="myBar1" style="width: {{ account_percentage }}%;"></div>
+                    </div>
+                </div>
+
+                <p class="remaining">Remaining Account Prop Coverage ${{remaining_size}}</p>
+       </div>
+</div>
+{% endif %}
+
+{% if insured_accounts %}
+<div class="firm-list" id="firm-account-info">
+
+                   
+    {% for account in insured_accounts %}
+        {% if account['account_url_fix'] %}
+
+        <div class="metrics-bar">
+            <div class="num-rank">{{ (account['account_url_fix']|int + 1) }}</div>
+            <div class="metrics-bars">
+                <p class="name sepr">{{account['name']}}<span class="prop-name">${{account_size}} </span></p>
+                <div class="dropdown header-text-under account-dropdown" id="account-dropdown">
+                    <button class="btn btn-primary dropdown-toggle" id="account-firm-btn" type="button" data-toggle="dropdown">Account Info
+                        <span class="caret"></span></button>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+                    <li role="presentation">
+                        <a role="menuitem"  tabindex="-1" href="">Invoice</a>
+                    </a>
+                    </li>
+                    <li role="presentation" class="divider"></li>
+                    <li role="presentation">  <a  role="menuitem" tabindex="-1" href="">File a Case</a></li>
+                    <li role="presentation" class="divider"></li>
+                    <li role="presentation">     <a  role="menuitem" tabindex="-1"a href="">Recieved a <br> Payout</a></li>
+                    <li role="presentation" class="divider"></li>
+                    <li role="presentation">     <a   role="menuitem" tabindex="-1" href="">Passed Current <br> Phase</a></li>
+
+                    <!-- <li class="coverage-p"><a href="">Billing</a></li>
+                    <li class="coverage-p"><a href="">File a Case</a></li>
+                    <li class="coverage-p"><a href="">Recieved a Payout</a></li>
+                    <li class="coverage-p"><a href="">Passed Current Phase</a></li> -->
+                </ul>
+                </div>
+                <div class="metric">
+                            <p class="name met-label"><span class="percent-num">{{account_percentage}}% </span> Total Prop Firm Coverage</p>
+                            <div class="progress-container">
+                
+                            <div class="progress-bar bar-1" id="myBar1" style="width: {{ account_percentage }}%;"></div>
+                            </div>
+                        </div>
+                        <div class="report-details">
+
+                            <span class="tag">{{account['phase_status']}}</span>
+                        </div>
+                       
+                        {% if account['account_status'] == 'pending' %}
+                        <div class="hazard-div">
+
+                            <a class="remaining hazard" href=""><div class="hazard-icon-div "> <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M19.5 12C19.5 16.1421 16.1421 19.5 12 19.5C7.85786 19.5 4.5 16.1421 4.5 12C4.5 7.85786 7.85786 4.5 12 4.5C16.1421 4.5 19.5 7.85786 19.5 12ZM21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12ZM11.25 13.5V8.25H12.75V13.5H11.25ZM11.25 15.75V14.25H12.75V15.75H11.25Z" fill="#00000082"></path> </g></svg></div> Status Pending Requires User Validation </a>
+                        </div>
+                        {% endif %}
+               </div>
+        </div>
+
+
+ 
+        {% endif %}
+        {% endfor %}
+</div>
+{% endif %}
+
+
+<a href="https://buy.stripe.com/test_3cs5kC9CM6Z79ry144?prefilled_email={{user_email }}">Purchase 50k FTMO</a>
    
 
 
