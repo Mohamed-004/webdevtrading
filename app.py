@@ -369,17 +369,25 @@ def webhook():
         if users_query.exists:
             user_info = users_query.to_dict()
             uid = user_info.get('uid', 0)
+            sub_type = ''
 
             if 'ftmo50' in payment_intent["lines"]["data"][0]["price"]["nickname"]:
                 account_size = 50000
                 prop_firm_name = 'FTMO'
+                sub_type = 'one-time'
 
             current_date = datetime.now()
             formatted_date_string = current_date.strftime('%Y-%m-%d')
 
-            # Preparing the account information to be appended to accounts_info array
+            # Get the next account index
+            accounts_collection = user_ref.collection('accounts_info')
+            # Count the documents to generate the next unique document ID
+            accounts_docs = accounts_collection.stream()  # Get all documents to count them
+            account_count = sum(1 for _ in accounts_docs)  # Count documents and prepare the next index
+            account_doc_id = f"account_info_{account_count}"
+
             account_info = {
-                'propsurance_count': len(user_info.get('accounts_info', [])) ,
+                'propsurance_count': account_count,
                 'invoice_url': payment_intent["hosted_invoice_url"],
                 'account_size': account_size,
                 'prop_firm_name': prop_firm_name,
@@ -387,15 +395,18 @@ def webhook():
                 'server': '',
                 'trading_account_type': '',
                 'insured_date': formatted_date_string,
-                 'customer-purchase-id': customer_id
+                'customer-purchase-id': customer.id,
+                'sub_type' : sub_type
             }
 
-            # Update Firestore document using a transaction or directly if atomicity is not crucial
+            # Add to sub-collection
+            accounts_ref = accounts_collection.document(account_doc_id).set(account_info)
+
+            # Update user's basic information if necessary
             user_ref.update({
-                'accounts_info': firestore.ArrayUnion([account_info]),
                 'user_name': customer.name,
                 'phone_number': customer.phone,
-               
+                'accounts_info_count' : account_count
             })
 
             
@@ -405,7 +416,7 @@ def webhook():
                 customer_id,
                 metadata={
                     'uid': uid,
-                    'propsurance-count': len(user_info.get('accounts_info', [])) ,
+                    'propsurance-count': account_count ,
                 }
             )
             
@@ -430,30 +441,33 @@ def webhook():
             user_info = users_query.to_dict()
             uid = user_info.get('uid', 0)
 
-            # Retrieve or initialize the accounts_info array
-            accounts_info = user_info.get('accounts_info_more', [])
+            # Retrieve the current number of accounts to create a unique identifier for the new account
+            accounts_collection = user_ref.collection('trader_info')
+            accounts_docs = accounts_collection.stream()  # Get all documents to count them
+            accounts_count = sum(1 for _ in accounts_docs)  # Count documents
 
+            # Extract custom field values
             phase_value = payment_intent.get("custom_fields", [{}])[0].get("dropdown", {}).get("value", "")
             mt4mt5_investor_id = payment_intent.get("custom_fields", [{}])[1].get("text", {}).get("value", "")
             mt4mt5_investor_password = payment_intent.get("custom_fields", [{}])[2].get("text", {}).get("value", "")
 
-            # New account information to append
-            new_account_info = {
-                'propsurance_count': len(accounts_info) ,  # Dynamic count based on the length of accounts_info
+            trader_account_info = {
+                'propsurance_count': accounts_count,  # Dynamic count based on the number of documents
                 'account_status': phase_value,
                 'investor_id': mt4mt5_investor_id,
                 'investor_password': mt4mt5_investor_password,
                 'insured_date': datetime.now().strftime('%Y-%m-%d'),
-                 'customer-purchase-id': customer_id# Current date
+                'customer-purchase-id': customer.id  # Ensure customer.id is passed correctly
             }
 
-            # Update the document by appending new account info to the accounts_info array
+            # Add a new document to the sub-collection
+            accounts_collection.document(f"trader_account_{accounts_count}").set(trader_account_info)
+
+            # Optionally update user's basic info
             user_ref.update({
-                'accounts_info_more': firestore.ArrayUnion([new_account_info]),
-                  # Ensuring this stays updated
                 'user_name': customer.name,
                 'phone_number': customer.phone,
-                
+
             })
 
             
