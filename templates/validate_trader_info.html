@@ -51,17 +51,23 @@
 {% block script %}
 
 <script>
-    function updateForm(select) {
-        var selectedAccount = {{ accounts|tojson }};
-        print(selectedAccount)
-        var accountInfo = selectedAccount.find(acc => acc.id == select.value);
-        // Ensure accountInfo is not undefined
-        if (accountInfo) {
-            document.getElementById("mt_account").value = accountInfo.investor_id || '';
-            document.getElementById("password").value = accountInfo.investor_password || '';
-            // Update the "Server" field if needed
-            // document.getElementById("server").value = accountInfo.server || '';
-        }
+    function sendVerificationEmail() {
+        fetch("{{ url_for('send_verification_email', _external=True) }}", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token() }}'  // Adjust based on how you have CSRF setup
+            }
+        }).then(response => response.json()).then(data => {
+            if (data.message) {
+                alert(data.message); // Success message
+            } else {
+                alert(data.error); // Error message
+            }
+        }).catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred. Please try again.');
+        });
     }
 </script>
 

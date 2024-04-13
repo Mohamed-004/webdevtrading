@@ -1,14 +1,18 @@
 from authlib.integrations.flask_client import OAuth
+from authlib.integrations.base_client import errors as authlib_errors
 import firebase_admin
 from firebase_admin import credentials, auth, db, firestore
-from flask import Flask, render_template, send_from_directory, jsonify, request, url_for, redirect, session, flash, abort
+from flask import Flask, render_template, send_from_directory, jsonify, request, url_for, redirect, session, flash, abort, current_app
 from flask_wtf.csrf import CSRFProtect, validate_csrf
 from wtforms import ValidationError
 from urllib.parse import quote_plus, urlencode
 import stripe 
-
+import requests
+from datetime import datetime
 
 stripe.api_key = 'sk_test_51Oyi2xP649Efo4kCYt2kWsW0hPJjptfuWapRJB8ZMCHvhfI4HJF0FuAdEaNJ6JzbQVp0pj1BBOsMEQwf4XJvQSRA00ELDbyNAC'
+
+endpoint_secret = 'whsec_5943b6c6ce120203812d73889dcc757cd73be09a7d93150736be55b115ca5d68'
 
 app = Flask(__name__)
 app.secret_key = '1799d3118e5549432de9b191ba8003c8826585499ebba1974de60d36c8c2c2e6'
@@ -16,7 +20,6 @@ app.config['WTF_CSRF_SECRET_KEY'] =   'Dv1vKfzX6Eo5h_C9cSbX4Q'
 app.config['DEBUG'] = True
 csrf = CSRFProtect(app)
 
-endpoint_secret = 'whsec_5943b6c6ce120203812d73889dcc757cd73be09a7d93150736be55b115ca5d68'
 
 cred = credentials.Certificate('static/prop-patrol24-firebase-adminsdk-i50kg-5fe571bc7b.json')
 firebase_admin.initialize_app(cred)
@@ -60,11 +63,13 @@ def callback():
     return redirect(url_for('dashboard'))
 
 
+
 @app.route("/login")
 def login():
     return oauth.proppatrol.authorize_redirect(
         redirect_uri=url_for("callback", _external=True),
     )
+    
 
 @app.route("/logout")
 def logout():
@@ -160,9 +165,104 @@ def submit_mt_account():
     return render_template("validate_trader_info.html", accounts=accounts)
 
 
+# def get_access_token():
+#     url = "https://dev-ct0rwl0778orlwvk.us.auth0.com/oauth/token"
+#     payload = {
+#         "client_id": "wFkP0rUFYfNDjGfq4Vpvo4HEXSahpCVW",
+#         "client_secret": "9SltpvJRpTv5oKcMoHlI5tLF6AeXOL6KJBG0RF_wZ8NT5Ta3DRK2dQI-ru0b2xKO",
+#         "audience": "https://dev-ct0rwl0778orlwvk.us.auth0.com/api/v2/",
+#         "grant_type": "client_credentials"
+#     }
+#     headers = {'content-type': "application/json"}
+#     response = requests.post(url, json=payload, headers=headers)
+#     data = response.json()
+#     return data.get('access_token')
+
+# def get_user_id_from_email(user_email):
+#     """Retrieve the Auth0 user ID based on the email address."""
+#     access_token = get_access_token()
+#     if not access_token:
+#         print("Failed to retrieve access token")
+#         return None
+
+#     url = f"https://dev-ct0rwl0778orlwvk.us.auth0.com/api/v2/users-by-email"
+#     headers = {
+#         "Authorization": f"Bearer {access_token}",
+#         "Content-Type": "application/json"
+#     }
+#     params = {'email': user_email}
+#     response = requests.get(url, headers=headers, params=params)
+
+#     if response.status_code == 200 and response.json():
+#         users = response.json()
+#         if users:
+#             return users[0]['user_id']
+#         else:
+#             print("No users found with that email")
+#             return None
+#     else:
+#         print(f"Error retrieving user by email: {response.status_code} {response.text}")
+#         return None
+
+#     """Retrieve the Auth0 user ID based on the email address."""
+#     url = f"https://{current_app.config['AUTH0_DOMAIN']}/api/v2/users-by-email"
+#     headers =  {
+#        "Authorization": f"Bearer https://dev-ct0rwl0778orlwvk.us.auth0.com/api/v2/",
+#     "Content-Type": "application/json"
+#     }
+#     params = {'email': user_email}
+#     response = requests.get(url, headers=headers, params=params)
+
+#     if response.status_code == 200 and response.json():
+#         # Ensure that the response contains at least one user
+#         users = response.json()
+#         if users:
+#             return users[0]['user_id']
+#         else:
+#             print("No users found with that email")
+#     else:
+#         print(f"Error retrieving user by email: {response.status_code} {response.text}")
+#     return None
+
+
+
+# def trigger_verification_email(user_email):
+#     """Sends a verification email to the user via Auth0 Management API."""
+#     user_id = get_user_id_from_email(user_email)
+#     if not user_id:
+#         print("User not found in Auth0")
+#         return False
+
+#     access_token = get_access_token()
+#     if not access_token:
+#         print("Failed to retrieve access token")
+#         return False
+
+#     url = f"https://dev-ct0rwl0778orlwvk.us.auth0.com/api/v2/jobs/verification-email"
+#     headers = {
+#         "Authorization": f"Bearer {access_token}",
+#         'Content-Type': 'application/json'
+#     }
+#     payload = {
+#         'user_id': user_id,
+#         'client_id': 'wFkP0rUFYfNDjGfq4Vpvo4HEXSahpCVW'  # Ensure this is the correct client_id
+#     }
+
+#     response = requests.post(url, headers=headers, json=payload)
+#     if response.status_code == 201:
+#         print("Verification email sent successfully")
+#         return True
+#     else:
+#         print(f"Failed to send verification email: {response.status_code} {response.text}")
+#         return False
+
+
+
 @app.route("/dashboard")
 def dashboard():
     # Check if user is authenticated
+    if 'user' not in session:
+        return redirect(url_for("login"))
     user_info = False
     user_data = False
     user_validated_email = 0
@@ -188,40 +288,44 @@ def dashboard():
         if user_data.exists:
             user_data = user_data.to_dict()
 
-            if int(user_data['propsurance_count']) >= 0 :
-                user_name = user_data['user_name']
-                num_of_accounts = int(user_data['propsurance_count']) + 1
-                
-                account_insured = True               
+            if user_data['propsurance_count']:
 
-                for i in range(0, int(user_data['propsurance_count']) + 1):
-                    account_info = user_data['account' +  str(i) ]
-                    account_more_info = user_data['account' +  str(i) + '.account_info' ]
-                    account_size += account_info['account_size']
-                    trade_status = ''
+                if int(user_data['propsurance_count']) >= 0 :
+                    user_name = user_data['user_name']
+                    num_of_accounts = int(user_data['propsurance_count']) + 1
                     
-                    if account_more_info['account_status'] == 'phase2':
-                        trade_status = 'Phase 2'
-                    elif account_more_info['account_status'] == 'phase1':
-                        trade_status = 'Phase 1'
-                    else:
-                        trade_status = 'Live Account'
+                    account_insured = True               
 
-                   
+                    for i in range(0, int(user_data['propsurance_count']) + 1):
+                        account_info = user_data['account' +  str(i) ]
+                        account_more_info = user_data['account' +  str(i) + '.account_info' ]
+                        account_size += account_info['account_size']
+                        trade_status = ''
+                        
+                        if account_more_info['account_status'] == 'phase2':
+                            trade_status = 'Phase 2'
+                        elif account_more_info['account_status'] == 'phase1':
+                            trade_status = 'Phase 1'
+                        else:
+                            trade_status = 'Live Account'
 
-                    prop_firm_info = {
-                        'name': account_info['prop_firm_name'],
-                        'account_size' : account_info['account_size'],
-                        'account_url_fix' : str( i),
-                        'account_status':  account_info['status'],
-                        'phase_status' : trade_status
-                    }
-
-                    insured_accounts.append(prop_firm_info)
-
-                account_percentage = int((account_size / 200000) * 100)
-                remaining_size = 200000 - account_size
                     
+
+                        prop_firm_info = {
+                            'name': account_info['prop_firm_name'],
+                            'account_size' : account_info['account_size'],
+                            'account_url_fix' : str( i),
+                            'account_status':  account_info['status'],
+                            'phase_status' : trade_status
+                        }
+
+                        insured_accounts.append(prop_firm_info)
+
+                    account_percentage = int((account_size / 200000) * 100)
+                    remaining_size = 200000 - account_size
+
+            else: 
+                return render_template("dashboard.html", session=user_info, user_email=user_email, user_validated_email=user_validated_email)        
                     
     
 
@@ -233,14 +337,19 @@ def dashboard():
 
         #     print(user_data_dict)
             
-            
-        if not user_info or not user_data:
+        
+        if not user_email or not user_data:
         # Redirect to login page if user is not authenticated or email is not verified
             return redirect(url_for("login"))
         
     except Exception as err:
         pass
-        # raise err
+        # if not user_email or not user_data:
+        # # Redirect to login page if user is not authenticated or email is not verified
+        #     return redirect(url_for("login"))
+        # else:
+        #     raise Exception
+        # return redirect(url_for("login")) 
         
 
     if account_insured:
@@ -250,7 +359,7 @@ def dashboard():
         
     # firebase_user_data = list(user_data.values())[0]
     
-    return render_template("dashboard.html", session=user_info, user_email=user_email)
+    return render_template("dashboard.html", session=user_info, user_email=user_email, user_validated_email=user_validated_email)
 
 
 
@@ -258,6 +367,7 @@ def dashboard():
 
 
 @app.route('/webhook', methods=['POST'])
+@csrf.exempt
 def webhook():
     event = None
     payload = request.data
@@ -267,12 +377,16 @@ def webhook():
         event = stripe.Webhook.construct_event(
             payload, sig_header, endpoint_secret
         )
+    except Exception as e:
+        raise Exception
     except ValueError as e:
         # Invalid payload
         raise e
     except stripe.error.SignatureVerificationError as e:
         # Invalid signature
         raise e
+    
+
 
     # Handle the event
     if event['type'] == 'invoice.payment_succeeded':
@@ -284,7 +398,7 @@ def webhook():
 
         # Query Firestore for the user document by email
         users_query = db.collection('users').document(customer.email).get()
-        print(users_query)
+        
         prop_count = 0
         
 
@@ -292,11 +406,10 @@ def webhook():
         account_size = 0
         prop_firm_name = 0
     
-        if users_query:
+        if users_query.exists:
 
-            for user_doc in users_query:
-                if user_doc.exists:
-                    user_info = user_doc.to_dict()
+            
+                    user_info = users_query.to_dict()
                     uid = user_info.get('uid', 0)
                     user_ref = db.collection('users').document(customer.email)
                     
@@ -329,7 +442,7 @@ def webhook():
                         'invoice_url': event['data']['object']["hosted_invoice_url"],
                         'account_size': (account_size), 'customer-purchase-id': customer_id, 
                         'prop_firm_name' : prop_firm_name,
-                        'status': 'pending', 'server': '', 'trading_account_type': ''
+                        'status': 'pending', 'server': '', 'trading_account_type': '', 'insurance_date': datetime.now().date()
                 }, 'propsurance_count' : str(prop_count), 'user_name': event['data']['object']["customer_name"],
                     'phone_numer': event['data']['object']["customer_phone"]  }
                         # Assuming you want to append to 'prop-firm-details' instead of resetting it
@@ -337,7 +450,7 @@ def webhook():
                     
 
                     # Update Firestore document
-                    user_ref.update(updated_data)
+                    user_ref.set(updated_data)
                     
 
                     # Optionally update the customer metadata in Stripe
@@ -348,6 +461,7 @@ def webhook():
                             'propsurance-count': prop_count,
                         }
                     )
+                    return jsonify({'status': 'success', 'message': 'Checkout session completed and data updated.'}), 200
         else:
                 if 'ftmo50' in event['data']['object']["lines"]["data"][0]["price"]["nickname"]:
                         account_size = 50000
@@ -367,7 +481,8 @@ def webhook():
                     'prop_firm_name' : prop_firm_name,
                    
               }, 'email' : customer.email,  'user_name': event['data']['object']["customer_name"],
-                   'phone_numer': event['data']['object']["customer_phone"]  }, merge=True)
+                   'phone_numer': event['data']['object']["customer_phone"]  })
+                return jsonify({'status': 'success', 'message': 'User not in database but still uploaded'}), 200
             
 
     if event['type'] == 'checkout.session.completed':
@@ -378,12 +493,12 @@ def webhook():
         customer = stripe.Customer.retrieve(customer_id)
 
         # Query Firestore for the user document by email
-        users_query = db.collection("users").where("email", "==", customer.email).get()
+        users_query = user_ref = db.collection('users').document(customer.email).get()
 
         
-        for user_doc in users_query:
-            if user_doc.exists:
-                user_info = user_doc.to_dict()
+        
+        if users_query.exists:
+                user_info = users_query.to_dict()
                 uid = user_info.get('uid', 0)
                 user_ref = db.collection('users').document(customer.email)
 
@@ -420,13 +535,14 @@ def webhook():
                 # Use .set() with merge=True to update the specific field, creating the document if it doesn't exist
                 user_ref.set({
                     account_info_key: account_info_data
-                }, merge=True)
+                })
+                return jsonify({'status': 'success', 'message': 'Checkout session completed and data updated.'}), 200
+        else:
+                return jsonify({'status': 'error', 'message': 'User not found in database.'}), 404
 
-        
-    
     else:
         pass
-    #   print('Unhandled event type {}'.format(event['type']))
+        print('Unhandled event type {}'.format(event['type']))
 
     return jsonify(success=True)
 

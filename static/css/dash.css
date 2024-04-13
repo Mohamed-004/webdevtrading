@@ -86,7 +86,7 @@ div#dashboard-container {
 }
 
 
-p.remaining, a.remaining {
+p.remaining, a.remaining,  span.remaining {
     max-width: 100%;
     font-size: 1em;
     font-weight: bold;
@@ -110,6 +110,13 @@ p.remaining, a.remaining {
     font-size: 1.1em;
     color: #0c3594a6;
     font-weight: 500;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+}
+
+.coverage-p svg {
+    margin-right:0.6em;
 }
 
 #hero {
@@ -302,4 +309,18 @@ option {
     position: absolute;
     top: 12px;
     left: 8px;
+}
+
+.alert-success {
+    display: none;
+}
+
+span.remaining.hazard.not-error {
+    color: #0c3594a6;
+    background: #f1f8ff;
+    border-left-color: #007bffab;
+}
+
+.hazard-div u {
+    margin-left: 3px;
 }
