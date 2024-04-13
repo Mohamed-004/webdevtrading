@@ -337,7 +337,8 @@ def webhook():
     event = None
     payload = request.data
     sig_header = request.headers['STRIPE_SIGNATURE']
-
+    check_for_count = True
+    prop_count = 0
     try:
         event = stripe.Webhook.construct_event(
             payload, sig_header, endpoint_secret
@@ -362,156 +363,107 @@ def webhook():
         customer = stripe.Customer.retrieve(customer_id)
 
         # Query Firestore for the user document by email
-        users_query = db.collection('users').document(customer.email).get()
+        user_ref = db.collection('users').document(customer.email)
+        users_query = user_ref.get()
         
-        prop_count = 0
-        
-
-        uid = 0
-        account_size = 0
-        prop_firm_name = 0
-    
         if users_query.exists:
+            user_info = users_query.to_dict()
+            uid = user_info.get('uid', 0)
+
+            if 'ftmo50' in payment_intent["lines"]["data"][0]["price"]["nickname"]:
+                account_size = 50000
+                prop_firm_name = 'FTMO'
+
+            current_date = datetime.now()
+            formatted_date_string = current_date.strftime('%Y-%m-%d')
+
+            # Preparing the account information to be appended to accounts_info array
+            account_info = {
+                'propsurance_count': len(user_info.get('accounts_info', [])) ,
+                'invoice_url': payment_intent["hosted_invoice_url"],
+                'account_size': account_size,
+                'prop_firm_name': prop_firm_name,
+                'status': 'pending',
+                'server': '',
+                'trading_account_type': '',
+                'insured_date': formatted_date_string,
+                 'customer-purchase-id': customer_id
+            }
+
+            # Update Firestore document using a transaction or directly if atomicity is not crucial
+            user_ref.update({
+                'accounts_info': firestore.ArrayUnion([account_info]),
+                'user_name': customer.name,
+                'phone_number': customer.phone,
+               
+            })
 
             
-                    user_info = users_query.to_dict()
-                    uid = user_info.get('uid', 0)
-                    user_ref = db.collection('users').document(customer.email)
-                    
 
-                    # Fetch document to check if 'propsurance-count' exists
-                    user_doc_snapshot = user_ref.get()
-                    if user_doc_snapshot.exists:
-                        user_data = user_doc_snapshot.to_dict()
-                        try:
-                            prop_count = int(user_data.get('propsurance_count')) + 1
-                        except:
-                            prop_count = 0 
-                    
-                    if 'ftmo50' in event['data']['object']["lines"]["data"][0]["price"]["nickname"]:
-                        account_size = 50000
-                        prop_firm_name = 'FTMO'
-                    
-                    
-                    # update_data = {
-            #     f'{mt_account_key}.status': 'new_status',  # Replace 'new_status' with the actual status value
-            #     f'{mt_account_key}.trader_info': 'new_trader_info',  # Replace 'new_trader_info' with actual trader info
-            #     # If updating the mt_account, password, and server as well:
-            #     f'{mt_account_key}.mt_account': mt_account,
-            #     f'{mt_account_key}.password': password,
-            #     f'{mt_account_key}.server': server,
-            # }
-                    date_date = datetime.now().date()
+            # Optionally update the customer metadata in Stripe
+            stripe.Customer.modify(
+                customer_id,
+                metadata={
+                    'uid': uid,
+                    'propsurance-count': len(user_info.get('accounts_info', [])) ,
+                }
+            )
+            
 
-                    formatted_date_string = date_date.strftime('%Y-%m-%d')
-
-
-                    updated_data = { 'account' + str(prop_count) :  {
-                        'propsurance_count': str(prop_count),
-                        'invoice_url': event['data']['object']["hosted_invoice_url"],
-                        'account_size': (account_size), 'customer-purchase-id': customer_id, 
-                        'prop_firm_name' : prop_firm_name,
-                        'status': 'pending', 'server': '', 'trading_account_type': '', 'insured_date': formatted_date_string
-                }, 'propsurance_count' : str(prop_count), 'user_name': event['data']['object']["customer_name"],
-                    'phone_numer': event['data']['object']["customer_phone"]  }
-                        # Assuming you want to append to 'prop-firm-details' instead of resetting it
-                        # 'prop-firm-details': firestore.ArrayUnion([new_prop_firm_detail]),
-                    
-
-                    # Update Firestore document
-                    user_ref.set(updated_data)
-                    
-
-                    # Optionally update the customer metadata in Stripe
-                    stripe.Customer.modify(
-                        customer_id,
-                        metadata={
-                            'uid': uid,
-                            'propsurance-count': prop_count,
-                        }
-                    )
-                    return jsonify({'status': 'success', 'message': 'Checkout session completed and data updated.'}), 200
         else:
-                if 'ftmo50' in event['data']['object']["lines"]["data"][0]["price"]["nickname"]:
-                        account_size = 50000
-                        prop_firm_name = 'FTMO'
-
-                user_ref = db.collection('users').document(customer.email)
-            #     user_ref.set({
-            #     'uid': user['sub'],  # Assuming sub field contains UID
-            #     'name': user.get('name', ''),
-            #     'email': user['email'],
-            #     # Add other user information as needed
-            # })
-                print('set the new user different email')
-                user_ref.set({ 'account_' + event['data']['object']["id"] :  {
-                                'invoice_url': event['data']['object']["hosted_invoice_url"],
-                    'account_size': (account_size), 'customer-purchase-id': customer_id, 
-                    'prop_firm_name' : prop_firm_name,
-                   
-              }, 'email' : customer.email,  'user_name': event['data']['object']["customer_name"],
-                   'phone_numer': event['data']['object']["customer_phone"]  })
-                return jsonify({'status': 'success', 'message': 'User not in database but still uploaded'}), 200
+            print('User not found in database.')
+            return jsonify({'status': 'error', 'message': 'User not found in database.'}), 404
             
 
     if event['type'] == 'checkout.session.completed':
         payment_intent = event['data']['object']  # The payment intent object
         customer_id = payment_intent['customer']
-        prop_count = 0
+
         # Fetch the customer details from Stripe
         customer = stripe.Customer.retrieve(customer_id)
 
         # Query Firestore for the user document by email
-        users_query = user_ref = db.collection('users').document(customer.email).get()
+        user_ref = db.collection('users').document(customer.email)
+        users_query = user_ref.get()
 
-        
-        
         if users_query.exists:
-                user_info = users_query.to_dict()
-                uid = user_info.get('uid', 0)
-                user_ref = db.collection('users').document(customer.email)
+            user_info = users_query.to_dict()
+            uid = user_info.get('uid', 0)
 
-                # Fetch document to check if 'propsurance-count' exists
-                user_doc_snapshot = user_ref.get()
-                user_data = 0
-                if user_doc_snapshot.exists: 
-                    user_data = user_doc_snapshot.to_dict()
-                    try:
-                        prop_count = int(user_data.get('propsurance_count')) + 1
-                    except:
-                        pass
+            # Retrieve or initialize the accounts_info array
+            accounts_info = user_info.get('accounts_info_more', [])
 
-                # else:
-                    # Starting count if it doesn't exist    
+            phase_value = payment_intent.get("custom_fields", [{}])[0].get("dropdown", {}).get("value", "")
+            mt4mt5_investor_id = payment_intent.get("custom_fields", [{}])[1].get("text", {}).get("value", "")
+            mt4mt5_investor_password = payment_intent.get("custom_fields", [{}])[2].get("text", {}).get("value", "")
+
+            # New account information to append
+            new_account_info = {
+                'propsurance_count': len(accounts_info) ,  # Dynamic count based on the length of accounts_info
+                'account_status': phase_value,
+                'investor_id': mt4mt5_investor_id,
+                'investor_password': mt4mt5_investor_password,
+                'insured_date': datetime.now().strftime('%Y-%m-%d'),
+                 'customer-purchase-id': customer_id# Current date
+            }
+
+            # Update the document by appending new account info to the accounts_info array
+            user_ref.update({
+                'accounts_info_more': firestore.ArrayUnion([new_account_info]),
+                  # Ensuring this stays updated
+                'user_name': customer.name,
+                'phone_number': customer.phone,
                 
-                phase_value = payment_intent["custom_fields"][0]["dropdown"]["value"]
-                mt4mt5_investor_id = payment_intent["custom_fields"][1]["text"]["value"]
+            })
 
-                # Extracting MT4/MT5 Investor Password
-                mt4mt5_investor_password = payment_intent["custom_fields"][2]["text"]["value"] 
+            
 
-                
-                account_info_key = f'account{prop_count}.account_info'
-
-                # Prepare the account info data
-                account_info_data = {
-                    'propsurance_count': prop_count,
-                    'account_status': phase_value,
-                    'investor_id': mt4mt5_investor_id,
-                    'investor_password': mt4mt5_investor_password
-                }
-
-                # Use .set() with merge=True to update the specific field, creating the document if it doesn't exist
-                user_ref.set({
-                    account_info_key: account_info_data
-                })
-                return jsonify({'status': 'success', 'message': 'Checkout session completed and data updated.'}), 200
         else:
-                return jsonify({'status': 'error', 'message': 'User not found in database.'}), 404
-
+            return jsonify({'status': 'error', 'message': 'User not found in database.'}), 404
     else:
-        pass
-        print('Unhandled event type {}'.format(event['type']))
+        return jsonify({'status': 'error', 'message': f'Unhandled event type {event["type"]}'}), 400
+
+    
 
     return jsonify(success=True)
 
