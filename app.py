@@ -1,5 +1,5 @@
 from authlib.integrations.flask_client import OAuth
-from authlib.integrations.base_client import errors as authlib_errors
+from authlib.integrations.base_client.errors import OAuthError
 import firebase_admin
 from firebase_admin import credentials, auth, db, firestore
 from flask import Flask, render_template, send_from_directory, jsonify, request, url_for, redirect, session, flash, abort, current_app
@@ -9,6 +9,8 @@ from urllib.parse import quote_plus, urlencode
 import stripe 
 import requests
 from datetime import datetime
+
+# email api key e0292a01d4005f36ecc119c1ea1cf1dd04ea111c
 
 stripe.api_key = 'sk_test_51Oyi2xP649Efo4kCYt2kWsW0hPJjptfuWapRJB8ZMCHvhfI4HJF0FuAdEaNJ6JzbQVp0pj1BBOsMEQwf4XJvQSRA00ELDbyNAC'
 
@@ -32,35 +34,48 @@ oauth.register(
     client_id='qA5AwBA91VxeHowQQu6MDKOBYHWbWbmx',
     client_secret='7FckIXvKm00XxFch0RDB9iGiATPnKZ_RqnL83Um_BILE4_gQyL7fYLi7MfW431hn',
     server_metadata_url=conf_url,
-    client_kwargs={'scope': 'openid profile email'},
+    client_kwargs={'scope': 'openid  email'},
 )
+
+
 
 @app.route("/callback", methods=["GET", "POST"])
 def callback():
-    token = oauth.proppatrol.authorize_access_token()
-    user_info = {
-    "email": token["userinfo"]["email"],
-    "email_verified": token["userinfo"]["email_verified"]
-}
+    try:
+        token = oauth.proppatrol.authorize_access_token()
+        
+        user_info = {
+        "email": token["userinfo"]["email"],
+        "email_verified": token["userinfo"]["email_verified"]
+    }
 
-# Store the extracted user information in the session
-    session["user"] = user_info
-    user = oauth.proppatrol.parse_id_token(token,nonce=session.get("nonce"))
+    # Store the extracted user information in the session
+        session["user"] = user_info
+        user = oauth.proppatrol.parse_id_token(token,nonce=session.get("nonce"))
+
+        
+        user_ref = db.collection('users').document(user['email'])
+        user_check_exist = db.collection('users').document(user['email']).get()
+        if not user_check_exist.exists:
+            user_ref.set({
+                'uid': user['sub'],  # Assuming sub field contains UID
+                'name': user.get('name', ''),
+                'email': user['email'],
+                # Add other user information as needed
+            })
+            return redirect(url_for('dashboard'))
+        else:
+            return redirect(url_for('dashboard'))
+    except OAuthError as e:
+        if 'access_denied' in str(e):
+            # Here you can handle the specific case where access was denied
+            
+            return 'you ddint provide consent', 403 
+    
 
     
-    user_ref = db.collection('users').document(user['email'])
-    user_check_exist = db.collection('users').document(user['email']).get()
-    if not user_check_exist.exists:
-        user_ref.set({
-            'uid': user['sub'],  # Assuming sub field contains UID
-            'name': user.get('name', ''),
-            'email': user['email'],
-            # Add other user information as needed
-        })
-        return redirect(url_for('dashboard'))
-    else:
-        return redirect(url_for('dashboard'))
-    return redirect(url_for('dashboard'))
+
+
 
 
 
@@ -116,16 +131,40 @@ def submit_mt_account():
             if account_key in user_data:
                 account_info = user_data[account_key]
                 account_more_info_ = user_data[account_more_info_key]
-                print(account_info)
+                account_stage_value =   ''
+                if account_more_info_.get('account_status') == 'phase1':
+                    account_stage_value = 'Phase 1'
+                elif account_more_info_.get('account_status') == 'phase2':
+                    account_stage_value = 'Phase 2'
+                elif account_more_info_.get('account_status') == 'live':
+                    account_stage_value = 'Live'
+                # print(account_info)
                 # Assuming account_info includes 'status', 'investor_id', 'prop_firm_name'
-                accounts.append({
+                if account_info.get('status') == 'needs_validation' or account_info.get('status') == 'validated' or account_info.get('status') == 'invalid':
+                    accounts.append({
                     'id': i,
                     'name': account_info.get('prop_firm_name', f'Account {i}'),
                     'investor_id': account_more_info_.get('investor_id', ''),
                     'investor_password': account_more_info_.get('investor_password', ''),
-                    'status': account_info.get('status', ''),
-                    'account_size': account_info.get('account_size', '')
+                    'status': account_info.get('status'),
+                    'account_size': account_info.get('account_size', ''),
+                    'server': account_info.get('server', ''),
+                    'server_type':   account_info.get('trading_account_type'),
+                    'account_stage' : account_stage_value
                 })
+
+
+                elif account_info.get('status') == 'pending':    
+                    accounts.append({
+                        'id': i,
+                        'name': account_info.get('prop_firm_name', f'Account {i}'),
+                        'investor_id': account_more_info_.get('investor_id', ''),
+                        'investor_password': account_more_info_.get('investor_password', ''),
+                        'status': account_info.get('status'),
+                        'account_size': account_info.get('account_size', ''),
+                        'account_stage' : account_stage_value
+                    })
+    
 
     # POST request handling
     if request.method == 'POST':
@@ -135,126 +174,52 @@ def submit_mt_account():
             # Handle the CSRF validation failure
             abort(400, description='CSRF token error')
 
-        mt_account = request.form['mt_account']
+        mt_account = request.form['server_type']
         password = request.form['password']
         server = request.form['server']
+        prop_count = request.form['prop_count']
         user_email = session['user']['email']
-
         
     
     # Update user data in database
         try:
             user_ref = db.collection('users').document(user_email)
-            mt_account_key = f'mt_account_{prop_count}'
-
+            
+            account_current_data = user_ref.get()
+            account_current_dict = account_current_data.to_dict()
+            account_key = f'account{prop_count}'
+            account_key_status = f'account_{prop_count}.status'
+            trader_account_key = f'account_{prop_count}.account_info'
+            
+            
+            account_status = account_current_dict.get(account_key).get('status')
+            if account_status == 'pending':
 # Specify the fields you want to update using dot notation
-            update_data = {
-                f'{mt_account_key}.status': 'new_status',  # Replace 'new_status' with the actual status value
-                f'{mt_account_key}.trader_info': 'new_trader_info',  # Replace 'new_trader_info' with actual trader info
-                # If updating the mt_account, password, and server as well:
-                f'{mt_account_key}.mt_account': mt_account,
-                f'{mt_account_key}.password': password,
-                f'{mt_account_key}.server': server,
-            }
+                update_data = {
+                    f'{account_key}.status': 'needs_validation',  # Replace 'new_status' with the actual status value
+                    # If updating the mt_account, password, and server as well:
+                    f'{account_key}.server': server,
+                    
+                    f'{account_key}.trading_account_type': mt_account 
+                }
+                user_ref.update(update_data)
+            else:
+                return redirect(url_for('submit_mt_account'))
+
+
+            # user_ref.update(update_data)
+
             flash('Awaiting Validation.')
         except Exception as err:
             # pass
             flash('Error updating MT account information.')
             print(err)  # Consider logging the error
 
+        return redirect(url_for('submit_mt_account'))
+
     return render_template("validate_trader_info.html", accounts=accounts)
 
 
-# def get_access_token():
-#     url = "https://dev-ct0rwl0778orlwvk.us.auth0.com/oauth/token"
-#     payload = {
-#         "client_id": "wFkP0rUFYfNDjGfq4Vpvo4HEXSahpCVW",
-#         "client_secret": "9SltpvJRpTv5oKcMoHlI5tLF6AeXOL6KJBG0RF_wZ8NT5Ta3DRK2dQI-ru0b2xKO",
-#         "audience": "https://dev-ct0rwl0778orlwvk.us.auth0.com/api/v2/",
-#         "grant_type": "client_credentials"
-#     }
-#     headers = {'content-type': "application/json"}
-#     response = requests.post(url, json=payload, headers=headers)
-#     data = response.json()
-#     return data.get('access_token')
-
-# def get_user_id_from_email(user_email):
-#     """Retrieve the Auth0 user ID based on the email address."""
-#     access_token = get_access_token()
-#     if not access_token:
-#         print("Failed to retrieve access token")
-#         return None
-
-#     url = f"https://dev-ct0rwl0778orlwvk.us.auth0.com/api/v2/users-by-email"
-#     headers = {
-#         "Authorization": f"Bearer {access_token}",
-#         "Content-Type": "application/json"
-#     }
-#     params = {'email': user_email}
-#     response = requests.get(url, headers=headers, params=params)
-
-#     if response.status_code == 200 and response.json():
-#         users = response.json()
-#         if users:
-#             return users[0]['user_id']
-#         else:
-#             print("No users found with that email")
-#             return None
-#     else:
-#         print(f"Error retrieving user by email: {response.status_code} {response.text}")
-#         return None
-
-#     """Retrieve the Auth0 user ID based on the email address."""
-#     url = f"https://{current_app.config['AUTH0_DOMAIN']}/api/v2/users-by-email"
-#     headers =  {
-#        "Authorization": f"Bearer https://dev-ct0rwl0778orlwvk.us.auth0.com/api/v2/",
-#     "Content-Type": "application/json"
-#     }
-#     params = {'email': user_email}
-#     response = requests.get(url, headers=headers, params=params)
-
-#     if response.status_code == 200 and response.json():
-#         # Ensure that the response contains at least one user
-#         users = response.json()
-#         if users:
-#             return users[0]['user_id']
-#         else:
-#             print("No users found with that email")
-#     else:
-#         print(f"Error retrieving user by email: {response.status_code} {response.text}")
-#     return None
-
-
-
-# def trigger_verification_email(user_email):
-#     """Sends a verification email to the user via Auth0 Management API."""
-#     user_id = get_user_id_from_email(user_email)
-#     if not user_id:
-#         print("User not found in Auth0")
-#         return False
-
-#     access_token = get_access_token()
-#     if not access_token:
-#         print("Failed to retrieve access token")
-#         return False
-
-#     url = f"https://dev-ct0rwl0778orlwvk.us.auth0.com/api/v2/jobs/verification-email"
-#     headers = {
-#         "Authorization": f"Bearer {access_token}",
-#         'Content-Type': 'application/json'
-#     }
-#     payload = {
-#         'user_id': user_id,
-#         'client_id': 'wFkP0rUFYfNDjGfq4Vpvo4HEXSahpCVW'  # Ensure this is the correct client_id
-#     }
-
-#     response = requests.post(url, headers=headers, json=payload)
-#     if response.status_code == 201:
-#         print("Verification email sent successfully")
-#         return True
-#     else:
-#         print(f"Failed to send verification email: {response.status_code} {response.text}")
-#         return False
 
 
 
@@ -436,13 +401,17 @@ def webhook():
             #     f'{mt_account_key}.password': password,
             #     f'{mt_account_key}.server': server,
             # }
-                    
+                    date_date = datetime.now().date()
+
+                    formatted_date_string = date_date.strftime('%Y-%m-%d')
+
+
                     updated_data = { 'account' + str(prop_count) :  {
                         'propsurance_count': str(prop_count),
                         'invoice_url': event['data']['object']["hosted_invoice_url"],
                         'account_size': (account_size), 'customer-purchase-id': customer_id, 
                         'prop_firm_name' : prop_firm_name,
-                        'status': 'pending', 'server': '', 'trading_account_type': '', 'insurance_date': datetime.now().date()
+                        'status': 'pending', 'server': '', 'trading_account_type': '', 'insured_date': formatted_date_string
                 }, 'propsurance_count' : str(prop_count), 'user_name': event['data']['object']["customer_name"],
                     'phone_numer': event['data']['object']["customer_phone"]  }
                         # Assuming you want to append to 'prop-firm-details' instead of resetting it

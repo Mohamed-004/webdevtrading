@@ -6,6 +6,15 @@
 {% block css %}    
 <link rel="stylesheet" href="{{ url_for('static', filename='css/cases.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/dash.css') }}">
+
+<script>
+    window.onload = function() {
+            if (window.performance && window.performance.navigation.type === window.performance.navigation.TYPE_BACK_FORWARD) {
+                document.getElementById("form-validation").reset();
+                alert("You've returned to a previously submitted form. We've cleared the data for your security.");
+            }
+        };
+</script>
 {% endblock %}
 
 {% block content %}
@@ -16,59 +25,156 @@
 <h2 class="form-h2">Account Information</h2>
 <form id="form-validation" action="{{ url_for('submit_mt_account') }}" method="post">
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-
+    <input type="hidden" id="prop_count" name="prop_count" value="{{ accounts[0].id  }}"/>
     <label for="account_select">Select Account:</label>
     <div class="select-container">
         <svg id="arrow-select" width="16px" height="20px" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M903.232 256l56.768 50.432L512 768 64 306.432 120.768 256 512 659.072z" fill="#0c35948a"></path></g></svg>    
-    <select name="account_select" id="account_select" onchange="updateForm(this)">
-       
-        {% for account in accounts %}
-            <option value="{{ account.id }}" {% if loop.first %}selected{% endif %}>
-                {{ account.name }} {{account.account_size}}
-            </option>
-        {% endfor %}
-    </select>
-</div>
+        <select name="account_select" id="account_select" onchange="updateForm(this)">
+            {% for account in accounts %}
+                <option value="{{ account.id }}" data-status="{{ account.status }}"
+                        {% if loop.first %}selected{% endif %}>
+                    {{ account.name }} ({{ account.account_size }}) #{{ (account.id | int) + 1 }}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+
     <label for="mt_account">Read Only/Investor ID</label>
     <div class="form-icon-cont">
     <div class="form-icon"> <svg width="25px" height="25px" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M15 7L18 10M10 12L7 15L6 19L10 18L13 15M12 10L17 5L20 8L15 13M19 19L5 5" stroke="#0c3594d1" stroke-width="1.2"></path> </g></svg></div> </div>
     <input type="text" id="mt_account" name="mt_account" value="{{ accounts[0].investor_id }}" readonly required><br>
-    <label for="password" >Investor Password:</label>
+
+    <label for="password" >Investor Password</label>
 
     <div class="form-icon-cont">
 
         <div class="form-icon"> <svg width="25px" height="25px" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M15 7L18 10M10 12L7 15L6 19L10 18L13 15M12 10L17 5L20 8L15 13M19 19L5 5" stroke="#0c3594d1" stroke-width="1.2"></path> </g></svg></div>
     </div>
     <input type="text" id="password" name="password" value="{{ accounts[0].investor_password }}" readonly required><br>
-    <label for="server">Server:</label>
-    <input type="text" id="server" name="server" required><br>
+
+    <label for="account-stage" >Account Stage</label>
+
+    <div class="form-icon-cont">
+
+        <div class="form-icon"> <svg width="25px" height="25px" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M15 7L18 10M10 12L7 15L6 19L10 18L13 15M12 10L17 5L20 8L15 13M19 19L5 5" stroke="#0c3594d1" stroke-width="1.2"></path> </g></svg></div>
+    </div>
+    <input type="text" id="account_stage" name="account-stage" value="{{ accounts[0].account_stage }}" readonly required><br>
+
+    {% if accounts[0].status == 'needs_validation' %}
+    <label for="server">Server </label>
+    <div class="form-icon-cont">
+
+        <div class="form-icon"> <svg width="25px" height="25px" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M15 7L18 10M10 12L7 15L6 19L10 18L13 15M12 10L17 5L20 8L15 13M19 19L5 5" stroke="#0c3594d1" stroke-width="1.2"></path> </g></svg></div>
+    </div>
+    <input type="text" id="server" name="server" value="{{accounts[0].server}}" required {{ 'readonly' if accounts[0].status == 'needs_validation' }}><br>
+
+    <label for="server">Server Type</label>
+    <div class="form-icon-cont">
+
+        <div class="form-icon"> <svg width="25px" height="25px" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M15 7L18 10M10 12L7 15L6 19L10 18L13 15M12 10L17 5L20 8L15 13M19 19L5 5" stroke="#0c3594d1" stroke-width="1.2"></path> </g></svg></div>
+    </div>
+    <input type="text" id="server_type" name="server_type" value="{{accounts[0].server_type}}"  required {{ 'readonly' if accounts[0].status == 'needs_validation' }}><br>
+
+
+    <div class="hazard-div" id="validated" >
+        <a class="remaining hazard" id="form-hazard">
+            <div class="hazard-icon-div">
+                <!-- SVG icon -->
+                <svg fill="#0c3594a6" width="25px" height="25px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M16.03,18.616l5.294-4.853a1,1,0,0,1,1.352,1.474l-6,5.5a1,1,0,0,1-1.383-.03l-3-3a1,1,0,0,1,1.414-1.414ZM1,20a9.01,9.01,0,0,1,5.623-8.337A4.981,4.981,0,1,1,10,13a7.011,7.011,0,0,0-6.929,6H10a1,1,0,0,1,0,2H2A1,1,0,0,1,1,20ZM7,8a3,3,0,1,0,3-3A3,3,0,0,0,7,8Z"></path></g></svg>
+            </div>
+            Account Added
+        </a>
+    </div>
+
+    <p class="change-id">To change Trading ID or  Password please contact us at <br> <strong> support@proppatrol.net</strong></p>
+
+    {% elif accounts[0].status == 'invalid'  %}
+
+    <label for="server">Server </label>
+    <div class="form-icon-cont">
+
+        <div class="form-icon"> <svg width="25px" height="25px" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M15 7L18 10M10 12L7 15L6 19L10 18L13 15M12 10L17 5L20 8L15 13M19 19L5 5" stroke="#0c3594d1" stroke-width="1.2"></path> </g></svg></div>
+    </div>
+    <input type="text" id="server" name="server" value="{{accounts[0].server}}" required {{ 'readonly' if accounts[0].status == 'invalid' }}><br>
+
+    <label for="server">Server Type</label>
+    <div class="form-icon-cont">
+
+        <div class="form-icon"> <svg width="25px" height="25px" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M15 7L18 10M10 12L7 15L6 19L10 18L13 15M12 10L17 5L20 8L15 13M19 19L5 5" stroke="#0c3594d1" stroke-width="1.2"></path> </g></svg></div>
+    </div>
+    <input type="text" id="server_type" name="server_type" value="{{accounts[0].server_type}}"  required {{ 'readonly' if accounts[0].status == 'invalid' }}><br>
+
+
+    <div class="hazard-div" id="invalid-user" >
+        <a class="remaining hazard" id="form-hazard-invalid">
+            <div class="hazard-icon-div">
+                <!-- SVG icon -->
+                <svg fill="#00000082" width="25px" height="25px" viewBox="0 0 64 64" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <rect id="Icons" x="-640" y="-64" width="1280" height="800" style="fill:none;"></rect> <g id="Icons1" serif:id="Icons"> <g id="Strike"> </g> <g id="H1"> </g> <g id="H2"> </g> <g id="H3"> </g> <g id="list-ul"> </g> <g id="hamburger-1"> </g> <g id="hamburger-2"> </g> <g id="list-ol"> </g> <g id="list-task"> </g> <g id="trash"> </g> <g id="vertical-menu"> </g> <g id="horizontal-menu"> </g> <g id="sidebar-2"> </g> <g id="Pen"> </g> <g id="Pen1" serif:id="Pen"> </g> <g id="clock"> </g> <g id="external-link"> </g> <g id="hr"> </g> <g id="info"> </g> <g id="warning"> <path d="M32.427,7.987c2.183,0.124 4,1.165 5.096,3.281l17.936,36.208c1.739,3.66 -0.954,8.585 -5.373,8.656l-36.119,0c-4.022,-0.064 -7.322,-4.631 -5.352,-8.696l18.271,-36.207c0.342,-0.65 0.498,-0.838 0.793,-1.179c1.186,-1.375 2.483,-2.111 4.748,-2.063Zm-0.295,3.997c-0.687,0.034 -1.316,0.419 -1.659,1.017c-6.312,11.979 -12.397,24.081 -18.301,36.267c-0.546,1.225 0.391,2.797 1.762,2.863c12.06,0.195 24.125,0.195 36.185,0c1.325,-0.064 2.321,-1.584 1.769,-2.85c-5.793,-12.184 -11.765,-24.286 -17.966,-36.267c-0.366,-0.651 -0.903,-1.042 -1.79,-1.03Z" style="fill-rule:nonzero;"></path> <path d="M33.631,40.581l-3.348,0l-0.368,-16.449l4.1,0l-0.384,16.449Zm-3.828,5.03c0,-0.609 0.197,-1.113 0.592,-1.514c0.396,-0.4 0.935,-0.601 1.618,-0.601c0.684,0 1.223,0.201 1.618,0.601c0.395,0.401 0.593,0.905 0.593,1.514c0,0.587 -0.193,1.078 -0.577,1.473c-0.385,0.395 -0.929,0.593 -1.634,0.593c-0.705,0 -1.249,-0.198 -1.634,-0.593c-0.384,-0.395 -0.576,-0.886 -0.576,-1.473Z" style="fill-rule:nonzero;"></path> </g> <g id="plus-circle"> </g> <g id="minus-circle"> </g> <g id="vue"> </g> <g id="cog"> </g> <g id="logo"> </g> <g id="radio-check"> </g> <g id="eye-slash"> </g> <g id="eye"> </g> <g id="toggle-off"> </g> <g id="shredder"> </g> <g id="spinner--loading--dots-" serif:id="spinner [loading, dots]"> </g> <g id="react"> </g> <g id="check-selected"> </g> <g id="turn-off"> </g> <g id="code-block"> </g> <g id="user"> </g> <g id="coffee-bean"> </g> <g id="coffee-beans"> <g id="coffee-bean1" serif:id="coffee-bean"> </g> </g> <g id="coffee-bean-filled"> </g> <g id="coffee-beans-filled"> <g id="coffee-bean2" serif:id="coffee-bean"> </g> </g> <g id="clipboard"> </g> <g id="clipboard-paste"> </g> <g id="clipboard-copy"> </g> <g id="Layer1"> </g> </g> </g></svg>
+            </div>
+            Account Invalid Please Contact us at support@proppatrol.net
+        </a>
+    </div>
+
+
+    {% else %}
+    <label for="server">Server *</label>
+    
+    <input type="text" id="server" name="server" placeholder="FTMO-Server4" required {{ 'readonly' if accounts[0].status == 'needs_validation' }}><br>
+
+    <label for="server_type">Server Type *</label>
+    <div class="radio-container">
+        <div>
+            <input type="radio" id="mt4" name="server_type" value="MT4" required {{ 'disabled' if accounts[0].status == 'needs_validation' }}>
+            <label for="mt4">MT4</label>
+        </div>
+        <div>
+            <input type="radio" id="mt5" name="server_type" value="MT5" required {{ 'disabled' if accounts[0].status == 'needs_validation' }}>
+            <label for="mt5">MT5</label>
+        </div>
+    </div><br>
+
     <input type="submit" value="Submit">
+    <p class="change-id">To change Trading ID or  Password please contact us at <br> <strong> support@proppatrol.net</strong></p>
+    {% endif %}
+
+    
+
+
+
+   
 </form>
 
 
-{%  endblock %}
+
+{% endblock %}
 
 {% block script %}
-
 <script>
-    function sendVerificationEmail() {
-        fetch("{{ url_for('send_verification_email', _external=True) }}", {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': '{{ csrf_token() }}'  // Adjust based on how you have CSRF setup
-            }
-        }).then(response => response.json()).then(data => {
-            if (data.message) {
-                alert(data.message); // Success message
-            } else {
-                alert(data.error); // Error message
-            }
-        }).catch(error => {
-            console.error('Error:', error);
-            alert('An error occurred. Please try again.');
-        });
+    function updateForm(select) {
+        var accounts = {{ accounts | tojson }};
+        var accountInfo = accounts.find(acc => acc.id == select.value);
+
+        if (accountInfo) {
+            document.getElementById("mt_account").value = accountInfo.investor_id;
+            document.getElementById("password").value = accountInfo.investor_password;
+            document.getElementById("server").value = accountInfo.server || ''; // Update server field if available
+            document.getElementById("validationLink").style.display = accountInfo.status === 'pending' ? 'block' : 'none';
+        } else {
+            console.log("No account info found for the selected account.");
+            document.getElementById("mt_account").value = '';
+            document.getElementById("password").value = '';
+            document.getElementById("server").value = '',
+            document.getElementById("validationLink").style.display = 'none';
+        }
     }
+
+    // Initial check on page load for the first account
+    window.onload = function() {
+        var selectElement = document.getElementById("account_select");
+        updateForm(selectElement);
+    };
 </script>
+
+
 
 {% endblock %}
