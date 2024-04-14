@@ -206,15 +206,42 @@
 </div>
 {% endif %}
 
+<button id="customButton">Click to Activate Pricing Table</button>
+
+
+<script async src="https://js.stripe.com/v3/pricing-table.js" ></script>
+<stripe-pricing-table pricing-table-id="prctbl_1P4EH6P649Efo4kCBcUGXRg3"
+publishable-key="pk_test_51Oyi2xP649Efo4kCUFvtVfHhos9bgDE0sKhYMxJIn9fbwTj8D22nXuXgXj0fLXSTPsvwBxEUD2iAVObNQVRTrRF100hiOayNuW"  customer-email="abdelaalmohamed004@gmail.com">
+</stripe-pricing-table>
 
 
 
 
-<a href="https://buy.stripe.com/test_3cs5kC9CM6Z79ry144?prefilled_email={{user_email }}">Purchase 50k FTMO</a>
+
+<a href="https://buy.stripe.com/test_3cs5kC9CM6Z79ry144?email={{user_email}}">Purchase 50k FTMO</a>
    
 
 
 </main>
+
+
+{% endblock %}
+
+{% block script %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var changeTextButton = document.getElementById('changeTextButton');
+      changeTextButton.addEventListener('click', function() {
+        // Select the span using the class name
+        var span = document.querySelector('.PriceColumn-description.Text.Text-color--default.Text-fontSize--14');
+        if (span) {
+          span.textContent = "New Price Description"; // Change the text
+        } else {
+          console.error('Span element not found');
+        }
+      });
+    });
+  </script>
 
 
 {% endblock %}

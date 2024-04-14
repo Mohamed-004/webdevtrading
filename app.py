@@ -249,45 +249,56 @@ def dashboard():
         user_email = user_info['email']
         user_validated_email = user_info["email_verified"]
         user_data = db.collection('users').document(user_email).get()
+        user_data_info = db.collection('users').document(user_email)
 
         if user_data.exists:
+
             user_data = user_data.to_dict()
+            accounts_collection = user_data_info.collection('accounts_info').get()
+            trader_info_collection = user_data_info.collection('trader_info')
+            num_of_accounts = user_data['accounts_info_count'] + 1
 
-            if user_data['propsurance_count']:
+            if user_data['accounts_info_count']:
 
-                if int(user_data['propsurance_count']) >= 0 :
-                    user_name = user_data['user_name']
-                    num_of_accounts = int(user_data['propsurance_count']) + 1
-                    
-                    account_insured = True               
+                if int(user_data['accounts_info_count']) >= 0 :
+                    account_insured = True   
 
-                    for i in range(0, int(user_data['propsurance_count']) + 1):
-                        account_info = user_data['account' +  str(i) ]
-                        account_more_info = user_data['account' +  str(i) + '.account_info' ]
-                        account_size += account_info['account_size']
-                        trade_status = ''
-                        
-                        if account_more_info['account_status'] == 'phase2':
-                            trade_status = 'Phase 2'
-                        elif account_more_info['account_status'] == 'phase1':
-                            trade_status = 'Phase 1'
-                        else:
-                            trade_status = 'Live Account'
+                    if accounts_collection:
+                        print( 'here 270')
+                        for account in accounts_collection:
+                            print('here line 270')
+                            
+                            account_info_data =  account.to_dict()
+                            current_index = account_info_data['propsurance_count']
+                            
+                            trader_info_data = trader_info_collection.document(f"trader_account_{current_index}").get()
+                            trader_info_data_parsed = trader_info_data.to_dict()
+                            account_size += account_info_data.get('account_size')
+                            trade_status = ''
 
-                    
 
-                        prop_firm_info = {
-                            'name': account_info['prop_firm_name'],
-                            'account_size' : account_info['account_size'],
-                            'account_url_fix' : str( i),
-                            'account_status':  account_info['status'],
+                            if trader_info_data_parsed.get('account_status') == 'phase2':
+                                trade_status = 'Phase 2'
+                            elif trader_info_data_parsed.get('account_status') == 'phase1':
+                                trade_status = 'Phase 1'
+                            else:
+                                trade_status = 'Live Account'
+                            
+                            print(trader_info_data_parsed.get('prop_firm_name'), 'line 286')
+                            prop_firm_info = {
+                            'name': account_info_data['prop_firm_name'],
+                            'account_size' : account_info_data['account_size'],
+                            'account_url_fix' : str(current_index),
+                            'account_status':  account_info_data.get('status'),
                             'phase_status' : trade_status
-                        }
+                            }
 
-                        insured_accounts.append(prop_firm_info)
+                            print(prop_firm_info)
+
+                            insured_accounts.append(prop_firm_info)
 
                     account_percentage = int((account_size / 200000) * 100)
-                    remaining_size = 200000 - account_size
+                    remaining_size = 200000 - account_size        
 
             else: 
                 return render_template("dashboard.html", session=user_info, user_email=user_email, user_validated_email=user_validated_email)        
