@@ -1,0 +1,154 @@
+{% extends "layout.html" %}
+{% block title %}
+<title>PropSurance - | Account Profile</title>
+{% endblock %}
+
+{% block css %}    
+<link rel="stylesheet" href="{{ url_for('static', filename='css/cases.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dash.css') }}">
+
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/current_user.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<main class="content-main">
+
+
+    <div id="dashboard-container">
+        <!-- prop surance status -->
+        <div class="board-cont">
+            <div class="text-img">
+                <p>Account </p>
+                <img src="{{ url_for('static', filename='images/info.png') }}" alt="Info Icon">
+            </div>
+            <p class="header-text-board">
+                Current Status  
+            </p>
+
+            {% if account_info['status'] == 'pending' %}
+            <div class="hazard-div">
+
+                <a class="remaining hazard" href="{{account_info['account_access_url']}}"><div class="hazard-icon-div "><svg fill="#00000082" width="25px" height="25px" viewBox="0 0 64 64" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <rect id="Icons" x="-640" y="-64" width="1280" height="800" style="fill:none;"></rect> <g id="Icons1" serif:id="Icons"> <g id="Strike"> </g> <g id="H1"> </g> <g id="H2"> </g> <g id="H3"> </g> <g id="list-ul"> </g> <g id="hamburger-1"> </g> <g id="hamburger-2"> </g> <g id="list-ol"> </g> <g id="list-task"> </g> <g id="trash"> </g> <g id="vertical-menu"> </g> <g id="horizontal-menu"> </g> <g id="sidebar-2"> </g> <g id="Pen"> </g> <g id="Pen1" serif:id="Pen"> </g> <g id="clock"> </g> <g id="external-link"> </g> <g id="hr"> </g> <g id="info"> </g> <g id="warning"> <path d="M32.427,7.987c2.183,0.124 4,1.165 5.096,3.281l17.936,36.208c1.739,3.66 -0.954,8.585 -5.373,8.656l-36.119,0c-4.022,-0.064 -7.322,-4.631 -5.352,-8.696l18.271,-36.207c0.342,-0.65 0.498,-0.838 0.793,-1.179c1.186,-1.375 2.483,-2.111 4.748,-2.063Zm-0.295,3.997c-0.687,0.034 -1.316,0.419 -1.659,1.017c-6.312,11.979 -12.397,24.081 -18.301,36.267c-0.546,1.225 0.391,2.797 1.762,2.863c12.06,0.195 24.125,0.195 36.185,0c1.325,-0.064 2.321,-1.584 1.769,-2.85c-5.793,-12.184 -11.765,-24.286 -17.966,-36.267c-0.366,-0.651 -0.903,-1.042 -1.79,-1.03Z" style="fill-rule:nonzero;"></path> <path d="M33.631,40.581l-3.348,0l-0.368,-16.449l4.1,0l-0.384,16.449Zm-3.828,5.03c0,-0.609 0.197,-1.113 0.592,-1.514c0.396,-0.4 0.935,-0.601 1.618,-0.601c0.684,0 1.223,0.201 1.618,0.601c0.395,0.401 0.593,0.905 0.593,1.514c0,0.587 -0.193,1.078 -0.577,1.473c-0.385,0.395 -0.929,0.593 -1.634,0.593c-0.705,0 -1.249,-0.198 -1.634,-0.593c-0.384,-0.395 -0.576,-0.886 -0.576,-1.473Z" style="fill-rule:nonzero;"></path> </g> <g id="plus-circle"> </g> <g id="minus-circle"> </g> <g id="vue"> </g> <g id="cog"> </g> <g id="logo"> </g> <g id="radio-check"> </g> <g id="eye-slash"> </g> <g id="eye"> </g> <g id="toggle-off"> </g> <g id="shredder"> </g> <g id="spinner--loading--dots-" serif:id="spinner [loading, dots]"> </g> <g id="react"> </g> <g id="check-selected"> </g> <g id="turn-off"> </g> <g id="code-block"> </g> <g id="user"> </g> <g id="coffee-bean"> </g> <g id="coffee-beans"> <g id="coffee-bean1" serif:id="coffee-bean"> </g> </g> <g id="coffee-bean-filled"> </g> <g id="coffee-beans-filled"> <g id="coffee-bean2" serif:id="coffee-bean"> </g> </g> <g id="clipboard"> </g> <g id="clipboard-paste"> </g> <g id="clipboard-copy"> </g> <g id="Layer1"> </g> </g> </g></svg></div> Status Pending <u> Requires User Validation</u> </a>
+            </div>
+            {% else %}
+            <div class="hazard-div">
+
+                <a class="remaining hazard not-error"  id="remaining-success" href="{{account_info['account_access_url']}}"><div class="hazard-icon-div "><svg viewBox="0 -0.5 25 25" width="25px" height="25px" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M5.50002 18.211V9.737C5.49724 9.30439 5.84541 8.9513 6.27802 8.948H9.38902C9.82162 8.9513 10.1698 9.30439 10.167 9.737V5.789C10.1642 5.35678 10.5118 5.00385 10.944 5H14.056C14.4886 5.0033 14.8368 5.35639 14.834 5.789V8.158C14.8312 7.72539 15.1794 7.3723 15.612 7.369H18.723C19.1552 7.37285 19.5028 7.72578 19.5 8.158V18.211C19.5028 18.6436 19.1546 18.9967 18.722 19H6.27802C5.84541 18.9967 5.49724 18.6436 5.50002 18.211V18.211Z" stroke="#0c3594a6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M9.41699 19C9.41699 19.4142 9.75278 19.75 10.167 19.75C10.5812 19.75 10.917 19.4142 10.917 19H9.41699ZM10.917 9.73696C10.917 9.32275 10.5812 8.98696 10.167 8.98696C9.75278 8.98696 9.41699 9.32275 9.41699 9.73696H10.917ZM14.083 19C14.083 19.4142 14.4188 19.75 14.833 19.75C15.2472 19.75 15.583 19.4142 15.583 19H14.083ZM15.583 8.15796C15.583 7.74375 15.2472 7.40796 14.833 7.40796C14.4188 7.40796 14.083 7.74375 14.083 8.15796H15.583ZM10.917 19V9.73696H9.41699V19H10.917ZM15.583 19V8.15796H14.083V19H15.583Z" fill="#0c3594a6"></path> </g></svg></div> Account Info </a>
+            </div>
+
+            {% endif %}
+
+
+            <!-- <div class="dropdown header-text-under">
+                <button class="btn btn-primary dropdown-toggle" id="menu4" type="button" data-toggle="dropdown">Get Insured
+                <span class="caret"></span></button>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+                  <li role="presentation"><a role="menuitem" tabindex="-1" >Ftmo</a></li>
+                  <li role="presentation" class="divider"></li>
+                  <li role="presentation"><a role="menuitem" tabindex="-1" >5%ers</a></li>
+                </ul>
+              </div> -->
+        </div>
+    
+
+    <!-- total accounts -->
+    <div class="board-cont">
+        <div class="text-img">
+            <p>Claims</p>
+            <img src="{{ url_for('static', filename='images/profilepic.png') }}" alt="Profile Icon">
+        </div>
+        <p class="header-text-board">
+        Open Tickets
+        </p>
+      
+            <div class="dropdown header-text-under">
+                <button class="btn btn-primary dropdown-toggle" id="menu1" type="button" data-toggle="dropdown">Claim Type
+                <span class="caret"></span></button>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+                    {% if insured_accounts %}
+                   
+                    {% for account in insured_accounts %}
+                        {% if account['account_url_fix'] %}
+                         
+                            <li role="presentation">
+                                <a role="menuitem" tabindex="-1" href="{{ url_for('dashboard', account_number=account['account_number']) }}">
+                                    {{account['name']}} <br> {{ account['account_size'] }} 
+                                </a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                    {% if not insured_accounts %}
+                        <li role="presentation"><a role="menuitem" tabindex="-1">No Accounts</a></li>
+                    {% endif %}
+                {% else %}
+                    <li role="presentation"><a role="menuitem" tabindex="-1">No Accounts</a></li>
+                {% endif %}
+                  
+                </ul>
+              </div>
+        
+    </div>
+
+    <div class="board-cont">
+        <div class="text-img">
+            <p>Billing</p>
+            <img src="{{ url_for('static', filename='images/rewards.png') }}" alt="Info Icon">
+        </div>
+        <p class="header-text-board">
+            Past Invoices
+        </p>
+
+        <div class="hazard-div">
+
+            <a class="remaining hazard not-error"  id="remaining-success" href="https://billing.stripe.com/p/login/test_bIYdTw74q2Im0Za9AA"><div class="hazard-icon-div "><svg viewBox="0 -0.5 25 25" width="25px" height="25px" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M5.50002 18.211V9.737C5.49724 9.30439 5.84541 8.9513 6.27802 8.948H9.38902C9.82162 8.9513 10.1698 9.30439 10.167 9.737V5.789C10.1642 5.35678 10.5118 5.00385 10.944 5H14.056C14.4886 5.0033 14.8368 5.35639 14.834 5.789V8.158C14.8312 7.72539 15.1794 7.3723 15.612 7.369H18.723C19.1552 7.37285 19.5028 7.72578 19.5 8.158V18.211C19.5028 18.6436 19.1546 18.9967 18.722 19H6.27802C5.84541 18.9967 5.49724 18.6436 5.50002 18.211V18.211Z" stroke="#0c3594a6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M9.41699 19C9.41699 19.4142 9.75278 19.75 10.167 19.75C10.5812 19.75 10.917 19.4142 10.917 19H9.41699ZM10.917 9.73696C10.917 9.32275 10.5812 8.98696 10.167 8.98696C9.75278 8.98696 9.41699 9.32275 9.41699 9.73696H10.917ZM14.083 19C14.083 19.4142 14.4188 19.75 14.833 19.75C15.2472 19.75 15.583 19.4142 15.583 19H14.083ZM15.583 8.15796C15.583 7.74375 15.2472 7.40796 14.833 7.40796C14.4188 7.40796 14.083 7.74375 14.083 8.15796H15.583ZM10.917 19V9.73696H9.41699V19H10.917ZM15.583 19V8.15796H14.083V19H15.583Z" fill="#0c3594a6"></path> </g></svg></div> Billing Info </a>
+        </div>
+
+
+       
+            
+            
+    </div>
+
+    <script>
+        window.fwSettings={
+        'widget_id':153000001827
+        };
+        !function(){if("function"!=typeof window.FreshworksWidget){var n=function(){n.q.push(arguments)};n.q=[],window.FreshworksWidget=n}}() 
+    </script>
+    <script type='text/javascript' src='https://widget.freshworks.com/widgets/153000001827.js' async defer></script>
+
+</main>
+
+
+
+
+{% endblock %}
+
+{% block script %}
+<script type='text/javascript' src='https://widget.freshworks.com/widgets/153000001827.js' async defer></script>
+<script>
+window.onload = function() {
+  // Ensure the widget script has loaded
+  window.fwSettings = {
+    'widget_id': 153000001827,
+    // other settings if needed
+  };
+
+  // Function to check if the Freshdesk widget is loaded
+  var checkIfWidgetLoaded = function() {
+    if (window.FreshworksWidget) {
+      // Open the widget
+      FreshworksWidget('open');
+    } else {
+      // Retry after a short delay if the widget is not ready
+      setTimeout(checkIfWidgetLoaded, 50);
+    }
+  };
+
+  // Start the checking function
+  checkIfWidgetLoaded();
+};
+</script>
+{% endblock %}

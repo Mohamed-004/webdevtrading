@@ -1,0 +1,8 @@
+#remaining-success {
+    margin: 0;
+    position: absolute;
+    bottom: 1.8em;
+    display: flex;
+    align-self: flex-end;
+}
+

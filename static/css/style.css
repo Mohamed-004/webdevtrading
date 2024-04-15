@@ -55,7 +55,7 @@ img {
 
 /* Header Styles */
 header {
-    background-color: #CAE8FF;
+    background-color: #F1F8FF !important;
     color: #050A30;
     /* padding: 1em 0; */
 }
@@ -78,6 +78,11 @@ header nav {
     display: flex;
     justify-content: space-between;
     padding: 1em 5em;
+    color: #0c3594a6;
+    background: #f1f8ff;
+    border: #007bffab;
+    height: max-content;
+    background: #f1f8ff;
 }
 
 #logo {
@@ -128,12 +133,17 @@ color: #0c3594d1;
 /* Hero Section Styles */
 #hero {
     text-align: center;
+    border-bottom: 0.8rem solid rgb(248, 214, 38);
     padding: 2em 5em;
-    background-color: #CAE8FF; /* Assuming a white background */
+    background-color: #F1F8FF !important; /* Assuming a white background */
     color: #050A30;
     display: flex;
     flex-flow: row nowrap;
     justify-content: space-between;
+    border-bottom-color: #007bffab;
+    background: white;
+    border-radius: 0 0 20px 20px;
+    padding-top: 2em;
 }
 
 .flex-full-child {
@@ -150,6 +160,7 @@ color: #0c3594d1;
     font-weight: bold;
     /* font-style: normal; */
     width: 100% !important;
+    color: #050a30fc;
 }
 
 span.unline {
@@ -221,7 +232,7 @@ a#report-button {
 }
 
 a#advocate-button {
-    background: #050a30e0;
+    background: #050a30fc;
 }
 
 .num-text-container .line-animated {
@@ -992,7 +1003,7 @@ nav.navbar {
     display: none;
     flex-flow: column nowrap;
     justify-content: center;
-    height: 163.333px;
+    height: 100.333px;
     width: 140px;
 }
 
@@ -1154,7 +1165,7 @@ background-color: #a7d4f682;
     border-radius: 20px;
     background: #ffffff87;
     box-shadow: 0px 10px 40px 0px rgba(109, 141, 173, 0.25);
-    box-shadow: inset 0 4px 10px #2196f357;
+    /* box-shadow: inset 0 4px 10px #2196f357; */
     border: none;
     border-left: 0.5rem solid rgb(248, 214, 38);
     color: #0c3594a6;
@@ -1233,7 +1244,7 @@ span.second-name {
 }
 
 .red-report {
-    box-shadow: inset 0 2px 10px #e91e635c;
+    /* box-shadow: inset 0 2px 10px #e91e635c; */
     border: none;
     border-left-color: #e91e635c;
     border-left: 0.5rem solid rgb(248, 214, 38);
@@ -1250,7 +1261,7 @@ span.second-name {
 
 .feat-reports.resolved-green {
 
-box-shadow: inset 0 4px 10px #4caf5087;
+/* box-shadow: inset 0 4px 10px #4caf5087; */
 
 border-left-color: #4caf5087;
 }
@@ -1274,11 +1285,14 @@ border-left-color: #4caf5087;
     cursor: pointer;
     justify-content: space-between;
     transition: background-color 0.3s ease;
-    box-shadow: inset 0 2px 10px #03a9f442;
+    /* box-shadow: inset 0 2px 10px #03a9f442; */
     border: none;
     color: #0c3594d1;
     font-weight: bold;
     padding: 1em 1.3em;
+    border-left-color: #e91e635c;
+    border-top: 0.5rem solid rgb(248, 214, 38) !important;
+    border-left-color: #e91e635c;
 }
 
 .filter-btn {
@@ -1293,11 +1307,16 @@ border-left-color: #4caf5087;
     cursor: pointer;
     justify-content: space-between;
     transition: box-shadow 0.3s ease;
-    box-shadow: inset 0 2px 10px #03a9f442;
+    /* box-shadow: inset 0 2px 10px #03a9f442; */
     border: none;
     color: #0c3594d1;
     font-weight: bold;
     padding: 1em 0.6em;
+    background: white;
+    box-shadow: 0px 3px 60px 0px rgba(109, 141, 173, 0.25);
+    border-left-color: #e91e635c;
+    border-top: 0.5rem solid rgb(248, 214, 38);
+    border-left-color: #e91e635c;
 }
 
 .filter-btn img {
@@ -1305,14 +1324,17 @@ border-left-color: #4caf5087;
 }
 
 .filter-btn.UnResolved {
-    color: #e91e63;
+    /* color: #e91e63; */
+    border-color: #e91e635c !important;
 }
 
 .filter-btn.Resolved {
-    color: #4caf4f;
+    /* color: #4caf4f; */
+    border-color: #4caf5087 !important;
 }
 .filter-left {
     border-radius: 10px 0 0 10px;
+    border-color: #007bffab !important;
 }
 
 .filter-right {
@@ -1671,6 +1693,10 @@ margin-left: auto;
 @media(min-width:855px) {
     .filter-btn {
         padding: 1em 1.2em;
+        border: none;
+        /* border-left-color: #e91e635c; */
+        /* border-top: 0.5rem solid rgb(248, 214, 38); */
+        /* border-left-color: #e91e635c; */
     }
 }
 
@@ -1763,7 +1789,7 @@ width: 100%;
     #hero {
         padding: 1em; /* Reduce padding for hero section */
         flex-direction: column; /* Ensure vertical layout */
-        margin-top: -2em;
+        /* margin-top: -3em; */
         padding-bottom: 2.8em;
     }
 

@@ -4,10 +4,10 @@ import firebase_admin
 from firebase_admin import credentials, auth, db, firestore
 from flask import Flask, render_template, send_from_directory, jsonify, request, url_for, redirect, session, flash, abort, current_app
 from flask_wtf.csrf import CSRFProtect, validate_csrf
-from wtforms import ValidationError
+# from wtforms import ValidationError
 from urllib.parse import quote_plus, urlencode
 import stripe 
-import requests
+# import requestsf
 from datetime import datetime
 
 # email api key e0292a01d4005f36ecc119c1ea1cf1dd04ea111c
@@ -59,7 +59,6 @@ def callback():
         if not user_check_exist.exists:
             user_ref.set({
                 'uid': user['sub'],  # Assuming sub field contains UID
-                'name': user.get('name', ''),
                 'email': user['email'],
                 # Add other user information as needed
             })
@@ -70,7 +69,7 @@ def callback():
         if 'access_denied' in str(e):
             # Here you can handle the specific case where access was denied
             
-            return 'you ddint provide consent', 403 
+            return 'you didnt provide consent', 403 
     
 
     
@@ -100,124 +99,185 @@ def logout():
         )
     )
 
-
-@app.route('/dashboard/validate/', methods=['GET', 'POST'])
-def submit_mt_account():
-    # Check if user is authenticated
-    
+@app.route('/dashboard/user/<int:account_count>', methods=['GET'])
+def access_account_dashboard(account_count):
     if 'user' not in session:
         return redirect(url_for("login"))
+    
     user_info = session.get("user")
     user_email = user_info['email']
-    
     user_data = db.collection('users').document(user_email).get()
-    account_info_user = 0
-    account_more_info_user = 0
-    user_name = 0
-    num_of_accounts = 0
-    account_insured = 0
-    propsurance_count = 0
-    prop_name = 0
-    accounts = []
 
-    if user_data.exists:
-        user_data = user_data.to_dict()
-        user_name = user_data.get('user_name', '')
-        num_of_accounts = int(user_data.get('propsurance_count', 0)) + 1
+    account = {}
 
-        for i in range(num_of_accounts):
-            account_key = f'account{i}'
-            account_more_info_key = f'account{i}.account_info'
-            if account_key in user_data:
-                account_info = user_data[account_key]
-                account_more_info_ = user_data[account_more_info_key]
-                account_stage_value =   ''
-                if account_more_info_.get('account_status') == 'phase1':
-                    account_stage_value = 'Phase 1'
-                elif account_more_info_.get('account_status') == 'phase2':
-                    account_stage_value = 'Phase 2'
-                elif account_more_info_.get('account_status') == 'live':
-                    account_stage_value = 'Live'
-                # print(account_info)
-                # Assuming account_info includes 'status', 'investor_id', 'prop_firm_name'
-                if account_info.get('status') == 'needs_validation' or account_info.get('status') == 'validated' or account_info.get('status') == 'invalid':
-                    accounts.append({
-                    'id': i,
-                    'name': account_info.get('prop_firm_name', f'Account {i}'),
-                    'investor_id': account_more_info_.get('investor_id', ''),
-                    'investor_password': account_more_info_.get('investor_password', ''),
-                    'status': account_info.get('status'),
-                    'account_size': account_info.get('account_size', ''),
-                    'server': account_info.get('server', ''),
-                    'server_type':   account_info.get('trading_account_type'),
-                    'account_stage' : account_stage_value
-                })
+    try:
+        user_email = user_info['email']
+        user_validated_email = user_info["email_verified"]
+        user_data = db.collection('users').document(user_email).get()
+        user_data_info = db.collection('users').document(user_email)
+        accounts_collection = ''
+        if user_data.exists:
+            user_data_dict = user_data.to_dict()
+            accounts_collection = db.collection('users').document(user_email).collection('accounts_info')
+
+        # Fetch all documents within the accounts_info subcollection
+            accounts_documents = accounts_collection.document(f'account_info_{str(account_count)}').get()
+            # for account_doc in accounts_documents:
+            account_info = accounts_documents.to_dict()
+            
+            account_id = account_info['propsurance_count']
+            
+            account_stage = ''
+
+            trader_info_collection = user_data_info.collection('trader_info')
+            
+                            
+            account_info_data =  account_info
+            current_index = account_info_data['propsurance_count']
+        
+            trader_info_data = trader_info_collection.document(f"trader_account_{account_count}").get()
+            trader_info_data_parsed = trader_info_data.to_dict()
+            
+            if trader_info_data_parsed.get('account_status', '') == 'phase1':
+                account_stage = 'Phase 1'
+            elif trader_info_data_parsed.get('account_status', '') == 'phase2':
+                account_stage = 'Phase 2'
+            else:
+                account_stage = 'Live'
+            
+            account_access_url = url_for('submit_mt_account', account=current_index)
+
+            account = {
+                'id': str(current_index),
+                'name': trader_info_data_parsed.get('prop_firm_name'),
+                'investor_id': trader_info_data_parsed.get('investor_id', ''),
+                'investor_password': trader_info_data_parsed.get('investor_password', ''),
+                'status': account_info.get('status', ''),
+                'account_size': str(trader_info_data_parsed.get('account_size', '')),
+                'server': account_info.get('server', ''),
+                'server_type': account_info.get('trading_account_type', ''),
+                'account_stage': account_stage,
+                'account_access_url': account_access_url
+            }
+
+            # print(accounts)
+                                    
+    except Exception  as err:
+        raise err
+        # pass
+
+    return render_template("user_dashboard.html", account_info=account, prop_count=account_count)
 
 
-                elif account_info.get('status') == 'pending':    
-                    accounts.append({
-                        'id': i,
-                        'name': account_info.get('prop_firm_name', f'Account {i}'),
-                        'investor_id': account_more_info_.get('investor_id', ''),
-                        'investor_password': account_more_info_.get('investor_password', ''),
-                        'status': account_info.get('status'),
-                        'account_size': account_info.get('account_size', ''),
-                        'account_stage' : account_stage_value
-                    })
+
+@app.route('/dashboard/validate/<int:account>', methods=['GET', 'POST'])
+def submit_mt_account(account):
+    # Check if user is authenticated
+    if 'user' not in session:
+        return redirect(url_for("login"))
     
+    user_info = session.get("user")
+    user_email = user_info['email']
+    user_data = db.collection('users').document(user_email).get()
+
+    accounts = {}
+
+    try:
+        user_email = user_info['email']
+        user_validated_email = user_info["email_verified"]
+        user_data = db.collection('users').document(user_email).get()
+        user_data_info = db.collection('users').document(user_email)
+        accounts_collection = ''
+        if user_data.exists:
+            user_data_dict = user_data.to_dict()
+            accounts_collection = db.collection('users').document(user_email).collection('accounts_info')
+
+        # Fetch all documents within the accounts_info subcollection
+            accounts_documents = accounts_collection.document(f'account_info_{str(account)}').get()
+            # for account_doc in accounts_documents:
+            account_info = accounts_documents.to_dict()
+            
+            account_id = account_info['propsurance_count']
+            
+            account_stage = ''
+
+            trader_info_collection = user_data_info.collection('trader_info')
+            
+                            
+            account_info_data =  account_info
+            current_index = account_info_data['propsurance_count']
+        
+            trader_info_data = trader_info_collection.document(f"trader_account_{account}").get()
+            trader_info_data_parsed = trader_info_data.to_dict()
+            
+            if trader_info_data_parsed.get('account_status', '') == 'phase1':
+                account_stage = 'Phase 1'
+            elif trader_info_data_parsed.get('account_status', '') == 'phase2':
+                account_stage = 'Phase 2'
+            else:
+                account_stage = 'Live'
+            
+            
+
+            accounts = {
+                'id': str(current_index),
+                'name': trader_info_data_parsed.get('prop_firm_name'),
+                'investor_id': trader_info_data_parsed.get('investor_id', ''),
+                'investor_password': trader_info_data_parsed.get('investor_password', ''),
+                'status': account_info.get('status', ''),
+                'account_size': str(trader_info_data_parsed.get('account_size', '')),
+                'server': account_info.get('server', ''),
+                'server_type': account_info.get('trading_account_type', ''),
+                'account_stage': account_stage
+            }
+
+            # print(accounts)
+                                    
+    except Exception  as err:
+        raise err
+        # pass
 
     # POST request handling
     if request.method == 'POST':
         try:
-            validate_csrf(request.form.get('csrf_token'))
-        except  ValidationError:
-            # Handle the CSRF validation failure
-            abort(400, description='CSRF token error')
-
-        mt_account = request.form['server_type']
-        password = request.form['password']
-        server = request.form['server']
-        prop_count = request.form['prop_count']
-        user_email = session['user']['email']
-        
-    
-    # Update user data in database
-        try:
-            user_ref = db.collection('users').document(user_email)
+            # Extract data from form
+            mt_account = request.form['server_type']
+            password = request.form['password']
+            server = request.form['server']
+            # prop_count = request.form['prop_count']
             
-            account_current_data = user_ref.get()
-            account_current_dict = account_current_data.to_dict()
-            account_key = f'account{prop_count}'
-            account_key_status = f'account_{prop_count}.status'
-            trader_account_key = f'account_{prop_count}.account_info'
+            # Get a reference to the specific account document
+            account_ref = db.collection('users').document(user_email).collection('accounts_info').document(f'account_info_{account}')
+            account_info = account_ref.get()
             
-            
-            account_status = account_current_dict.get(account_key).get('status')
-            if account_status == 'pending':
-# Specify the fields you want to update using dot notation
-                update_data = {
-                    f'{account_key}.status': 'needs_validation',  # Replace 'new_status' with the actual status value
-                    # If updating the mt_account, password, and server as well:
-                    f'{account_key}.server': server,
-                    
-                    f'{account_key}.trading_account_type': mt_account 
-                }
-                user_ref.update(update_data)
+            if account_info.exists:
+                account_data = account_info.to_dict()
+                # Only update if the current status is 'pending'\
+                
+                if account_data.get('status') == 'pending':
+                    update_data = {
+                        'status': 'needs_validation',  # Update status to needs validation
+                        'server': server,              # Update server information
+                        'trading_account_type': mt_account  # Update account type information
+                    }
+                    account_ref.update(update_data)
+                    flash('Account updated successfully and is awaiting validation.')
+                else:
+                    flash('Account is not in a pending state and cannot be updated.')
             else:
-                return redirect(url_for('submit_mt_account'))
+                flash('Account information could not be found.')
 
-
-            # user_ref.update(update_data)
-
-            flash('Awaiting Validation.')
         except Exception as err:
-            # pass
-            flash('Error updating MT account information.')
-            print(err)  # Consider logging the error
+            # Provide a generic error message to the user
+            raise err
+            flash('Error updating account information. Please try again.')
+            # Log the specific error internally
+            # print(f"Error updating account information: {err}")
 
-        return redirect(url_for('submit_mt_account'))
+        # Redirect back to the same page to potentially show updated data or messages
+        return redirect(url_for('submit_mt_account', account=account))
 
-    return render_template("validate_trader_info.html", accounts=accounts)
+    return render_template("validate_trader_info.html", accounts=accounts, prop_count=account)
 
 
 
@@ -258,22 +318,23 @@ def dashboard():
             trader_info_collection = user_data_info.collection('trader_info')
             num_of_accounts = user_data['accounts_info_count'] + 1
 
-            if user_data['accounts_info_count']:
+            if int(user_data['accounts_info_count']) >= 0:
 
-                if int(user_data['accounts_info_count']) >= 0 :
+                
                     account_insured = True   
-
+                    # # print(accounts_collection)
                     if accounts_collection:
-                        print( 'here 270')
+                        # # print( 'here 270')
                         for account in accounts_collection:
-                            print('here line 270')
+                            # # print('here line 270')
                             
                             account_info_data =  account.to_dict()
                             current_index = account_info_data['propsurance_count']
                             
                             trader_info_data = trader_info_collection.document(f"trader_account_{current_index}").get()
                             trader_info_data_parsed = trader_info_data.to_dict()
-                            account_size += account_info_data.get('account_size')
+                            # # print('line 275', account_info_data)
+                            account_size += (trader_info_data_parsed.get('account_size'))
                             trade_status = ''
 
 
@@ -284,16 +345,19 @@ def dashboard():
                             else:
                                 trade_status = 'Live Account'
                             
-                            print(trader_info_data_parsed.get('prop_firm_name'), 'line 286')
+                            # # print(trader_info_data_parsed.get('prop_firm_name'), 'line 286')
                             prop_firm_info = {
-                            'name': account_info_data['prop_firm_name'],
-                            'account_size' : account_info_data['account_size'],
+                            'name': trader_info_data_parsed['prop_firm_name'],
+                            'account_size' : trader_info_data_parsed['account_size'],
+                            'invoice_url' : account_info_data['invoice_url'],
                             'account_url_fix' : str(current_index),
                             'account_status':  account_info_data.get('status'),
-                            'phase_status' : trade_status
+                            'phase_status' : trade_status,
+                            'current_percentage': int((trader_info_data_parsed['account_size'] / 200000) * 100),
+                            'current_size': trader_info_data_parsed['account_size']
                             }
 
-                            print(prop_firm_info)
+                            # print(account_info_data)
 
                             insured_accounts.append(prop_firm_info)
 
@@ -311,7 +375,7 @@ def dashboard():
         #     user_data_dict = user_doc.to_dict() 
             
 
-        #     print(user_data_dict)
+        #     # print(user_data_dict)
             
         
         if not user_email or not user_data:
@@ -319,7 +383,9 @@ def dashboard():
             return redirect(url_for("login"))
         
     except Exception as err:
-        pass
+        # pass
+        
+        raise err 
         # if not user_email or not user_data:
         # # Redirect to login page if user is not authenticated or email is not verified
         #     return redirect(url_for("login"))
@@ -330,7 +396,7 @@ def dashboard():
 
     if account_insured:
         return render_template("dashboard.html", session=user_info, user_email=user_email, user_name=user_name, account_insured=True, num_of_accounts = num_of_accounts, insured_accounts =insured_accounts, account_percentage=account_percentage, remaining_size=remaining_size, account_size=account_size )
-    # print(user_data + " the value for user data came")
+    # # print(user_data + " the value for user data came")
     
         
     # firebase_user_data = list(user_data.values())[0]
@@ -345,6 +411,7 @@ def dashboard():
 @app.route('/webhook', methods=['POST'])
 @csrf.exempt
 def webhook():
+
     event = None
     payload = request.data
     sig_header = request.headers['STRIPE_SIGNATURE']
@@ -368,13 +435,22 @@ def webhook():
     # Handle the event
     if event['type'] == 'invoice.payment_succeeded':
         payment_intent = event['data']['object']  # The payment intent object
+        
+        
+        
         customer_id = payment_intent['customer']
 
         # Fetch the customer details from Stripe
         customer = stripe.Customer.retrieve(customer_id)
+        
+          
+        
+
+        # Fetch the customer details from Stripe
 
         # Query Firestore for the user document by email
-        user_ref = db.collection('users').document(customer.email)
+        client_reference_id_email  = customer.email
+        user_ref = db.collection('users').document(client_reference_id_email)
         users_query = user_ref.get()
         
         if users_query.exists:
@@ -382,10 +458,12 @@ def webhook():
             uid = user_info.get('uid', 0)
             sub_type = ''
 
-            if 'ftmo50' in payment_intent["lines"]["data"][0]["price"]["nickname"]:
-                account_size = 50000
-                prop_firm_name = 'FTMO'
-                sub_type = 'one-time'
+            # # print('Metadata', payment_intent['metadata'])
+
+            # if 'ftmo50' in payment_intent["lines"]["data"][0]["price"]["nickname"]:
+            #     account_size = 50000
+            #     prop_firm_name = 'FTMO'
+            #     sub_type = 'one-time'
 
             current_date = datetime.now()
             formatted_date_string = current_date.strftime('%Y-%m-%d')
@@ -400,8 +478,8 @@ def webhook():
             account_info = {
                 'propsurance_count': account_count,
                 'invoice_url': payment_intent["hosted_invoice_url"],
-                'account_size': account_size,
-                'prop_firm_name': prop_firm_name,
+                # 'account_size': account_size,
+                # 'prop_firm_name': prop_firm_name,
                 'status': 'pending',
                 'server': '',
                 'trading_account_type': '',
@@ -416,7 +494,8 @@ def webhook():
             # Update user's basic information if necessary
             user_ref.update({
                 'user_name': customer.name,
-                'phone_number': customer.phone,
+                'customer_phone_number': customer.phone,
+                'customer_email': client_reference_id_email,
                 'accounts_info_count' : account_count
             })
 
@@ -428,13 +507,12 @@ def webhook():
                 metadata={
                     'uid': uid,
                     'propsurance-count': account_count ,
+                    'customer-email': client_reference_id_email
                 }
             )
             
 
-        else:
-            print('User not found in database.')
-            return jsonify({'status': 'error', 'message': 'User not found in database.'}), 404
+        
             
 
     if event['type'] == 'checkout.session.completed':
@@ -443,14 +521,18 @@ def webhook():
 
         # Fetch the customer details from Stripe
         customer = stripe.Customer.retrieve(customer_id)
+        client_reference_id_email  = customer.email
+        
 
         # Query Firestore for the user document by email
-        user_ref = db.collection('users').document(customer.email)
+        user_ref = db.collection('users').document(client_reference_id_email)
         users_query = user_ref.get()
 
         if users_query.exists:
             user_info = users_query.to_dict()
             uid = user_info.get('uid', 0)
+            account_size = ''
+            prop_firm_name = ''
 
             # Retrieve the current number of accounts to create a unique identifier for the new account
             accounts_collection = user_ref.collection('trader_info')
@@ -458,6 +540,17 @@ def webhook():
             accounts_count = sum(1 for _ in accounts_docs)  # Count documents
 
             # Extract custom field values
+            trader_account_info = payment_intent['metadata']
+
+            # if 'ftmo50' in payment_intent["lines"]["data"][0]["price"]["nickname"]:
+            #     account_size = 50000
+            #     prop_firm_name = 'FTMO'
+            #     sub_type = 'one-time'
+
+            account_size = int(trader_account_info['account_value'])
+            prop_firm_name =  trader_account_info['firm_name']
+            sub_type = trader_account_info['service']
+
             phase_value = payment_intent.get("custom_fields", [{}])[0].get("dropdown", {}).get("value", "")
             mt4mt5_investor_id = payment_intent.get("custom_fields", [{}])[1].get("text", {}).get("value", "")
             mt4mt5_investor_password = payment_intent.get("custom_fields", [{}])[2].get("text", {}).get("value", "")
@@ -465,6 +558,9 @@ def webhook():
             trader_account_info = {
                 'propsurance_count': accounts_count,  # Dynamic count based on the number of documents
                 'account_status': phase_value,
+                'account_size': account_size,
+                'sub-type': sub_type,
+                'prop_firm_name': prop_firm_name,
                 'investor_id': mt4mt5_investor_id,
                 'investor_password': mt4mt5_investor_password,
                 'insured_date': datetime.now().strftime('%Y-%m-%d'),
@@ -475,22 +571,41 @@ def webhook():
             accounts_collection.document(f"trader_account_{accounts_count}").set(trader_account_info)
 
             # Optionally update user's basic info
-            user_ref.update({
-                'user_name': customer.name,
-                'phone_number': customer.phone,
-
-            })
+            
 
             
 
         else:
+            trader_account_info = payment_intent['metadata']
+
+            # if 'ftmo50' in payment_intent["lines"]["data"][0]["price"]["nickname"]:
+            #     account_size = 50000
+            #     prop_firm_name = 'FTMO'
+            #     sub_type = 'one-time'
+
+            account_size = int(trader_account_info['account_value'])
+            prop_firm_name =  trader_account_info['firm_name']
+            sub_type = trader_account_info['service']
+            user_ref.set({
+                                'account_size': account_size,
+                'sub-type': sub_type,
+                'prop_firm_name': prop_firm_name,
+                'user_name': customer.name,
+                'phone_number': customer.phone,
+                'customer_email': customer.email,
+               'customer_purchase_id': payment_intent['payment_intent'],
+               'user_description': "purchased with stripe using wrong account: transfer " ,
+                'purchase_info' : payment_intent['metadata']
+            })
             return jsonify({'status': 'error', 'message': 'User not found in database.'}), 404
+        
     else:
         return jsonify({'status': 'error', 'message': f'Unhandled event type {event["type"]}'}), 400
 
     
 
     return jsonify(success=True)
+
 
 @app.route('/robots.txt')
 def static_from_root():
