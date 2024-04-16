@@ -1,0 +1,526 @@
+{% extends "layout.html" %}
+{% block title %}
+<title>PropSurance - | Account Profile</title>
+{% endblock %}
+
+{% block css %}    
+<link rel="stylesheet" href="{{ url_for('static', filename='css/cases.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dash.css') }}">
+
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/current_user.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<main class="content-main" id="faq-info">
+    <h2 class="stage-pass">PropSurance Users FAQ</h2>
+
+    <div  id="" class="board-cont ticket-border rate-id">
+        <div class="rate-flex">
+            <svg fill="#233DFF" class="info-icon" width="35px" height="35px" class="left-top" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" class="icon"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm32 664c0 4.4-3.6 8-8 8h-48c-4.4 0-8-3.6-8-8V456c0-4.4 3.6-8 8-8h48c4.4 0 8 3.6 8 8v272zm-32-344a48.01 48.01 0 0 1 0-96 48.01 48.01 0 0 1 0 96z"></path> </g></svg>
+          
+            <div id="cover-text-div">
+            <p id="rate-header">PropSurance User</p>
+            <p class="header-text-board">
+                Current <span class="
+                propsurance-color">Coverage Rate? </span>
+            </p>
+        
+       
+
+        <ul class="coverage-ul">
+
+            <p class="coverage-p">
+                Upon signing up, your payout coverage is initially set at <strong> 40%</strong>.  With each <strong> successful payout</strong> from a firm, your insurance rate increases by <strong> 20%</strong>. After three payouts, your <strong> insurance coverage reaches 100%</strong>. We currently limit processed payouts to a maximum of 10% of your account size at any given time; <strong> i.e $20,000 for a $20,0000 account </strong>  However, for users who have already had <strong> 3 payouts processed through Propsurance</strong>, each successful payout thereafter will incrementally increase the <u></u> maximum payout cap by 5%.
+            </p>
+        </ul>
+
+  
+        </div>
+        </div>
+        </div>
+
+        
+    <div  id="" class="board-cont ticket-border rate-id">
+        <div class="rate-flex">
+            <svg fill="#233DFF" class="info-icon" width="35px" height="35px" class="left-top" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" class="icon"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm32 664c0 4.4-3.6 8-8 8h-48c-4.4 0-8-3.6-8-8V456c0-4.4 3.6-8 8-8h48c4.4 0 8 3.6 8 8v272zm-32-344a48.01 48.01 0 0 1 0-96 48.01 48.01 0 0 1 0 96z"></path> </g></svg>
+          
+            <div id="cover-text-div">
+            <p id="rate-header">PropSurance User</p>
+            <p class="header-text-board">
+                 Passed  Your<span class="
+                 propsurance-color"> Current Stage?</span>
+            </p>
+        
+       
+
+        <ul class="coverage-ul">
+
+            <p class="coverage-p">
+                To maintain your Propsurance coverage, promptly update your credentials by submitting a case for "Passed Current Stage" and providing the necessary information. Failure to update your credentials promptly after being informed may result in the termination of your Propsurance benefits.
+            </p>
+        </ul>
+
+  
+        </div>
+        </div>
+        </div>
+
+        <div  id="" class="board-cont ticket-border rate-id">
+            <div class="rate-flex">
+                <svg fill="#233DFF" class="info-icon" width="35px" height="35px" class="left-top" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" class="icon"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm32 664c0 4.4-3.6 8-8 8h-48c-4.4 0-8-3.6-8-8V456c0-4.4 3.6-8 8-8h48c4.4 0 8 3.6 8 8v272zm-32-344a48.01 48.01 0 0 1 0-96 48.01 48.01 0 0 1 0 96z"></path> </g></svg>
+              
+                <div id="cover-text-div">
+                <p id="rate-header">PropSurance User</p>
+                <p class="header-text-board">
+                     Received  Your<span class="
+                     propsurance-color"> Payout?</span>
+                </p>
+            
+           
+    
+            <ul class="coverage-ul">
+    
+                <p class="coverage-p">
+                    It's important to update us after you receive a payout. Otherwise, our system may flag your account as invalid and void your PropSurance status.You can do so by opening a claim for "Received Payout" and filling out your information accordingly.
+                </p>
+            </ul>
+    
+      
+            </div>
+            </div>
+            </div>
+
+        <div  id="" class="board-cont ticket-border rate-id">
+            <div class="rate-flex">
+                <svg fill="#233DFF" class="info-icon" width="35px" height="35px" class="left-top" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" class="icon"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm32 664c0 4.4-3.6 8-8 8h-48c-4.4 0-8-3.6-8-8V456c0-4.4 3.6-8 8-8h48c4.4 0 8 3.6 8 8v272zm-32-344a48.01 48.01 0 0 1 0-96 48.01 48.01 0 0 1 0 96z"></path> </g></svg>
+
+                <!-- <img src="{{ url_for('static', filename='images/info.png') }}" alt="info-icon" class="info-icon"> -->
+              
+                <div id="cover-text-div">
+                <p id="rate-header">PropSurance User</p>
+                <p class="header-text-board">
+                     My Account Dashboard says <span class="
+                     propsurance-color"> "Account Invalid"? </span>
+                </p>
+            
+           
+    
+            <ul class="coverage-ul">
+    
+                <ul style="padding: 0;">
+                    <li class="coverage-p" style="margin-bottom: 0.5em;"> <strong  style="margin-right: 0.3em;">  -Recent Payout or Stage Completion: </strong>You may have recently received a payout or completed a stage with your prop firm & not updated the status in PropSurance Dashboard.</li>
+
+                   <li class="coverage-p" style=" margin-bottom: 0.5em;">  <strong style="margin-right: 0.3em ">  -Inactive Account Update: </strong>You might not have updated your account status within <br>  two weeks from the event of the status change.</li>
+
+                   <li class="coverage-p"  style=" margin-bottom: 0.5em;">  <strong style="margin-right: 0.3em;">  -How to Resolve: </strong>Open a claim through the "Account Invalid" option > Submit the necessary information promptly. </li>
+                   <li class="coverage-p">  <strong style="margin-right: 0.3em;">  -Failure to Resolve Promptly: </strong>Failure to update your status after multiple attempts to reach you  may result in the suspension or termination of your Propsurance coverage.  We want to ensure your coverage remains active, so please take action promptly.</li>
+                </ul>
+            </ul>
+    
+    
+            </div>
+            </div>
+            </div>
+
+            <div  id="" class="board-cont ticket-border rate-id">
+                <div class="rate-flex">
+                    <svg fill="#233DFF" class="info-icon" width="35px" height="35px" class="left-top" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" class="icon"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm32 664c0 4.4-3.6 8-8 8h-48c-4.4 0-8-3.6-8-8V456c0-4.4 3.6-8 8-8h48c4.4 0 8 3.6 8 8v272zm-32-344a48.01 48.01 0 0 1 0-96 48.01 48.01 0 0 1 0 96z"></path> </g></svg>
+                  
+                    <div id="cover-text-div">
+                    <p id="rate-header">PropSurance User</p>
+                    <p class="header-text-board">
+                        Am I still entitled to a payout if I <span class="
+                        propsurance-color"> violate a firm's policy? </span>
+                    </p>
+                
+               
+        
+                <ul class="coverage-ul">
+        
+                    <p class="coverage-p">
+                        Yes, however, you <strong> must</strong> have previously processed at least <strong> 3 successful payouts</strong> with us where we received the <strong> standard 5% fee </strong> from each. In this case, due to the nature of the violation, you will be entitled to a <u> <strong> 40% coverage</strong></u> on the rejected payout, rather than the usual  coverage.
+                    </p>
+                </ul>
+        
+          
+                </div>
+                </div>
+                </div>
+
+        <h2 class="stage-pass">General FAQ</h2>
+
+        <div   class="board-cont ticket-border rate-id">
+            <div class="rate-flex">
+                <svg fill="#233DFF" class="info-icon" width="35px" height="35px" class="left-top" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" class="icon"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm32 664c0 4.4-3.6 8-8 8h-48c-4.4 0-8-3.6-8-8V456c0-4.4 3.6-8 8-8h48c4.4 0 8 3.6 8 8v272zm-32-344a48.01 48.01 0 0 1 0-96 48.01 48.01 0 0 1 0 96z"></path> </g></svg>
+              
+                <div id="cover-text-div">
+                <p id="rate-header">General</p>
+                <p class="header-text-board">
+                    What is <span class="propsurance-color">  PropSurance? </span>
+                </p>
+            
+           
+    
+            <ul class="coverage-ul">
+    
+                <p class="coverage-p">
+                   Propsurance is a service provider that guarantees the rightful withdrawal of your trading profits through prop firms, in the event it is unrightfully rejected.
+                </p>
+            </ul>
+    
+            <!-- <div class="hazard-div">
+                <a class="remaining hazard not-error no-bottom"  id="remaining-success" href="https://billing.stripe.com/p/login/test_bIYdTw74q2Im0Za9AA"><div class="hazard-icon-div "><svg viewBox="0 -0.5 25 25" width="25px" height="25px" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M5.50002 18.211V9.737C5.49724 9.30439 5.84541 8.9513 6.27802 8.948H9.38902C9.82162 8.9513 10.1698 9.30439 10.167 9.737V5.789C10.1642 5.35678 10.5118 5.00385 10.944 5H14.056C14.4886 5.0033 14.8368 5.35639 14.834 5.789V8.158C14.8312 7.72539 15.1794 7.3723 15.612 7.369H18.723C19.1552 7.37285 19.5028 7.72578 19.5 8.158V18.211C19.5028 18.6436 19.1546 18.9967 18.722 19H6.27802C5.84541 18.9967 5.49724 18.6436 5.50002 18.211V18.211Z" stroke="#0c3594a6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M9.41699 19C9.41699 19.4142 9.75278 19.75 10.167 19.75C10.5812 19.75 10.917 19.4142 10.917 19H9.41699ZM10.917 9.73696C10.917 9.32275 10.5812 8.98696 10.167 8.98696C9.75278 8.98696 9.41699 9.32275 9.41699 9.73696H10.917ZM14.083 19C14.083 19.4142 14.4188 19.75 14.833 19.75C15.2472 19.75 15.583 19.4142 15.583 19H14.083ZM15.583 8.15796C15.583 7.74375 15.2472 7.40796 14.833 7.40796C14.4188 7.40796 14.083 7.74375 14.083 8.15796H15.583ZM10.917 19V9.73696H9.41699V19H10.917ZM15.583 19V8.15796H14.083V19H15.583Z" fill="#0c3594a6"></path> </g></svg></div> {{account_info['current_rate']}} </a>
+            </div> -->
+            </div>
+            </div>
+            </div>
+
+
+            <div   class="board-cont ticket-border rate-id">
+                <div class="rate-flex">
+                    <svg fill="#233DFF" class="info-icon" width="35px" height="35px" class="left-top" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" class="icon"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm32 664c0 4.4-3.6 8-8 8h-48c-4.4 0-8-3.6-8-8V456c0-4.4 3.6-8 8-8h48c4.4 0 8 3.6 8 8v272zm-32-344a48.01 48.01 0 0 1 0-96 48.01 48.01 0 0 1 0 96z"></path> </g></svg>
+                  
+                    <div id="cover-text-div">
+                    <p id="rate-header">General</p>
+                    <p class="header-text-board">
+                        How does <span class="propsurance-color"> PropSurance</span> work?
+                    </p>
+                
+               
+        
+                <ul class="coverage-ul">
+        
+                    <p class="coverage-p">
+                        In light of the prevailing dishonesty within the industry, Propsurance offers traders a guarantee that their hard-earned profits will be safely secured. With your Propsurance plan, you will be reimbursed—fully or partially—for any unjustly withheld payouts from our approved firms.
+                    </p>
+                </ul>
+        
+                <!-- <div class="hazard-div">
+                    <a class="remaining hazard not-error no-bottom"  id="remaining-success" href="https://billing.stripe.com/p/login/test_bIYdTw74q2Im0Za9AA"><div class="hazard-icon-div "><svg viewBox="0 -0.5 25 25" width="25px" height="25px" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M5.50002 18.211V9.737C5.49724 9.30439 5.84541 8.9513 6.27802 8.948H9.38902C9.82162 8.9513 10.1698 9.30439 10.167 9.737V5.789C10.1642 5.35678 10.5118 5.00385 10.944 5H14.056C14.4886 5.0033 14.8368 5.35639 14.834 5.789V8.158C14.8312 7.72539 15.1794 7.3723 15.612 7.369H18.723C19.1552 7.37285 19.5028 7.72578 19.5 8.158V18.211C19.5028 18.6436 19.1546 18.9967 18.722 19H6.27802C5.84541 18.9967 5.49724 18.6436 5.50002 18.211V18.211Z" stroke="#0c3594a6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M9.41699 19C9.41699 19.4142 9.75278 19.75 10.167 19.75C10.5812 19.75 10.917 19.4142 10.917 19H9.41699ZM10.917 9.73696C10.917 9.32275 10.5812 8.98696 10.167 8.98696C9.75278 8.98696 9.41699 9.32275 9.41699 9.73696H10.917ZM14.083 19C14.083 19.4142 14.4188 19.75 14.833 19.75C15.2472 19.75 15.583 19.4142 15.583 19H14.083ZM15.583 8.15796C15.583 7.74375 15.2472 7.40796 14.833 7.40796C14.4188 7.40796 14.083 7.74375 14.083 8.15796H15.583ZM10.917 19V9.73696H9.41699V19H10.917ZM15.583 19V8.15796H14.083V19H15.583Z" fill="#0c3594a6"></path> </g></svg></div> {{account_info['current_rate']}} </a>
+                </div> -->
+                </div>
+                </div>
+                </div>
+
+
+                
+
+
+                    <div   class="board-cont ticket-border rate-id">
+                        <div class="rate-flex">
+                            <svg fill="#233DFF" class="info-icon" width="35px" height="35px" class="left-top" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" class="icon"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm32 664c0 4.4-3.6 8-8 8h-48c-4.4 0-8-3.6-8-8V456c0-4.4 3.6-8 8-8h48c4.4 0 8 3.6 8 8v272zm-32-344a48.01 48.01 0 0 1 0-96 48.01 48.01 0 0 1 0 96z"></path> </g></svg>
+                          
+                            <div id="cover-text-div">
+                            <p id="rate-header">General</p>
+                            <p class="header-text-board">
+                                What types of <span class="propsurance-color"> Plans</span> are available?
+                            </p>
+                        
+                       
+                
+                        <ul class="coverage-ul">
+                
+                            <p class="coverage-p" href="{{url_for('dashboard')}}">
+                                Based on their extensive case history and the valuation of your account with the firm, PropPatrol customizes pricing to align with their reputation. Navigate to the Pricing  dashboard  for more info.
+                            </p>
+                        </ul>
+                
+                   
+                        </div>
+                        </div>
+                        </div>
+
+                        <div class="board-cont ticket-border rate-id">
+                            <div class="rate-flex">
+                                <svg fill="#233DFF" class="info-icon" width="35px" height="35px" class="left-top" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" class="icon"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm32 664c0 4.4-3.6 8-8 8h-48c-4.4 0-8-3.6-8-8V456c0-4.4 3.6-8 8-8h48c4.4 0 8 3.6 8 8v272zm-32-344a48.01 48.01 0 0 1 0-96 48.01 48.01 0 0 1 0 96z"></path> </g></svg>
+                              
+                                <div id="cover-text-div">
+                                <p id="rate-header">General</p>
+                                <p class="header-text-board">
+                                    What's my <span class="propsurance-color"> Maximum Allocated</span> Account Amount?
+                                </p>
+                            
+                           
+                    
+                            <ul class="coverage-ul">
+                    
+                                <p class="coverage-p" href="{{url_for('dashboard')}}">
+                                    The maximum allocated account amount is $200,000. This means you can insure your trading accounts across different firms, as long as the total guaranteed amount doesn't exceed $200,000 For example:  You can purchase a $50,000 insurance plan for an account at one firm and still be eligible for a separate $150,000 account at another firm, totaling $200,000 in coverage.
+                                </p>
+                            </ul>
+                    
+                       
+                            </div>
+                            </div>
+                            </div>
+
+    <div   class="board-cont ticket-border rate-id">
+        <div class="rate-flex">
+            <svg fill="#233DFF" class="info-icon" width="35px" height="35px" class="left-top" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" class="icon"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm32 664c0 4.4-3.6 8-8 8h-48c-4.4 0-8-3.6-8-8V456c0-4.4 3.6-8 8-8h48c4.4 0 8 3.6 8 8v272zm-32-344a48.01 48.01 0 0 1 0-96 48.01 48.01 0 0 1 0 96z"></path> </g></svg>
+            
+            <div id="cover-text-div">
+            <p id="rate-header">General</p>
+            <p class="header-text-board">
+                What is my <span class="propsurance-color"> Investor Password & ID?   </span>
+            </p>
+        
+        
+
+        <ul class="coverage-ul">
+
+            <p class="coverage-p">
+                Your investor password and ID are read-only credentials that allow us to securely connect to your account and monitor changes, such as your current phase progression. It's important to understand that these credentials do not grant us trading access. To maintain accurate coverage and avoid potential voiding of your Propsurance status, providing this information is mandatory.
+            </p>
+        </ul>
+
+
+        </div>
+        </div>
+        </div>
+
+        <div   class="board-cont ticket-border rate-id">
+            <div class="rate-flex">
+                <svg fill="#233DFF" class="info-icon" width="35px" height="35px" class="left-top" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" class="icon"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm32 664c0 4.4-3.6 8-8 8h-48c-4.4 0-8-3.6-8-8V456c0-4.4 3.6-8 8-8h48c4.4 0 8 3.6 8 8v272zm-32-344a48.01 48.01 0 0 1 0-96 48.01 48.01 0 0 1 0 96z"></path> </g></svg>
+                
+                <div id="cover-text-div">
+                <p id="rate-header">General</p>
+                <p class="header-text-board">
+                    What are the <span class="propsurance-color"> Payment Options?   </span>
+                </p>
+            
+            
+    
+            <ul class="coverage-ul">
+    
+                <p class="coverage-p">
+                    We currently accept and process payments through Stripe.
+                </p>
+            </ul>
+    
+    
+            </div>
+            </div>
+            </div>
+                    
+              
+
+   
+    
+
+
+    <h2 class="form-h2">Account Information</h2>
+    <form id="form-validation" >
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+        <label for="account-stage" >Name</label>
+    
+        <div class="form-icon-cont">
+    
+            <div class="form-icon"  onclick="copyToClipboardname()"><svg width="25px" height="25px" viewBox="0 -0.5 25 25" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M8.94605 4.99995L13.2541 4.99995C14.173 5.00498 15.0524 5.37487 15.6986 6.02825C16.3449 6.68163 16.7051 7.56497 16.7001 8.48395V12.716C16.7051 13.6349 16.3449 14.5183 15.6986 15.1717C15.0524 15.825 14.173 16.1949 13.2541 16.2H8.94605C8.02707 16.1949 7.14773 15.825 6.50148 15.1717C5.85522 14.5183 5.495 13.6349 5.50005 12.716L5.50005 8.48495C5.49473 7.5658 5.85484 6.6822 6.50112 6.0286C7.1474 5.375 8.0269 5.00498 8.94605 4.99995Z" stroke="#0c35948a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M10.1671 19H14.9371C17.4857 18.9709 19.5284 16.8816 19.5001 14.333V9.666" stroke="#0c35948a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg></div>
+        </div>
+        <input type="text" id="account_name" name="account-stage" value="{{ account_info.customer_name }}" readonly required><br>
+
+        <!-- email label -->
+
+        <label for="email-account" >Email</label>
+    
+        <div class="form-icon-cont">
+    
+            <div class="form-icon"  onclick="copyToClipboardemail()"> <svg width="25px" height="25px" viewBox="0 -0.5 25 25" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M8.94605 4.99995L13.2541 4.99995C14.173 5.00498 15.0524 5.37487 15.6986 6.02825C16.3449 6.68163 16.7051 7.56497 16.7001 8.48395V12.716C16.7051 13.6349 16.3449 14.5183 15.6986 15.1717C15.0524 15.825 14.173 16.1949 13.2541 16.2H8.94605C8.02707 16.1949 7.14773 15.825 6.50148 15.1717C5.85522 14.5183 5.495 13.6349 5.50005 12.716L5.50005 8.48495C5.49473 7.5658 5.85484 6.6822 6.50112 6.0286C7.1474 5.375 8.0269 5.00498 8.94605 4.99995Z" stroke="#0c35948a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M10.1671 19H14.9371C17.4857 18.9709 19.5284 16.8816 19.5001 14.333V9.666" stroke="#0c35948a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg></div>
+        </div>
+        <input type="text" id="account_email" name="email-account" value="{{ account_info.email }}" readonly required><br>
+
+        <!-- email end -->
+
+        <label for="mt_account">Read Only/Account ID</label>
+        
+
+        <div class="form-icon-cont" >
+        <div class="form-icon" onclick="copyToClipboardaccount()"> <svg width="25px" height="25px" viewBox="0 -0.5 25 25" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M8.94605 4.99995L13.2541 4.99995C14.173 5.00498 15.0524 5.37487 15.6986 6.02825C16.3449 6.68163 16.7051 7.56497 16.7001 8.48395V12.716C16.7051 13.6349 16.3449 14.5183 15.6986 15.1717C15.0524 15.825 14.173 16.1949 13.2541 16.2H8.94605C8.02707 16.1949 7.14773 15.825 6.50148 15.1717C5.85522 14.5183 5.495 13.6349 5.50005 12.716L5.50005 8.48495C5.49473 7.5658 5.85484 6.6822 6.50112 6.0286C7.1474 5.375 8.0269 5.00498 8.94605 4.99995Z" stroke="#0c35948a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M10.1671 19H14.9371C17.4857 18.9709 19.5284 16.8816 19.5001 14.333V9.666" stroke="#0c35948a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg></div> </div>
+        <input type="text" id="account_id" name="mt_account" value="{{ account_info.investor_id }}" readonly required><br>
+    
+        <label for="password" >Investor Password</label>
+    
+        <div class="form-icon-cont">
+    
+            <div class="form-icon" onclick="copyToClipboardpassword()"> <svg width="25px" height="25px" viewBox="0 -0.5 25 25" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M8.94605 4.99995L13.2541 4.99995C14.173 5.00498 15.0524 5.37487 15.6986 6.02825C16.3449 6.68163 16.7051 7.56497 16.7001 8.48395V12.716C16.7051 13.6349 16.3449 14.5183 15.6986 15.1717C15.0524 15.825 14.173 16.1949 13.2541 16.2H8.94605C8.02707 16.1949 7.14773 15.825 6.50148 15.1717C5.85522 14.5183 5.495 13.6349 5.50005 12.716L5.50005 8.48495C5.49473 7.5658 5.85484 6.6822 6.50112 6.0286C7.1474 5.375 8.0269 5.00498 8.94605 4.99995Z" stroke="#0c35948a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M10.1671 19H14.9371C17.4857 18.9709 19.5284 16.8816 19.5001 14.333V9.666" stroke="#0c35948a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg></div>
+        </div>
+        <input type="text" id="account_password" name="password" value="{{ account_info.investor_password }}" readonly required><br>
+    
+        <label for="account-stage" >Account Stage</label>
+    
+        <div class="form-icon-cont">
+    
+            <div class="form-icon" onclick="copyToClipboardphase()"> <svg width="25px" height="25px" viewBox="0 -0.5 25 25" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M8.94605 4.99995L13.2541 4.99995C14.173 5.00498 15.0524 5.37487 15.6986 6.02825C16.3449 6.68163 16.7051 7.56497 16.7001 8.48395V12.716C16.7051 13.6349 16.3449 14.5183 15.6986 15.1717C15.0524 15.825 14.173 16.1949 13.2541 16.2H8.94605C8.02707 16.1949 7.14773 15.825 6.50148 15.1717C5.85522 14.5183 5.495 13.6349 5.50005 12.716L5.50005 8.48495C5.49473 7.5658 5.85484 6.6822 6.50112 6.0286C7.1474 5.375 8.0269 5.00498 8.94605 4.99995Z" stroke="#0c35948a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M10.1671 19H14.9371C17.4857 18.9709 19.5284 16.8816 19.5001 14.333V9.666" stroke="#0c35948a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg></div>
+            
+        </div>
+        <input type="text" id="account_stage" name="account-stage" value="{{ account_info.account_stage }}" readonly required><br>
+    
+
+        {% if account_info.status == 'needs_validation' %}
+        
+    
+    
+        <div class="hazard-div" id="validated" >
+            <a class="remaining hazard" id="form-hazard">
+                <div class="hazard-icon-div">
+                    <!-- SVG icon -->
+                    <svg fill="#0c3594a6" width="25px" height="25px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M16.03,18.616l5.294-4.853a1,1,0,0,1,1.352,1.474l-6,5.5a1,1,0,0,1-1.383-.03l-3-3a1,1,0,0,1,1.414-1.414ZM1,20a9.01,9.01,0,0,1,5.623-8.337A4.981,4.981,0,1,1,10,13a7.011,7.011,0,0,0-6.929,6H10a1,1,0,0,1,0,2H2A1,1,0,0,1,1,20ZM7,8a3,3,0,1,0,3-3A3,3,0,0,0,7,8Z"></path></g></svg>
+                </div>
+                Account Added
+            </a>
+        </div>
+    
+        <!-- <p class="change-id">To update <strong> credentials</strong> please open a case here.</p> -->
+    
+        {% elif account_info.status == 'invalid'  %}
+    
+      
+    
+    
+        <div class="hazard-div" id="invalid-user" >
+            <a class="remaining hazard" id="form-hazard-invalid">
+                <div class="hazard-icon-div">
+                    <!-- SVG icon -->
+                    <svg fill="#00000082" width="25px" height="25px" viewBox="0 0 64 64" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <rect id="Icons" x="-640" y="-64" width="1280" height="800" style="fill:none;"></rect> <g id="Icons1" serif:id="Icons"> <g id="Strike"> </g> <g id="H1"> </g> <g id="H2"> </g> <g id="H3"> </g> <g id="list-ul"> </g> <g id="hamburger-1"> </g> <g id="hamburger-2"> </g> <g id="list-ol"> </g> <g id="list-task"> </g> <g id="trash"> </g> <g id="vertical-menu"> </g> <g id="horizontal-menu"> </g> <g id="sidebar-2"> </g> <g id="Pen"> </g> <g id="Pen1" serif:id="Pen"> </g> <g id="clock"> </g> <g id="external-link"> </g> <g id="hr"> </g> <g id="info"> </g> <g id="warning"> <path d="M32.427,7.987c2.183,0.124 4,1.165 5.096,3.281l17.936,36.208c1.739,3.66 -0.954,8.585 -5.373,8.656l-36.119,0c-4.022,-0.064 -7.322,-4.631 -5.352,-8.696l18.271,-36.207c0.342,-0.65 0.498,-0.838 0.793,-1.179c1.186,-1.375 2.483,-2.111 4.748,-2.063Zm-0.295,3.997c-0.687,0.034 -1.316,0.419 -1.659,1.017c-6.312,11.979 -12.397,24.081 -18.301,36.267c-0.546,1.225 0.391,2.797 1.762,2.863c12.06,0.195 24.125,0.195 36.185,0c1.325,-0.064 2.321,-1.584 1.769,-2.85c-5.793,-12.184 -11.765,-24.286 -17.966,-36.267c-0.366,-0.651 -0.903,-1.042 -1.79,-1.03Z" style="fill-rule:nonzero;"></path> <path d="M33.631,40.581l-3.348,0l-0.368,-16.449l4.1,0l-0.384,16.449Zm-3.828,5.03c0,-0.609 0.197,-1.113 0.592,-1.514c0.396,-0.4 0.935,-0.601 1.618,-0.601c0.684,0 1.223,0.201 1.618,0.601c0.395,0.401 0.593,0.905 0.593,1.514c0,0.587 -0.193,1.078 -0.577,1.473c-0.385,0.395 -0.929,0.593 -1.634,0.593c-0.705,0 -1.249,-0.198 -1.634,-0.593c-0.384,-0.395 -0.576,-0.886 -0.576,-1.473Z" style="fill-rule:nonzero;"></path> </g> <g id="plus-circle"> </g> <g id="minus-circle"> </g> <g id="vue"> </g> <g id="cog"> </g> <g id="logo"> </g> <g id="radio-check"> </g> <g id="eye-slash"> </g> <g id="eye"> </g> <g id="toggle-off"> </g> <g id="shredder"> </g> <g id="spinner--loading--dots-" serif:id="spinner [loading, dots]"> </g> <g id="react"> </g> <g id="check-selected"> </g> <g id="turn-off"> </g> <g id="code-block"> </g> <g id="user"> </g> <g id="coffee-bean"> </g> <g id="coffee-beans"> <g id="coffee-bean1" serif:id="coffee-bean"> </g> </g> <g id="coffee-bean-filled"> </g> <g id="coffee-beans-filled"> <g id="coffee-bean2" serif:id="coffee-bean"> </g> </g> <g id="clipboard"> </g> <g id="clipboard-paste"> </g> <g id="clipboard-copy"> </g> <g id="Layer1"> </g> </g> </g></svg>
+                </div>
+                Account Invalid Please Open a Ticket or Case
+            </a>
+        </div>
+    
+    
+        {% else %}
+       
+    
+    
+        <div class="hazard-div" id="invalid-user" >
+            <a class="remaining hazard" id="form-hazard-invalid">
+                <div class="hazard-icon-div">
+                    <!-- SVG icon -->
+                    <svg fill="#00000082" width="25px" height="25px" viewBox="0 0 64 64" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <rect id="Icons" x="-640" y="-64" width="1280" height="800" style="fill:none;"></rect> <g id="Icons1" serif:id="Icons"> <g id="Strike"> </g> <g id="H1"> </g> <g id="H2"> </g> <g id="H3"> </g> <g id="list-ul"> </g> <g id="hamburger-1"> </g> <g id="hamburger-2"> </g> <g id="list-ol"> </g> <g id="list-task"> </g> <g id="trash"> </g> <g id="vertical-menu"> </g> <g id="horizontal-menu"> </g> <g id="sidebar-2"> </g> <g id="Pen"> </g> <g id="Pen1" serif:id="Pen"> </g> <g id="clock"> </g> <g id="external-link"> </g> <g id="hr"> </g> <g id="info"> </g> <g id="warning"> <path d="M32.427,7.987c2.183,0.124 4,1.165 5.096,3.281l17.936,36.208c1.739,3.66 -0.954,8.585 -5.373,8.656l-36.119,0c-4.022,-0.064 -7.322,-4.631 -5.352,-8.696l18.271,-36.207c0.342,-0.65 0.498,-0.838 0.793,-1.179c1.186,-1.375 2.483,-2.111 4.748,-2.063Zm-0.295,3.997c-0.687,0.034 -1.316,0.419 -1.659,1.017c-6.312,11.979 -12.397,24.081 -18.301,36.267c-0.546,1.225 0.391,2.797 1.762,2.863c12.06,0.195 24.125,0.195 36.185,0c1.325,-0.064 2.321,-1.584 1.769,-2.85c-5.793,-12.184 -11.765,-24.286 -17.966,-36.267c-0.366,-0.651 -0.903,-1.042 -1.79,-1.03Z" style="fill-rule:nonzero;"></path> <path d="M33.631,40.581l-3.348,0l-0.368,-16.449l4.1,0l-0.384,16.449Zm-3.828,5.03c0,-0.609 0.197,-1.113 0.592,-1.514c0.396,-0.4 0.935,-0.601 1.618,-0.601c0.684,0 1.223,0.201 1.618,0.601c0.395,0.401 0.593,0.905 0.593,1.514c0,0.587 -0.193,1.078 -0.577,1.473c-0.385,0.395 -0.929,0.593 -1.634,0.593c-0.705,0 -1.249,-0.198 -1.634,-0.593c-0.384,-0.395 -0.576,-0.886 -0.576,-1.473Z" style="fill-rule:nonzero;"></path> </g> <g id="plus-circle"> </g> <g id="minus-circle"> </g> <g id="vue"> </g> <g id="cog"> </g> <g id="logo"> </g> <g id="radio-check"> </g> <g id="eye-slash"> </g> <g id="eye"> </g> <g id="toggle-off"> </g> <g id="shredder"> </g> <g id="spinner--loading--dots-" serif:id="spinner [loading, dots]"> </g> <g id="react"> </g> <g id="check-selected"> </g> <g id="turn-off"> </g> <g id="code-block"> </g> <g id="user"> </g> <g id="coffee-bean"> </g> <g id="coffee-beans"> <g id="coffee-bean1" serif:id="coffee-bean"> </g> </g> <g id="coffee-bean-filled"> </g> <g id="coffee-beans-filled"> <g id="coffee-bean2" serif:id="coffee-bean"> </g> </g> <g id="clipboard"> </g> <g id="clipboard-paste"> </g> <g id="clipboard-copy"> </g> <g id="Layer1"> </g> </g> </g></svg>
+                </div>
+                Account Requires Validation
+            </a>
+        
+        </div>
+    
+        <!-- <input type="submit" value="Submit"> -->
+        
+    
+       
+        {% endif %}
+ <!-- <p class="change-id">To update credentials please open a ticket here.<br> <strong></strong></p> -->
+
+
+
+    </main>
+
+
+ 
+    
+
+{% endblock %}
+
+
+{% block script %}
+<script>
+    window.fwSettings = {
+        'widget_id': 153000001827
+    };
+    !function() {
+        if ("function" != typeof window.FreshworksWidget) {
+            var n = function() {
+                n.q.push(arguments);
+            };
+            n.q = [], window.FreshworksWidget = n;
+        }
+    }();
+</script>
+<script type='text/javascript' src='https://widget.freshworks.com/widgets/153000001827.js' async defer></script>
+
+<script>
+    // Ensure the window is loaded completely
+    window.onload = function() {
+        // Function to check if the Freshworks Widget is available and loaded
+        var checkIfWidgetLoaded = function() {
+            if (window.FreshworksWidget) {
+                // Open the widget
+                FreshworksWidget('open');
+            } else {
+                // If the widget isn't available yet, check again after a short delay
+                setTimeout(checkIfWidgetLoaded, 50);
+            }
+        };
+
+        // Start checking for the widget
+        checkIfWidgetLoaded();
+    };
+
+
+
+
+function copyToClipboardname() {
+    const text = document.getElementById("account_name").value;
+    navigator.clipboard.writeText(text).then(() => {
+        // console.log('Text successfully copied to clipboard');
+        // Optionally show a user-friendly message or feedback
+        // alert("Copied: " + text);
+    }).catch(err => {
+        // console.error('Failed to copy text to clipboard', err);
+    });
+}
+
+
+function copyToClipboardemail() {
+    const text = document.getElementById("account_email").value;
+    navigator.clipboard.writeText(text).then(() => {
+        // console.log('Text successfully copied to clipboard');
+        // Optionally show a user-friendly message or feedback
+        // alert("Copied: " + text);
+    }).catch(err => {
+        // console.error('Failed to copy text to clipboard', err);
+    });
+}
+
+
+function copyToClipboardaccount() {
+    const text = document.getElementById("account_id").value;
+    navigator.clipboard.writeText(text).then(() => {
+        // console.log('Text successfully copied to clipboard');
+        // Optionally show a user-friendly message or feedback
+        // alert("Copied: " + text);
+    }).catch(err => {
+        // console.error('Failed to copy text to clipboard', err);
+    });
+}
+
+function copyToClipboardpassword() {
+    const text = document.getElementById("account_password").value;
+    navigator.clipboard.writeText(text).then(() => {
+        // console.log('Text successfully copied to clipboard');
+        // Optionally show a user-friendly message or feedback
+        // alert("Copied: " + text);
+    }).catch(err => {
+        // console.error('Failed to copy text to clipboard', err);
+    });
+}
+
+
+function copyToClipboardphase() {
+    const text = document.getElementById("account_stage").value;
+    navigator.clipboard.writeText(text).then(() => {
+        // console.log('Text successfully copied to clipboard');
+        // Optionally show a user-friendly message or feedback
+        // alert("Copied: " + text);
+    }).catch(err => {
+        // console.error('Failed to copy text to clipboard', err);
+    });
+}
+
+
+
+</script>
+
+
+{% endblock %}

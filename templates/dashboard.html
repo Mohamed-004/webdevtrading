@@ -10,9 +10,18 @@
 
 {% block content %}
 
-
-
+  
 <main class="content-main">
+
+    
+{% if has_first_name  %}
+
+<h2 class="stage-pass">Welcome {{first_name}}</h2>
+
+{%else%}
+<h2 class="stage-pass">Welcome {{first_name}}</h2>
+{% endif %}
+
 
 
     <div id="dashboard-container">
@@ -101,7 +110,7 @@
             <button class="btn btn-primary dropdown-toggle" id="menu3" type="button" data-toggle="dropdown">Rewards
             <span class="caret"></span></button>
             <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
-              <li role="presentation"><a role="menuitem" tabindex="-1" >No Accounts</a></li>
+              <li role="presentation"><a role="menuitem" tabindex="-1" >Coming Soon</a></li>
               
             </ul>
           </div>
@@ -117,8 +126,10 @@
 
 
 {% if insured_accounts %}
+<h2 class="stage-pass">Coverage Metrics</h2>
 <div class="metrics-bar" id="full-coverage-bar">
     <div class="metrics-bars">
+        
         <p class="name sepr">Prop Firm Coverage<span class="prop-name">200k Max </span></p>
         <ul>
 
@@ -143,6 +154,7 @@
 {% endif %}
 
 {% if insured_accounts %}
+<h2 class="stage-pass">Accounts</h2>
 <div class="firm-list" id="firm-account-info">
 
                    

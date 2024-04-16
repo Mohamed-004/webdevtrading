@@ -61,10 +61,10 @@ div#dashboard-container {
 .header-text-under.dropdown .btn-primary {
     position: absolute;
     bottom: 0em;
-    width: 130px;
+    width: 180px;
 }
 
-.header-text-under.dropdown  ul.dropdown-menu {top: 100%;max-width: 130px;min-width: 130px;margin-top: 0.4em;}
+.header-text-under.dropdown  ul.dropdown-menu {top: 100%;max-width: 180px;min-width: 180px;margin-top: 0.4em;}
 
 #menu3 {
     background: #0c3594d1 !important;
@@ -396,6 +396,26 @@ span.remaining.hazard.not-error {
     border-left-color: #233DFF;
   }  
 
+
+  .stage-pass {
+    font-size: 2.2em;
+    color: #233DFF;
+    margin: 1.5em 0 0.7em;
+    font-weight: bold;
+  }
+
+  /* update stat */
+  .stage-notification .remaining.hazard {
+    margin: 0;
+  }
+
+
+  .link-icon-text {
+    
+color: #0c3594a6;
+    
+font-weight: bold;
+  }
 
 /* payment div starts here */
 

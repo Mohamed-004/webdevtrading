@@ -78,11 +78,15 @@ header nav {
     display: flex;
     justify-content: space-between;
     padding: 1em 5em;
+    box-shadow: inset 0 4px 80px #2196f357;
     color: #0c3594a6;
+    border-radius: 0 0 40px 40px;
     background: #f1f8ff;
     border: #007bffab;
     height: max-content;
     background: #f1f8ff;
+    border-bottom: 0.8rem solid rgb(248, 214, 38);
+    border-bottom-color: #007bffab;
 }
 
 #logo {
@@ -133,7 +137,7 @@ color: #0c3594d1;
 /* Hero Section Styles */
 #hero {
     text-align: center;
-    border-bottom: 0.8rem solid rgb(248, 214, 38);
+    /* border-bottom: 0.8rem solid rgb(248, 214, 38); */
     padding: 2em 5em;
     background-color: #F1F8FF !important; /* Assuming a white background */
     color: #050A30;
@@ -1193,9 +1197,15 @@ background-color: #a7d4f682;
 }
 
 .feat-reports p.report-description-p {
+    font-size: 1.1em;
+    color: #0c3594a6;
+    font-weight: 500;
     color: #0c3594e8;
     width: 60%;
     /* line-height: 1.1em; */
+    font-size: 1.1em;
+    color: #0c3594a6;
+    font-weight: 500;
 }
 
 .feat-reports span.status.tag {
@@ -1393,8 +1403,10 @@ span.blacklisted-h2 {
 
 @media (min-width: 1600px) {
 
-    header nav { 
+    header nav {
       padding: 1em 10%;
+      /* background: #cae8ff; */
+      /* border-radius: 0 0 40px 40px; */
     }
 
     #hero {

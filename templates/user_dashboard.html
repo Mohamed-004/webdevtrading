@@ -14,7 +14,14 @@
 {% block content %}
 
 <main class="content-main">
+    {% if has_first_name  %}
 
+    <h2 class="stage-pass">Welcome {{first_name}}</h2>
+    
+    {%else%}
+    <h2 class="stage-pass">Welcome {{first_name}}</h2>
+    {% endif %}
+    
 
     <div id="dashboard-container">
         <!-- prop surance status -->
@@ -35,7 +42,7 @@
             {% else %}
             <div class="hazard-div">
 
-                <a class="remaining hazard not-error"  id="remaining-success" href="{{account_info['account_access_url']}}"><div class="hazard-icon-div "><svg viewBox="0 -0.5 25 25" width="25px" height="25px" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M5.50002 18.211V9.737C5.49724 9.30439 5.84541 8.9513 6.27802 8.948H9.38902C9.82162 8.9513 10.1698 9.30439 10.167 9.737V5.789C10.1642 5.35678 10.5118 5.00385 10.944 5H14.056C14.4886 5.0033 14.8368 5.35639 14.834 5.789V8.158C14.8312 7.72539 15.1794 7.3723 15.612 7.369H18.723C19.1552 7.37285 19.5028 7.72578 19.5 8.158V18.211C19.5028 18.6436 19.1546 18.9967 18.722 19H6.27802C5.84541 18.9967 5.49724 18.6436 5.50002 18.211V18.211Z" stroke="#0c3594a6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M9.41699 19C9.41699 19.4142 9.75278 19.75 10.167 19.75C10.5812 19.75 10.917 19.4142 10.917 19H9.41699ZM10.917 9.73696C10.917 9.32275 10.5812 8.98696 10.167 8.98696C9.75278 8.98696 9.41699 9.32275 9.41699 9.73696H10.917ZM14.083 19C14.083 19.4142 14.4188 19.75 14.833 19.75C15.2472 19.75 15.583 19.4142 15.583 19H14.083ZM15.583 8.15796C15.583 7.74375 15.2472 7.40796 14.833 7.40796C14.4188 7.40796 14.083 7.74375 14.083 8.15796H15.583ZM10.917 19V9.73696H9.41699V19H10.917ZM15.583 19V8.15796H14.083V19H15.583Z" fill="#0c3594a6"></path> </g></svg></div> Account Info </a>
+                <a class="remaining hazard not-error"  id="remaining-success" href="{{account_info['account_access_url']}}"><div class="hazard-icon-div "><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" stroke="#233DFF"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" stroke="#CCCCCC" stroke-width="0.048"></g><g id="SVGRepo_iconCarrier"> <path d="M15.197 3.35462C16.8703 1.67483 19.4476 1.53865 20.9536 3.05046C22.4596 4.56228 22.3239 7.14956 20.6506 8.82935L18.2268 11.2626M10.0464 14C8.54044 12.4882 8.67609 9.90087 10.3494 8.22108L12.5 6.06212" stroke="#233DFF" stroke-width="2.4" stroke-linecap="round"></path> <path d="M13.9536 10C15.4596 11.5118 15.3239 14.0991 13.6506 15.7789L11.2268 18.2121L8.80299 20.6454C7.12969 22.3252 4.55237 22.4613 3.0464 20.9495C1.54043 19.4377 1.67609 16.8504 3.34939 15.1706L5.77323 12.7373" stroke="#233DFF" stroke-width="2.4" stroke-linecap="round"></path> </g></svg></div> Account Info </a>
             </div>
 
             {% endif %}
@@ -57,7 +64,7 @@
     <div class="board-cont">
         <div class="text-img">
             <p>Claims</p>
-            <img src="{{ url_for('static', filename='images/profilepic.png') }}" alt="Profile Icon">
+            <img src="{{ url_for('static', filename='images/claims.png') }}" alt="Claims">
         </div>
         <p class="header-text-board">
         Open Tickets
@@ -67,24 +74,32 @@
                 <button class="btn btn-primary dropdown-toggle" id="menu1" type="button" data-toggle="dropdown">Claim Type
                 <span class="caret"></span></button>
                 <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
-                    {% if insured_accounts %}
-                   
-                    {% for account in insured_accounts %}
-                        {% if account['account_url_fix'] %}
+                    
                          
                             <li role="presentation">
-                                <a role="menuitem" tabindex="-1" href="{{ url_for('dashboard', account_number=account['account_number']) }}">
-                                    {{account['name']}} <br> {{ account['account_size'] }} 
+                                <a role="menuitem" tabindex="-1" href="{{url_for('access_ticket_handler', account_count=account_info['id'])}}">
+                                   Passed Current <br> Phase
                                 </a>
                             </li>
-                        {% endif %}
-                    {% endfor %}
-                    {% if not insured_accounts %}
-                        <li role="presentation"><a role="menuitem" tabindex="-1">No Accounts</a></li>
-                    {% endif %}
-                {% else %}
-                    <li role="presentation"><a role="menuitem" tabindex="-1">No Accounts</a></li>
-                {% endif %}
+                            <li role="presentation">
+                                <a role="menuitem" tabindex="-1" href="{{url_for('access_ticket_handler', account_count=account_info['id'])}}">
+                                   Received Payout
+                                </a>
+                            </li>
+                            <li role="presentation">
+                                <a role="menuitem" tabindex="-1" href="{{url_for('access_ticket_handler', account_count=account_info['id'])}}">
+                                   Payout Denied
+                                </a>
+                            </li>
+                            <li role="presentation">
+                                <a role="menuitem" tabindex="-1" href="{{url_for('access_ticket_handler', account_count=account_info['id'])}}">
+                                  Invalid Credentials
+                                </a>
+                            </li>
+                 
+
+
+              
                   
                 </ul>
               </div>
@@ -94,30 +109,102 @@
     <div class="board-cont">
         <div class="text-img">
             <p>Billing</p>
-            <img src="{{ url_for('static', filename='images/rewards.png') }}" alt="Info Icon">
+            <img src="{{ url_for('static', filename='images/invoices.png') }}" alt="Info Icon">
         </div>
         <p class="header-text-board">
             Past Invoices
         </p>
 
         <div class="hazard-div">
+            <a class="remaining hazard not-error"  id="remaining-success" href="https://billing.stripe.com/p/login/test_bIYdTw74q2Im0Za9AA"><div class="hazard-icon-div "><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" stroke="#233DFF"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" stroke="#CCCCCC" stroke-width="0.048"></g><g id="SVGRepo_iconCarrier"> <path d="M15.197 3.35462C16.8703 1.67483 19.4476 1.53865 20.9536 3.05046C22.4596 4.56228 22.3239 7.14956 20.6506 8.82935L18.2268 11.2626M10.0464 14C8.54044 12.4882 8.67609 9.90087 10.3494 8.22108L12.5 6.06212" stroke="#233DFF" stroke-width="2.4" stroke-linecap="round"></path> <path d="M13.9536 10C15.4596 11.5118 15.3239 14.0991 13.6506 15.7789L11.2268 18.2121L8.80299 20.6454C7.12969 22.3252 4.55237 22.4613 3.0464 20.9495C1.54043 19.4377 1.67609 16.8504 3.34939 15.1706L5.77323 12.7373" stroke="#233DFF" stroke-width="2.4" stroke-linecap="round"></path> </g></svg></div> Billing Info </a>
+        </div>
+    </div>
 
-            <a class="remaining hazard not-error"  id="remaining-success" href="https://billing.stripe.com/p/login/test_bIYdTw74q2Im0Za9AA"><div class="hazard-icon-div "><svg viewBox="0 -0.5 25 25" width="25px" height="25px" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M5.50002 18.211V9.737C5.49724 9.30439 5.84541 8.9513 6.27802 8.948H9.38902C9.82162 8.9513 10.1698 9.30439 10.167 9.737V5.789C10.1642 5.35678 10.5118 5.00385 10.944 5H14.056C14.4886 5.0033 14.8368 5.35639 14.834 5.789V8.158C14.8312 7.72539 15.1794 7.3723 15.612 7.369H18.723C19.1552 7.37285 19.5028 7.72578 19.5 8.158V18.211C19.5028 18.6436 19.1546 18.9967 18.722 19H6.27802C5.84541 18.9967 5.49724 18.6436 5.50002 18.211V18.211Z" stroke="#0c3594a6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M9.41699 19C9.41699 19.4142 9.75278 19.75 10.167 19.75C10.5812 19.75 10.917 19.4142 10.917 19H9.41699ZM10.917 9.73696C10.917 9.32275 10.5812 8.98696 10.167 8.98696C9.75278 8.98696 9.41699 9.32275 9.41699 9.73696H10.917ZM14.083 19C14.083 19.4142 14.4188 19.75 14.833 19.75C15.2472 19.75 15.583 19.4142 15.583 19H14.083ZM15.583 8.15796C15.583 7.74375 15.2472 7.40796 14.833 7.40796C14.4188 7.40796 14.083 7.74375 14.083 8.15796H15.583ZM10.917 19V9.73696H9.41699V19H10.917ZM15.583 19V8.15796H14.083V19H15.583Z" fill="#0c3594a6"></path> </g></svg></div> Billing Info </a>
+    </div>
+
+
+
+        <div  id="rate-id" class="board-cont">
+            <div class="rate-flex">
+
+                <div id="cover-img-div">
+                    <div>
+                        <img src="{{ url_for('static', filename='images/coverage.png') }}" alt="Info Icon">
+                    </div>
+                </div>
+                <div id="cover-text-div">
+                <p id="rate-header">PropSurance</p>
+                <p class="header-text-board">
+                    Current Coverage Rate
+                </p>
+
+               
+            
+           
+
+            <ul class="coverage-ul">
+
+                <p class="coverage-p">
+                    Upon signing up, your payout coverage is initially set at 40%.  With each successful payout from a firm, your insurance rate increases by 20%. After three payouts, your insurance coverage reaches 100%
+                </p>
+
+                <!-- <li class="coverage-p"><svg fill="#0c3594d1" width="25px" height="25px" viewBox="-3 0 19 19" xmlns="http://www.w3.org/2000/svg" class="cf-icon-svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M12.365 10.832a.473.473 0 0 1-.012.106q.012.179.012.37c0 3.239-5.865 5.063-5.865 5.063S.635 14.547.635 11.307q0-.19.012-.37a.473.473 0 0 1-.012-.105V3.643a.476.476 0 0 1 .475-.475h10.78a.476.476 0 0 1 .475.475zm-3.617-.387a1.653 1.653 0 0 0-.409-1.087 2.23 2.23 0 0 0-.617-.491l-.002-.001a2.599 2.599 0 0 0-.641-.232h-.002a2.797 2.797 0 0 0-.59-.062 2.196 2.196 0 0 1-.364-.028 1.405 1.405 0 0 1-.384-.123h-.001a.918.918 0 0 1-.294-.236v-.002a.596.596 0 0 1-.141-.358.604.604 0 0 1 .336-.509 1.67 1.67 0 0 1 .858-.23 1.722 1.722 0 0 1 .304.05l.036.008a1.926 1.926 0 0 1 .365.127 1.024 1.024 0 0 1 .3.206.554.554 0 1 0 .782-.785 2.145 2.145 0 0 0-.627-.431 2.961 2.961 0 0 0-.585-.2l-.036-.008h-.002v-.626a.554.554 0 0 0-1.109 0v.609a2.646 2.646 0 0 0-.878.343 1.712 1.712 0 0 0-.853 1.446 1.688 1.688 0 0 0 .39 1.058 2.01 2.01 0 0 0 .659.529 2.481 2.481 0 0 0 .697.225 3.281 3.281 0 0 0 .548.044 1.686 1.686 0 0 1 .355.036 1.47 1.47 0 0 1 .362.13 1.128 1.128 0 0 1 .3.24.552.552 0 0 1 .135.358c0 .124-.036.289-.31.466a1.69 1.69 0 0 1-.875.243 2.678 2.678 0 0 1-.38-.046 1.845 1.845 0 0 1-.354-.113.762.762 0 0 1-.284-.218.554.554 0 1 0-.838.726 1.852 1.852 0 0 0 .71.521 2.827 2.827 0 0 0 .577.176l.04.007v.625a.554.554 0 1 0 1.108 0v-.63a2.667 2.667 0 0 0 .9-.36 1.628 1.628 0 0 0 .814-1.397z"></path></g></svg> -->
+                    
+                </li>
+            </ul>
+
+            <div class="status-coverage-div">
+
+            <div class="hazard-div">
+                <a class="remaining hazard not-error no-bottom"  id="remaining-success" ><div class="hazard-icon-div "><svg viewBox="0 -0.5 25 25" width="25px" height="25px" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M5.50002 18.211V9.737C5.49724 9.30439 5.84541 8.9513 6.27802 8.948H9.38902C9.82162 8.9513 10.1698 9.30439 10.167 9.737V5.789C10.1642 5.35678 10.5118 5.00385 10.944 5H14.056C14.4886 5.0033 14.8368 5.35639 14.834 5.789V8.158C14.8312 7.72539 15.1794 7.3723 15.612 7.369H18.723C19.1552 7.37285 19.5028 7.72578 19.5 8.158V18.211C19.5028 18.6436 19.1546 18.9967 18.722 19H6.27802C5.84541 18.9967 5.49724 18.6436 5.50002 18.211V18.211Z" stroke="#0c3594a6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M9.41699 19C9.41699 19.4142 9.75278 19.75 10.167 19.75C10.5812 19.75 10.917 19.4142 10.917 19H9.41699ZM10.917 9.73696C10.917 9.32275 10.5812 8.98696 10.167 8.98696C9.75278 8.98696 9.41699 9.32275 9.41699 9.73696H10.917ZM14.083 19C14.083 19.4142 14.4188 19.75 14.833 19.75C15.2472 19.75 15.583 19.4142 15.583 19H14.083ZM15.583 8.15796C15.583 7.74375 15.2472 7.40796 14.833 7.40796C14.4188 7.40796 14.083 7.74375 14.083 8.15796H15.583ZM10.917 19V9.73696H9.41699V19H10.917ZM15.583 19V8.15796H14.083V19H15.583Z" fill="#0c3594a6"></path> </g></svg></div> {{account_info['current_rate']}} </a>
+            </div>
+
+            <div class="hazard-div">
+                <a class="remaining hazard not-error no-bottom last-hazard"  id="remaining-success" href="{{url_for('access_ticket_handler', account_count=account_info['id'])}}"" ><div class="hazard-icon-div "><svg fill="#0c3594d1" width="25px" height="25px" viewBox="-3 0 19 19" xmlns="http://www.w3.org/2000/svg" class="cf-icon-svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M12.365 10.832a.473.473 0 0 1-.012.106q.012.179.012.37c0 3.239-5.865 5.063-5.865 5.063S.635 14.547.635 11.307q0-.19.012-.37a.473.473 0 0 1-.012-.105V3.643a.476.476 0 0 1 .475-.475h10.78a.476.476 0 0 1 .475.475zm-3.617-.387a1.653 1.653 0 0 0-.409-1.087 2.23 2.23 0 0 0-.617-.491l-.002-.001a2.599 2.599 0 0 0-.641-.232h-.002a2.797 2.797 0 0 0-.59-.062 2.196 2.196 0 0 1-.364-.028 1.405 1.405 0 0 1-.384-.123h-.001a.918.918 0 0 1-.294-.236v-.002a.596.596 0 0 1-.141-.358.604.604 0 0 1 .336-.509 1.67 1.67 0 0 1 .858-.23 1.722 1.722 0 0 1 .304.05l.036.008a1.926 1.926 0 0 1 .365.127 1.024 1.024 0 0 1 .3.206.554.554 0 1 0 .782-.785 2.145 2.145 0 0 0-.627-.431 2.961 2.961 0 0 0-.585-.2l-.036-.008h-.002v-.626a.554.554 0 0 0-1.109 0v.609a2.646 2.646 0 0 0-.878.343 1.712 1.712 0 0 0-.853 1.446 1.688 1.688 0 0 0 .39 1.058 2.01 2.01 0 0 0 .659.529 2.481 2.481 0 0 0 .697.225 3.281 3.281 0 0 0 .548.044 1.686 1.686 0 0 1 .355.036 1.47 1.47 0 0 1 .362.13 1.128 1.128 0 0 1 .3.24.552.552 0 0 1 .135.358c0 .124-.036.289-.31.466a1.69 1.69 0 0 1-.875.243 2.678 2.678 0 0 1-.38-.046 1.845 1.845 0 0 1-.354-.113.762.762 0 0 1-.284-.218.554.554 0 1 0-.838.726 1.852 1.852 0 0 0 .71.521 2.827 2.827 0 0 0 .577.176l.04.007v.625a.554.554 0 1 0 1.108 0v-.63a2.667 2.667 0 0 0 .9-.36 1.628 1.628 0 0 0 .814-1.397z"></path></g></svg></div> You may also be entitled to a rejected payout even if you violated one of the firm's policies. Learn more. </a>
+            </div>
+            </div>
+            </div>
+            </div>
+            </div>
+    
+       
         </div>
 
 
-       
-            
-            
+
+
+
+    <div class="stage-notification">
+    {% if account_info['account_stage'] == 'Phase 1' %}
+     <h2 class="stage-pass centered-hazard">Passed your First Phase?</h2>
+
+
+     {% elif account_info['account_stage'] == 'Phase 2' %}
+     <h2 class="stage-pass centered-hazard">Passed your Second Phase?</h2>
+
+     {% elif account_info['account_staget'] == 'Phase 3' %}
+     <h2 class="stage-pass centered-hazard">Passed your Third Phase?</h2>
+
+     {% elif account_info['account_staget'] == 'Phase 3' %}
+     <h2 class="stage-pass centered-hazard">Received your Payout?</h2>
+
+
+    {% endif %}
+
+    <div class="hazard-div">
+
+        <span class="remaining hazard centered-hazard"  ><div class="hazard-icon-div "><svg fill="#00000082" width="25px" height="25px" viewBox="0 0 64 64" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <rect id="Icons" x="-640" y="-64" width="1280" height="800" style="fill:none;"></rect> <g id="Icons1" serif:id="Icons"> <g id="Strike"> </g> <g id="H1"> </g> <g id="H2"> </g> <g id="H3"> </g> <g id="list-ul"> </g> <g id="hamburger-1"> </g> <g id="hamburger-2"> </g> <g id="list-ol"> </g> <g id="list-task"> </g> <g id="trash"> </g> <g id="vertical-menu"> </g> <g id="horizontal-menu"> </g> <g id="sidebar-2"> </g> <g id="Pen"> </g> <g id="Pen1" serif:id="Pen"> </g> <g id="clock"> </g> <g id="external-link"> </g> <g id="hr"> </g> <g id="info"> </g> <g id="warning"> <path d="M32.427,7.987c2.183,0.124 4,1.165 5.096,3.281l17.936,36.208c1.739,3.66 -0.954,8.585 -5.373,8.656l-36.119,0c-4.022,-0.064 -7.322,-4.631 -5.352,-8.696l18.271,-36.207c0.342,-0.65 0.498,-0.838 0.793,-1.179c1.186,-1.375 2.483,-2.111 4.748,-2.063Zm-0.295,3.997c-0.687,0.034 -1.316,0.419 -1.659,1.017c-6.312,11.979 -12.397,24.081 -18.301,36.267c-0.546,1.225 0.391,2.797 1.762,2.863c12.06,0.195 24.125,0.195 36.185,0c1.325,-0.064 2.321,-1.584 1.769,-2.85c-5.793,-12.184 -11.765,-24.286 -17.966,-36.267c-0.366,-0.651 -0.903,-1.042 -1.79,-1.03Z" style="fill-rule:nonzero;"></path> <path d="M33.631,40.581l-3.348,0l-0.368,-16.449l4.1,0l-0.384,16.449Zm-3.828,5.03c0,-0.609 0.197,-1.113 0.592,-1.514c0.396,-0.4 0.935,-0.601 1.618,-0.601c0.684,0 1.223,0.201 1.618,0.601c0.395,0.401 0.593,0.905 0.593,1.514c0,0.587 -0.193,1.078 -0.577,1.473c-0.385,0.395 -0.929,0.593 -1.634,0.593c-0.705,0 -1.249,-0.198 -1.634,-0.593c-0.384,-0.395 -0.576,-0.886 -0.576,-1.473Z" style="fill-rule:nonzero;"></path> </g> <g id="plus-circle"> </g> <g id="minus-circle"> </g> <g id="vue"> </g> <g id="cog"> </g> <g id="logo"> </g> <g id="radio-check"> </g> <g id="eye-slash"> </g> <g id="eye"> </g> <g id="toggle-off"> </g> <g id="shredder"> </g> <g id="spinner--loading--dots-" serif:id="spinner [loading, dots]"> </g> <g id="react"> </g> <g id="check-selected"> </g> <g id="turn-off"> </g> <g id="code-block"> </g> <g id="user"> </g> <g id="coffee-bean"> </g> <g id="coffee-beans"> <g id="coffee-bean1" serif:id="coffee-bean"> </g> </g> <g id="coffee-bean-filled"> </g> <g id="coffee-beans-filled"> <g id="coffee-bean2" serif:id="coffee-bean"> </g> </g> <g id="clipboard"> </g> <g id="clipboard-paste"> </g> <g id="clipboard-copy"> </g> <g id="Layer1"> </g> </g> </g></svg></div> We require you to update us or open a claim or ticket within two weeks  to avoid voiding your PropSurance status.   </span>
     </div>
 
-    <script>
-        window.fwSettings={
-        'widget_id':153000001827
-        };
-        !function(){if("function"!=typeof window.FreshworksWidget){var n=function(){n.q.push(arguments)};n.q=[],window.FreshworksWidget=n}}() 
-    </script>
-    <script type='text/javascript' src='https://widget.freshworks.com/widgets/153000001827.js' async defer></script>
+    <div class="ticket-handler">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="35px" height="35px" stroke="#233DFF"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" stroke="#CCCCCC" stroke-width="0.048"></g><g id="SVGRepo_iconCarrier"> <path d="M15.197 3.35462C16.8703 1.67483 19.4476 1.53865 20.9536 3.05046C22.4596 4.56228 22.3239 7.14956 20.6506 8.82935L18.2268 11.2626M10.0464 14C8.54044 12.4882 8.67609 9.90087 10.3494 8.22108L12.5 6.06212" stroke="#233DFF" stroke-width="2.4" stroke-linecap="round"></path> <path d="M13.9536 10C15.4596 11.5118 15.3239 14.0991 13.6506 15.7789L11.2268 18.2121L8.80299 20.6454C7.12969 22.3252 4.55237 22.4613 3.0464 20.9495C1.54043 19.4377 1.67609 16.8504 3.34939 15.1706L5.77323 12.7373" stroke="#233DFF" stroke-width="2.4" stroke-linecap="round"></path> </g></svg>
+    <a class="link-icon-text" href="{{url_for('access_ticket_handler', account_count=account_info['id'])}}">  You can Open a Ticket or Case here. </a>
+</div>
+
+
+    </div>
+
+
 
 </main>
 
@@ -126,29 +213,3 @@
 
 {% endblock %}
 
-{% block script %}
-<script type='text/javascript' src='https://widget.freshworks.com/widgets/153000001827.js' async defer></script>
-<script>
-window.onload = function() {
-  // Ensure the widget script has loaded
-  window.fwSettings = {
-    'widget_id': 153000001827,
-    // other settings if needed
-  };
-
-  // Function to check if the Freshdesk widget is loaded
-  var checkIfWidgetLoaded = function() {
-    if (window.FreshworksWidget) {
-      // Open the widget
-      FreshworksWidget('open');
-    } else {
-      // Retry after a short delay if the widget is not ready
-      setTimeout(checkIfWidgetLoaded, 50);
-    }
-  };
-
-  // Start the checking function
-  checkIfWidgetLoaded();
-};
-</script>
-{% endblock %}

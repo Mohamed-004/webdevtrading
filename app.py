@@ -7,6 +7,7 @@ from flask_wtf.csrf import CSRFProtect, validate_csrf
 # from wtforms import ValidationError
 from urllib.parse import quote_plus, urlencode
 import stripe 
+import sparkpost
 # import requestsf
 from datetime import datetime
 
@@ -38,6 +39,41 @@ oauth.register(
 )
 
 
+# old call back
+# @app.route("/callback", methods=["GET", "POST"])
+# def callback():
+#     try:
+#         token = oauth.proppatrol.authorize_access_token()
+        
+#         user_info = {
+#         "email": token["userinfo"]["email"],
+#         "email_verified": token["userinfo"]["email_verified"]
+#     }
+
+#     # Store the extracted user information in the session
+
+#     # check if user email is valid in 
+#         # session["user"] = user_info
+#         # user = oauth.proppatrol.parse_id_token(token,nonce=session.get("nonce"))
+
+        
+#         user_ref = db.collection('users').document(user['email'])
+#         user_check_exist = db.collection('users').document(user['email']).get()
+#         if not user_check_exist.exists:
+#             user_ref.set({
+#                 'uid': user['sub'],  # Assuming sub field contains UID
+#                 'email': user['email'],
+#                 # Add other user information as needed
+#             })
+#             return redirect(url_for('dashboard'))
+#         else:
+#             return redirect(url_for('dashboard'))
+#     except OAuthError as e:
+#         if 'access_denied' in str(e):
+#             # Here you can handle the specific case where access was denied
+            
+#             return 'you didnt provide consent', 403 
+    
 
 @app.route("/callback", methods=["GET", "POST"])
 def callback():
@@ -45,34 +81,45 @@ def callback():
         token = oauth.proppatrol.authorize_access_token()
         
         user_info = {
-        "email": token["userinfo"]["email"],
-        "email_verified": token["userinfo"]["email_verified"]
-    }
-
-    # Store the extracted user information in the session
-        session["user"] = user_info
-        user = oauth.proppatrol.parse_id_token(token,nonce=session.get("nonce"))
-
+            "email": token["userinfo"]["email"],
+            "email_verified": token["userinfo"]["email_verified"]
+        }
         
-        user_ref = db.collection('users').document(user['email'])
-        user_check_exist = db.collection('users').document(user['email']).get()
-        if not user_check_exist.exists:
-            user_ref.set({
-                'uid': user['sub'],  # Assuming sub field contains UID
-                'email': user['email'],
-                # Add other user information as needed
-            })
+        # Parse the ID token to get the user details
+        user = oauth.proppatrol.parse_id_token(token, nonce=session.get("nonce"))
+        
+        # Check if the user's email is in the allowed_users collection
+        allowed_user_ref = db.collection('allowed_users').document(user['email'])
+        allowed_user_doc = allowed_user_ref.get()
+        
+        if allowed_user_doc.exists:
+            # User is allowed, proceed with session creation and saving to users collection
+            session["user"] = user_info
+            
+            user_ref = db.collection('users').document(user['email'])
+            user_check_exist = user_ref.get()
+            
+            if not user_check_exist.exists:
+                # Create a new document in the 'users' collection if it does not exist
+                user_ref.set({
+                    'uid': user['sub'],  # Assuming 'sub' field contains UID
+                    'email': user['email'],
+                    # Add other necessary user information as needed
+                })
+            
             return redirect(url_for('dashboard'))
         else:
-            return redirect(url_for('dashboard'))
+            # If the user is not allowed, do not store in session or 'users' collection
+            flash('You are not authorized to access this page.', 'error')
+            return 'you are not eligible' # Redirect to a generic page or a denial information page
+
     except OAuthError as e:
         if 'access_denied' in str(e):
-            # Here you can handle the specific case where access was denied
-            
-            return 'you didnt provide consent', 403 
-    
-
-    
+            # Handle specific case where access was denied
+            return 'You did not provide consent', 403
+        else:
+            # Handle other OAuth errors
+            return 'Authentication failed', 403
 
 
 
@@ -99,15 +146,15 @@ def logout():
         )
     )
 
-@app.route('/dashboard/user/<int:account_count>', methods=['GET'])
-def access_account_dashboard(account_count):
+@app.route('/dashboard/raise-ticket/<int:account_count>', methods=['GET'])
+def access_ticket_handler(account_count):
     if 'user' not in session:
         return redirect(url_for("login"))
     
     user_info = session.get("user")
     user_email = user_info['email']
     user_data = db.collection('users').document(user_email).get()
-
+    first_name = ''
     account = {}
 
     try:
@@ -117,7 +164,9 @@ def access_account_dashboard(account_count):
         user_data_info = db.collection('users').document(user_email)
         accounts_collection = ''
         if user_data.exists:
+
             user_data_dict = user_data.to_dict()
+            customer_name = user_data_dict['user_name']
             accounts_collection = db.collection('users').document(user_email).collection('accounts_info')
 
         # Fetch all documents within the accounts_info subcollection
@@ -142,6 +191,8 @@ def access_account_dashboard(account_count):
                 account_stage = 'Phase 1'
             elif trader_info_data_parsed.get('account_status', '') == 'phase2':
                 account_stage = 'Phase 2'
+            elif trader_info_data_parsed.get('account_status', '') == 'phase3':
+                account_stage = 'Phase 2'    
             else:
                 account_stage = 'Live'
             
@@ -157,7 +208,86 @@ def access_account_dashboard(account_count):
                 'server': account_info.get('server', ''),
                 'server_type': account_info.get('trading_account_type', ''),
                 'account_stage': account_stage,
-                'account_access_url': account_access_url
+                'account_access_url': account_access_url,
+                'current_rate': account_info.get('current_rate', '40%'),
+                'customer_name' : customer_name,
+                'email': user_email
+            }
+
+            # print(accounts)
+                                    
+    except Exception  as err:
+        # user has no account
+        raise err
+        # pass
+
+    return render_template("ticket_handler.html", account_info=account, prop_count=account_count)
+
+@app.route('/dashboard/user/<int:account_count>', methods=['GET'])
+def access_account_dashboard(account_count):
+    if 'user' not in session:
+        return redirect(url_for("login"))
+    
+    user_info = session.get("user")
+    user_email = user_info['email']
+    user_data = db.collection('users').document(user_email).get()
+    first_name = ''
+    account = {}
+
+    try:
+        user_email = user_info['email']
+        user_validated_email = user_info["email_verified"]
+        user_data = db.collection('users').document(user_email).get()
+        user_data_info = db.collection('users').document(user_email)
+        accounts_collection = ''
+        if user_data.exists:
+
+            user_data_dict = user_data.to_dict()
+            name = user_data_dict['user_name']
+            first_name = user_data_dict['first_name']
+            accounts_collection = db.collection('users').document(user_email).collection('accounts_info')
+
+        # Fetch all documents within the accounts_info subcollection
+            accounts_documents = accounts_collection.document(f'account_info_{str(account_count)}').get()
+            # for account_doc in accounts_documents:
+            account_info = accounts_documents.to_dict()
+            
+            account_id = account_info['propsurance_count']
+            
+            account_stage = ''
+
+            trader_info_collection = user_data_info.collection('trader_info')
+            
+                            
+            account_info_data =  account_info
+            current_index = account_info_data['propsurance_count']
+        
+            trader_info_data = trader_info_collection.document(f"trader_account_{account_count}").get()
+            trader_info_data_parsed = trader_info_data.to_dict()
+            
+            if trader_info_data_parsed.get('account_status', '') == 'phase1':
+                account_stage = 'Phase 1'
+            elif trader_info_data_parsed.get('account_status', '') == 'phase2':
+                account_stage = 'Phase 2'
+            elif trader_info_data_parsed.get('account_status', '') == 'phase3':
+                account_stage = 'Phase 2'    
+            else:
+                account_stage = 'Live'
+            
+            account_access_url = url_for('submit_mt_account', account=current_index)
+
+            account = {
+                'id': str(current_index),
+                'name': trader_info_data_parsed.get('prop_firm_name'),
+                'investor_id': trader_info_data_parsed.get('investor_id', ''),
+                'investor_password': trader_info_data_parsed.get('investor_password', ''),
+                'status': account_info.get('status', ''),
+                'account_size': str(trader_info_data_parsed.get('account_size', '')),
+                'server': account_info.get('server', ''),
+                'server_type': account_info.get('trading_account_type', ''),
+                'account_stage': account_stage,
+                'account_access_url': account_access_url,
+                'current_rate': account_info.get('current_rate', '40%')
             }
 
             # print(accounts)
@@ -166,7 +296,7 @@ def access_account_dashboard(account_count):
         raise err
         # pass
 
-    return render_template("user_dashboard.html", account_info=account, prop_count=account_count)
+    return render_template("user_dashboard.html", account_info=account, prop_count=account_count, has_first_name=True, first_name=first_name)
 
 
 
@@ -191,7 +321,7 @@ def submit_mt_account(account):
         if user_data.exists:
             user_data_dict = user_data.to_dict()
             accounts_collection = db.collection('users').document(user_email).collection('accounts_info')
-
+            customer_name = user_data_dict['user_name']
         # Fetch all documents within the accounts_info subcollection
             accounts_documents = accounts_collection.document(f'account_info_{str(account)}').get()
             # for account_doc in accounts_documents:
@@ -228,7 +358,8 @@ def submit_mt_account(account):
                 'account_size': str(trader_info_data_parsed.get('account_size', '')),
                 'server': account_info.get('server', ''),
                 'server_type': account_info.get('trading_account_type', ''),
-                'account_stage': account_stage
+                'account_stage': account_stage,
+                'customer_name': customer_name
             }
 
             # print(accounts)
@@ -282,7 +413,7 @@ def submit_mt_account(account):
 
 
 
-
+@app.route("/dashboard/")
 @app.route("/dashboard")
 def dashboard():
     # Check if user is authenticated
@@ -314,6 +445,7 @@ def dashboard():
         if user_data.exists:
 
             user_data = user_data.to_dict()
+            first_name = user_data['first_name']
             accounts_collection = user_data_info.collection('accounts_info').get()
             trader_info_collection = user_data_info.collection('trader_info')
             num_of_accounts = user_data['accounts_info_count'] + 1
@@ -395,7 +527,7 @@ def dashboard():
         
 
     if account_insured:
-        return render_template("dashboard.html", session=user_info, user_email=user_email, user_name=user_name, account_insured=True, num_of_accounts = num_of_accounts, insured_accounts =insured_accounts, account_percentage=account_percentage, remaining_size=remaining_size, account_size=account_size )
+        return render_template("dashboard.html", session=user_info, user_email=user_email, user_name=user_name, account_insured=True, num_of_accounts = num_of_accounts, insured_accounts =insured_accounts, account_percentage=account_percentage, remaining_size=remaining_size, account_size=account_size, has_first_name=True,first_name=first_name )
     # # print(user_data + " the value for user data came")
     
         
@@ -474,6 +606,7 @@ def webhook():
             accounts_docs = accounts_collection.stream()  # Get all documents to count them
             account_count = sum(1 for _ in accounts_docs)  # Count documents and prepare the next index
             account_doc_id = f"account_info_{account_count}"
+            first_name = customer.name.split()[0]
 
             account_info = {
                 'propsurance_count': account_count,
@@ -485,7 +618,10 @@ def webhook():
                 'trading_account_type': '',
                 'insured_date': formatted_date_string,
                 'customer-purchase-id': customer.id,
-                'sub_type' : sub_type
+                'sub_type' : sub_type,
+                'current_rate': '40%',
+                'customer_name': customer.name,
+                'first_name' : first_name
             }
 
             # Add to sub-collection
@@ -496,7 +632,8 @@ def webhook():
                 'user_name': customer.name,
                 'customer_phone_number': customer.phone,
                 'customer_email': client_reference_id_email,
-                'accounts_info_count' : account_count
+                'accounts_info_count' : account_count,
+                'first_name' : first_name
             })
 
             
@@ -616,41 +753,54 @@ def home():
     return render_template('index.html')
 
 
-
+@app.route('/report-payout/')
 @app.route('/report-payout')
 def report_payout():
     return render_template('report_payout.html')
 
+
+
+@app.route('/featured-firms/')
 @app.route('/featured-firms')
 def featured_firms():
     return render_template('featured-firms.html')
 
+
+@app.route('/terms-of-service/')
 @app.route('/terms-of-service')
 def tos():
     return render_template('terms-of-service.html')
 
 
-
+@app.route('/reports/dei-20a/')
 @app.route('/reports/dei-20a')
 def dei_20a():
     return render_template('dei_case_20a.html')
 
+@app.route('/reports/fast-forex-funding-30a/')
 @app.route('/reports/fast-forex-funding-30a')
 def fff_30a():
     return render_template('fff_case_30a.html')
 
+
+@app.route('/reports/bespoke-funding-40a/')
 @app.route('/reports/bespoke-funding-40a')
 def bsp_40a():
     return render_template('bsp_case_40a.html')
 
+@app.route('/reports/uwm-60a/')
 @app.route('/reports/uwm-60a')
 def uwm_60a():
     return render_template('uwm_case_60a.html')
 
+
+@app.route('/reports/kortana-70a/')
 @app.route('/reports/kortana-70a')
 def kortana_70a():
     return render_template('kor_case_70a.html')
 
+
+@app.route('/reports/mff-90a/')
 @app.route('/reports/mff-90a')
 def mff_90a():
     return render_template('mff_case_90a.html')
@@ -661,18 +811,23 @@ def mff_90a():
 # def report_preview():
 #     return render_template('report_section.html')
 
+
+@app.route('/reports-unresolved-closed/')
 @app.route('/reports-unresolved-closed')
 def report_preview_unresolved():
     return render_template('reports-unresolved-closed.html')
 
+@app.route('/reports-unresolved-open/')
 @app.route('/reports-unresolved-open')
 def report_preview_unresolved_open():
     return render_template('reports-unresolved-open.html')
 
+@app.route('/reports-resolved/')
 @app.route('/reports-resolved')
 def report_preview_resolved():
     return render_template('reports-resolved.html')
 
+@app.route('/view-reports/')
 @app.route('/view-reports')
 def view_firm_reports():
     return render_template('reports-stats.html')
