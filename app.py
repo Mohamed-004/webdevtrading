@@ -22,8 +22,8 @@ app.config['WTF_CSRF_SECRET_KEY'] =   'Dv1vKfzX6Eo5h_C9cSbX4Q'
 app.config['DEBUG'] = True
 
 # only for the live account
-# app.config['PREFERRED_URL_SCHEME'] = 'https'
-# app.config['SERVER_NAME'] = 'www.proppatrol.net'
+app.config['PREFERRED_URL_SCHEME'] = 'https'
+app.config['SERVER_NAME'] = 'www.proppatrol.net'
 csrf = CSRFProtect(app)
 
 
