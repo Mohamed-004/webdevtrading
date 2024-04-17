@@ -467,6 +467,18 @@ display: flex;
 /* payment div starts here */
 
 
+#payment form {
+     display: unset; 
+     flex-direction: unset; 
+    max-width: 100%; 
+   margin: 0; 
+    padding: 0; 
+    background: none; 
+   border-radius: unset; 
+    box-shadow: unset;
+}
+
+
 #full-coverage-bar {
     border: none;
     border-bottom: 0.5rem solid rgb(248, 214, 38);
@@ -486,11 +498,12 @@ display: flex;
     height: 650px;
     background: #fff;
     height: 600px;
+    /* gap: 10px; */
     justify-content: space-between;
     border-radius: 20px;
     box-shadow: 0px 10px 40px 0px rgba(109, 141, 173, 0.25);
     text-align: center;
-    height: 650px;
+    height: 800px;
 }
 
 .slider {
@@ -563,7 +576,7 @@ display: flex;
     color: #0c3594d1;
     width: 100%;
     box-shadow: 0 4px 8px rgba(128, 128, 128, 0.116);
-    margin-bottom: 20px;
+    margin-bottom: 0;
     border-left: 0.5rem solid rgb(248, 214, 38);
     border-left-color: #007bffab;
 }
@@ -633,7 +646,7 @@ display: flex;
         left: 10px;
 }
 
-#dropdown-svg-div {
+.dropdown-svg-div {
     position: relative;
 }
 
@@ -658,7 +671,7 @@ display: flex;
 .checkbox-custom {
     display: flex;
     align-items: center;
-    margin: 10px 0;
+    /* margin: 10px 0; */
 }
 
 .custom-checkbox {

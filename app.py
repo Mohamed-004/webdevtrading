@@ -15,6 +15,7 @@ from datetime import datetime
 spark_api = 'e0292a01d4005f36ecc119c1ea1cf1dd04ea111c'
 stripe.api_key = 'sk_test_51Oyi2xP649Efo4kCYt2kWsW0hPJjptfuWapRJB8ZMCHvhfI4HJF0FuAdEaNJ6JzbQVp0pj1BBOsMEQwf4XJvQSRA00ELDbyNAC'
 endpoint_secret = 'whsec_5943b6c6ce120203812d73889dcc757cd73be09a7d93150736be55b115ca5d68'
+
 app = Flask(__name__)
 app.secret_key = '1799d3118e5549432de9b191ba8003c8826585499ebba1974de60d36c8c2c2e6'
 app.config['WTF_CSRF_SECRET_KEY'] =   'Dv1vKfzX6Eo5h_C9cSbX4Q'
@@ -44,40 +45,6 @@ oauth.register(
 )
 
 
-# old call back
-# @app.route("/callback", methods=["GET", "POST"])
-# def callback():
-#     try:
-#         token = oauth.proppatrol.authorize_access_token()
-        
-#         user_info = {
-#         "email": token["userinfo"]["email"],
-#         "email_verified": token["userinfo"]["email_verified"]
-#     }
-
-#     # Store the extracted user information in the session
-
-#     # check if user email is valid in 
-#         # session["user"] = user_info
-#         # user = oauth.proppatrol.parse_id_token(token,nonce=session.get("nonce"))
-
-        
-#         user_ref = db.collection('users').document(user['email'])
-#         user_check_exist = db.collection('users').document(user['email']).get()
-#         if not user_check_exist.exists:
-#             user_ref.set({
-#                 'uid': user['sub'],  # Assuming sub field contains UID
-#                 'email': user['email'],
-#                 # Add other user information as needed
-#             })
-#             return redirect(url_for('dashboard'))
-#         else:
-#             return redirect(url_for('dashboard'))
-#     except OAuthError as e:
-#         if 'access_denied' in str(e):
-#             # Here you can handle the specific case where access was denied
-            
-#             return 'you didnt provide consent', 403 
 
 def send_email(recipient, template_id, substitution_data):
     url = "https://api.sparkpost.com/api/v1/transmissions"
@@ -112,6 +79,36 @@ def send_email(recipient, template_id, substitution_data):
 def not_found(error):
     return render_template('404.html'), 404
     
+@app.route('/dashboard/process_payment/', methods=['POST'])
+@app.route('/dashboard/process_payment', methods=['POST'])
+def process_payment():
+    firm = request.form.get('firm')
+    phase = request.form.get('phase')
+    account_size = int(request.form.get('accountSize'))
+
+    # Define payment URLs for each firm and phase
+    urls = {
+        'FTMO': {
+            #  50k, 100k, 200k links
+            'phase1': ['https://buy.stripe.com/test_eVa14meX6abj9ry4gi', 'https://buy.stripe.com/test_eVadR85mw5V31Z66ot', 'https://ftmo.com/phase1/200k'],
+            'phase2': ['https://buy.stripe.com/test_28ofZg16g0AJgU0bIJ', 'https://buy.stripe.com/test_dR65kC02c97fcDK7sw', 'https://ftmo.com/phase2/200k'],
+            'live': ['https://buy.stripe.com/test_8wM7sKg1a4QZavC6or', 'https://ftmo.com/live/100k', 'https://ftmo.com/live/200k']
+        },
+        '5ers': {
+            'phase1': ['https://5ers.com/phase1/50k', 'https://5ers.com/phase1/100k', 'https://5ers.com/phase1/200k'],
+            'phase2': ['https://5ers.com/phase2/50k', 'https://5ers.com/phase2/100k', 'https://5ers.com/phase2/200k'],
+            'live': ['https://5ers.com/live/50k', 'https://5ers.com/live/100k', 'https://5ers.com/live/200k']
+        },
+        'LuxTrading': {
+            'phase1': ['https://luxtrading.com/phase1/50k', 'https://luxtrading.com/phase1/100k', 'https://luxtrading.com/phase1/200k'],
+            'phase2': ['https://luxtrading.com/phase2/50k', 'https://luxtrading.com/phase2/100k', 'https://luxtrading.com/phase2/200k'],
+            'live': ['https://luxtrading.com/live/50k', 'https://luxtrading.com/live/100k', 'https://luxtrading.com/live/200k']
+        }
+    }
+
+    redirect_url = urls[firm][phase][account_size - 1]  # Subtract 1 because list indices start at 0
+    # print(redirect_url)
+    return redirect(redirect_url)
 
 @app.route("/callback", methods=["GET", "POST"])
 def callback():
@@ -286,8 +283,8 @@ def access_ticket_handler(account_count):
                                     
     except Exception  as err:
         # user has no account
-        raise err
-        # pass
+        pass
+        # raise err
 
     return render_template("ticket_handler.html", account_info=account, prop_count=account_count,dashboard_nav=True)
 
@@ -450,6 +447,8 @@ def submit_mt_account(account):
             # Get a reference to the specific account document
             account_ref = db.collection('users').document(user_email).collection('accounts_info').document(f'account_info_{account}')
             account_info = account_ref.get()
+
+            
             
             if account_info.exists:
                 account_data = account_info.to_dict()
@@ -462,6 +461,7 @@ def submit_mt_account(account):
                         'trading_account_type': mt_account  # Update account type information
                     }
                     account_ref.update(update_data)
+                    send_email(user_email,  'validation-confirmation', {} )
                     flash('Account updated successfully and is awaiting validation.')
                 else:
                     flash('Account is not in a pending state and cannot be updated.')
@@ -515,14 +515,14 @@ def dashboard():
         if user_data.exists:
 
             user_data = user_data.to_dict()
-            first_name = user_data['first_name']
-            accounts_collection = user_data_info.collection('accounts_info').get()
-            trader_info_collection = user_data_info.collection('trader_info')
-            num_of_accounts = user_data['accounts_info_count'] + 1
+            
+            
 
-            if int(user_data['accounts_info_count']) >= 0:
-
-                
+            if int(user_data.get('accounts_info_count')) >= 0:
+                    accounts_collection = user_data_info.collection('accounts_info').get()
+                    trader_info_collection = user_data_info.collection('trader_info')
+                    num_of_accounts = user_data['accounts_info_count'] + 1
+                    first_name = user_data['first_name']
                     account_insured = True   
                     # # print(accounts_collection)
                     if accounts_collection:
@@ -567,7 +567,7 @@ def dashboard():
                     remaining_size = 200000 - account_size        
 
             else: 
-                return render_template("dashboard.html", session=user_info, user_email=user_email, user_validated_email=user_validated_email, dashboard_nav=True)        
+                return render_template("dashboard.html", session=user_info, user_email=user_email, user_validated_email=user_validated_email, dashboard_nav=True, remaining_size=200000)        
                     
     
 
@@ -585,9 +585,9 @@ def dashboard():
             return redirect(url_for("login"))
         
     except Exception as err:
-        # pass
+        pass
         
-        raise err 
+        # raise err 
         # if not user_email or not user_data:
         # # Redirect to login page if user is not authenticated or email is not verified
         #     return redirect(url_for("login"))
@@ -603,7 +603,7 @@ def dashboard():
         
     # firebase_user_data = list(user_data.values())[0]
     
-    return render_template("dashboard.html", session=user_info, user_email=user_email, user_validated_email=user_validated_email, dashboard_nav=True)
+    return render_template("dashboard.html", session=user_info, user_email=user_email, user_validated_email=user_validated_email, dashboard_nav=True, remaining_size=200000)
 
 
 
@@ -729,6 +729,8 @@ def webhook():
         payment_intent = event['data']['object']  # The payment intent object
         customer_id = payment_intent['customer']
 
+        # print(payment_intent)
+
         # Fetch the customer details from Stripe
         customer = stripe.Customer.retrieve(customer_id)
         client_reference_id_email  = customer.email
@@ -758,15 +760,15 @@ def webhook():
             #     prop_firm_name = 'FTMO'
             #     sub_type = 'one-time'
 
-            account_size = int(trader_account_info['account_value'])
+            account_size = int(trader_account_info['account_size'])
             prop_firm_name =  trader_account_info['firm_name']
             sub_type = trader_account_info['service']
             current_phase = trader_account_info['phase']
             purchase_cost = trader_account_info['price']
 
             # phase_value = payment_intent.get("custom_fields", [{}])[0].get("dropdown", {}).get("value", "")
-            mt4mt5_investor_id = payment_intent.get("custom_fields", [{}])[1].get("text", {}).get("value", "")
-            mt4mt5_investor_password = payment_intent.get("custom_fields", [{}])[2].get("text", {}).get("value", "")
+            mt4mt5_investor_id = payment_intent.get("custom_fields", [{}])[0].get("text", {}).get("value", "")
+            mt4mt5_investor_password = payment_intent.get("custom_fields", [{}])[1].get("text", {}).get("value", "")
 
             sub_data = {
                 'customer_name': first_name,

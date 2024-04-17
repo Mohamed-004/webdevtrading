@@ -257,9 +257,12 @@ Dashboard
 </div>
 {% endif %}
 
+{% if remaining_size == 0  %}
 
+{% else%}
 
-<div class="board-cont payment-slider payment-image" id="payment">
+<form class="board-cont payment-slider payment-image paymentForm" id="payment"  action="{{url_for('process_payment')}}" method="POST" >
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
     <div>
     <img src=" {{ url_for('static', filename='images/propsurance.png') }}" alt="Prop Surance">
 </div>
@@ -267,34 +270,55 @@ Dashboard
 
 
     <div class="payment-svg-wrapper">
-
-
     
     <svg viewBox="0 0 24 24" width="25px" height="25px" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Edit / Add_To_Queue"> <path id="Vector" d="M3 9V19.4C3 19.9601 3 20.2399 3.10899 20.4538C3.20487 20.642 3.35774 20.7952 3.5459 20.8911C3.7596 21 4.0395 21 4.59846 21H15.0001M14 13V10M14 10V7M14 10H11M14 10H17M7 13.8002V6.2002C7 5.08009 7 4.51962 7.21799 4.0918C7.40973 3.71547 7.71547 3.40973 8.0918 3.21799C8.51962 3 9.08009 3 10.2002 3H17.8002C18.9203 3 19.4801 3 19.9079 3.21799C20.2842 3.40973 20.5905 3.71547 20.7822 4.0918C21.0002 4.51962 21.0002 5.07969 21.0002 6.19978L21.0002 13.7998C21.0002 14.9199 21.0002 15.48 20.7822 15.9078C20.5905 16.2841 20.2842 16.5905 19.9079 16.7822C19.4805 17 18.9215 17 17.8036 17H10.1969C9.07899 17 8.5192 17 8.0918 16.7822C7.71547 16.5905 7.40973 16.2842 7.21799 15.9079C7 15.4801 7 14.9203 7 13.8002Z" stroke="#007bffab" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg>
     <h2 class="form-h2">Choose Your Account Size and Firm</h2>
 </div>
 
 <!-- <label for="propFirmSelect">Select Prop Firm</label> -->
-    <!-- Prop Firm Selection -->  <div class="payment-svg-wrapper wrapper-p" id="dropdown-svg-div">
+    <!-- Prop Firm Selection -->  <div class="payment-svg-wrapper wrapper-p dropdown-svg-div">
   <svg width="25px" height="25px" id="dropdown-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M12.7071 14.7071C12.3166 15.0976 11.6834 15.0976 11.2929 14.7071L6.29289 9.70711C5.90237 9.31658 5.90237 8.68342 6.29289 8.29289C6.68342 7.90237 7.31658 7.90237 7.70711 8.29289L12 12.5858L16.2929 8.29289C16.6834 7.90237 17.3166 7.90237 17.7071 8.29289C18.0976 8.68342 18.0976 9.31658 17.7071 9.70711L12.7071 14.7071Z" fill="#0c3594d1"></path> </g></svg> 
-    <select id="propFirmSelect" class="styled-select">
+    <select name="firm"  id="propFirmSelect" class="styled-select">
         <option value="FTMO">FTMO</option>
         <option value="5ers">5%ers</option>
         <option value="LuxTrading">LuxTrading</option>
-    </select></div>
+    </select>
+
+
+</div>
+
+<div class="payment-svg-wrapper wrapper-p dropdown-svg-div" id="phase-svg-div">
+    <svg width="25px" height="25px" id="dropdown-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M12.7071 14.7071C12.3166 15.0976 11.6834 15.0976 11.2929 14.7071L6.29289 9.70711C5.90237 9.31658 5.90237 8.68342 6.29289 8.29289C6.68342 7.90237 7.31658 7.90237 7.70711 8.29289L12 12.5858L16.2929 8.29289C16.6834 7.90237 17.3166 7.90237 17.7071 8.29289C18.0976 8.68342 18.0976 9.31658 17.7071 9.70711L12.7071 14.7071Z" fill="#0c3594d1"></path> </g></svg> 
+    <select id="phaseSelect" name="phase" class="styled-select">
+        <option value="phase1">Phase 1</option>
+        <option value="phase2">Phase 2</option>
+        <option value="live">Live</option>
+    </select>
+</div>
+
+
+<input type="range" min="1" max="{{ '3' if remaining_size >= 200000 else '2' if remaining_size >= 100000 else '1' }}" value="1" class="slider" name="accountSize" id="accountSizeRange">
+<div class="slider-labels">
+    <span class="slider-label">$50k</span>
+    {% if remaining_size >= 100000 %}
+    <span class="slider-label">$100k</span>
+    {% endif %}
+    {% if remaining_size >= 200000 %}
+    <span class="slider-label">$200k</span>
+    {% endif %}
+</div>
+
+
+
+
+
+    
     
     <!-- Account Size Slider -->
     <!-- <label for="accountSizeRange">Account Size</label> -->
-    <input type="range" min="1" max="{{ '3' if remaining_size >= 200000 else '2' if remaining_size >= 100000 else '1' }}" value="1" class="slider" id="accountSizeRange">
-    <div class="slider-labels">
-        <span class="slider-label">$50k</span>
-        {% if remaining_size >= 100000 %}
-        <span class="slider-label">$100k</span>
-        {% endif %}
-        {% if remaining_size >= 200000 %}
-        <span class="slider-label">$200k</span>
-        {% endif %}
-    </div>
+
+
+ 
     
     <!-- Dynamic Info Display -->
     <div class="payment-info">
@@ -317,18 +341,19 @@ Dashboard
 
     <!-- Agreement Checkbox -->
     <div class="agreement-section checkbox-custom">
-        <input type="checkbox" id="termsCheckbox" name="agreeTerms" class="custom-checkbox">
-        <label for="agreeTerms" class="checkbox-label">I agree to the <a href="/terms-of-service" target="_blank">Terms of Service *</a></label>
+        <input type="checkbox" required id="termsCheckbox" name="agreeTerms" class="custom-checkbox">
+        <label for="agreeTerms" class="checkbox-label">I agree to the <a href="{{url_for('propsurance_service')}}" target="_blank">Terms of Service *</a></label>
     </div>
 
     <!-- FAQ Read Checkbox -->
     <div class="faq-section checkbox-custom">
-        <input type="checkbox" id="faqCheckbox" name="readFaq" class="custom-checkbox">
-        <label for="readFaq" class="checkbox-label">I have read the <a href="/faq" target="_blank">FAQ *</a> </label>
+        <input type="checkbox" required id="faqCheckbox" name="readFaq" class="custom-checkbox">
+        <label for="readFaq"  class="checkbox-label">I have read the <a href="{{url_for('dashboard_faq')}}" target="_blank">FAQ *</a> </label>
     </div>
     
-    <a  id="paymentLink" draggable="false" class="submit-btn disabled" onclick="return false;">Sign Up</a>
-</div>
+    <button id="submitBtn" type="submit" draggable="false" class="submit-btn" >Sign Up</button>
+</form>
+{% endif %}
 
 
    
@@ -341,55 +366,66 @@ Dashboard
 
 {% block script %}
 <script>
-    document.getElementById('accountSizeRange').addEventListener('input', updatePaymentDetails);
 
+
+
+const forms = document.getElementsByClassName('paymentForm');
+
+// Function to execute when an input event is triggered
 function updatePaymentDetails() {
-    const accountSizes = ['$50k', '{{ "$100k" if remaining_size >= 100000 }}', '{{ "$200k" if remaining_size >= 200000 }}'].filter(Boolean);
-    const sizeIndex = parseInt(document.getElementById('accountSizeRange').value) - 1;
-    const selectedSize = accountSizes[sizeIndex];
-    const firm = document.getElementById('propFirmSelect').value;
+    const submitBtn = document.getElementById('submitBtn');
+    const termsChecked = document.getElementById('termsCheckbox').checked;
+    const faqChecked = document.getElementById('faqCheckbox').checked;
 
-    // Fees based on account size
-    const signUps = [169, 269, 369].slice(0, accountSizes.length); // Adjust fees based on available sizes
-    const payouts = [5, 5, 5].slice(0, accountSizes.length); // Adjust percentages based on available sizes
-
-    document.getElementById('feeInfo').innerHTML = 'Sign-up Fee: <span>$' + signUps[sizeIndex] + '</span>';
-    document.getElementById('commissionInfo').innerText = 'Fee: ' + payouts[sizeIndex] + '% of Every Payout';
-
-    // Update the payment link based on the selected firm and size
-    const urls = {
-        'FTMO': ['https://buy.stripe.com/test_3cs5kC9CM6Z79ry144', 'https://buy.stripe.com/ftmo100k', 'https://buy.stripe.com/ftmo200k'],
-        '5ers': ['https://buy.stripe.com/5ers50k', 'https://buy.stripe.com/5ers100k', 'https://buy.stripe.com/5ers200k'],
-        'LuxTrading': ['https://buy.stripe.com/lux50k', 'https://buy.stripe.com/lux100k', 'https://buy.stripe.com/lux200k']
-    };
-    document.getElementById('paymentLink').href = urls[firm][sizeIndex];
+    // submitBtn.classList.toggle('disabled', !(termsChecked && faqChecked));
+    // submitBtn.disabled = !(termsChecked && faqChecked);
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-    const termsCheckbox = document.getElementById('termsCheckbox');
-    const faqCheckbox = document.getElementById('faqCheckbox');
-    const paymentButton = document.getElementById('paymentLink');
-
-    // Function to update the button's state based on the checkbox
-    function updateButtonState() {
-        if (termsCheckbox.checked && faqCheckbox.checked) {
-            paymentButton.classList.remove('disabled');
-            paymentButton.removeAttribute('onclick'); // Enable the link
-        } else {
-            paymentButton.classList.add('disabled');
-            paymentButton.setAttribute('onclick', 'return false;'); // Keep the link disabled
-        }
-    }
-
-    // Initial check in case the checkboxes are pre-checked or saved in state
-    updateButtonState();
-
-    // Event listener for checkbox changes
-    termsCheckbox.addEventListener('change', updateButtonState);
-    faqCheckbox.addEventListener('change', updateButtonState);
+// Add the event listener to all form elements
+Array.from(forms).forEach(form => {
+    form.addEventListener('input', updatePaymentDetails);
 });
 
-// Initialize with default values
-window.onload = updatePaymentDetails;
+
+document.addEventListener('DOMContentLoaded', function() {
+    const accountSizeRange = document.getElementById('accountSizeRange');
+    const phaseSelect = document.getElementById('phaseSelect');
+    const priceInfo = document.getElementById('feeInfo');
+
+    // Pricing data structure
+    const pricing = {
+        '50k': { 'phase1': 120, 'phase2': 169, 'live': 220 },
+        '100k': { 'phase1': 240, 'phase2': 338, 'live': 440 },
+        '200k': { 'phase1': 480, 'phase2': 676, 'live': 880 }
+    };
+
+    // Function to update the displayed price
+    function updatePriceDisplay() {
+        const accountSizeIndex = accountSizeRange.value; // 1, 2, or 3
+        const phase = phaseSelect.value; // 'phase1', 'phase2', or 'live'
+
+        // Determine the account size label
+        let accountSizeLabel;
+        if (accountSizeIndex === '1') accountSizeLabel = '50k';
+        else if (accountSizeIndex === '2') accountSizeLabel = '100k';
+        else if (accountSizeIndex === '3') accountSizeLabel = '200k';
+
+        // Get the price based on the account size and phase
+        const price = pricing[accountSizeLabel][phase];
+
+        // Update the DOM
+        priceInfo.innerHTML = 'Sign-up Fee: <span>$' + price + '</span>';
+    }
+
+    // Event listeners
+    accountSizeRange.addEventListener('input', updatePriceDisplay);
+    phaseSelect.addEventListener('change', updatePriceDisplay);
+
+    // Initialize with default values
+    updatePriceDisplay();
+});
+
+
+
 </script>
 {% endblock %}
