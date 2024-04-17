@@ -13,3 +13,6 @@ Disallow: /static/images/fastforex.png
 Disallow: /static/images/topstep.png
 Disallow: /static/images/uwm.png
 Disallow: /static/images/tft.png
+Disallow: /login
+Disallow: /dashboard
+Disallow: /callback

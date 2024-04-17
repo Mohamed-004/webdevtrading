@@ -1,0 +1,102 @@
+{% extends "layout.html" %}
+{% block title %}
+<title>PropSurance - | Submit Case </title>
+{% endblock %}
+
+{% block css %}    
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/cases.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dash.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/policies.css') }}">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/current_user.css') }}">
+{% endblock %}
+
+{% block dashlink_current_pg %}
+Terms of Service
+                  {% endblock %}
+
+{% block dashlinks %}
+<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ url_for('home') }}">Home</a></li>
+<li role="presentation" class="divider"></li>
+<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ url_for('dashboard') }}"> PropSurance <br> Dashboard</a></li>
+<li role="presentation" class="divider"></li>
+<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ url_for('logout') }}">Logout</a></li>
+
+
+<li role="presentation" class="divider"></li>
+<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ url_for('dashboard_faq') }}">PropSurance-FAQ</a></li>
+<li role="presentation" class="divider"></li>
+
+
+
+<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ url_for('view_firm_reports') }}">Reported Firms </a></li>  
+<li role="presentation" class="divider"></li>
+
+<!-- <li role="presentation"><a role="menuitem" tabindex="-1" href="{{ url_for('view_firm_reports') }}">Terms of Service </a></li>    -->
+<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ url_for('propsurance_terms') }}">Privacy Policy </a></li>   
+<li role="presentation" class="divider"></li> 
+
+<li role="presentation"><a role="menuitem" tabindex="-1" href="https://twitter.com/PropPatrol" target="_blank"> Twitter</a></li> 
+<li role="presentation"><a role="menuitem" tabindex="-1" href="https://mailto:support@proppatrol.net" target="_blank"> Contact Us</a></li> 
+{% endblock %}
+
+{% block content %}
+
+<main class="content-main">
+    <h1 class="header-text-board">Terms of Service</h1>
+    <p>Welcome to PropSurance! These terms of service ("Terms") govern your access to and use of the PropSurance platform and services ("Services").</p>
+
+    <h2>PropSurance Services</h2>
+    <p>PropSurance is a risk mitigation service provider. We understand the challenges traders face with potential payout rejections from prop firms. Our service aims to provide a safety net in these situations. We offer a predefined percentage of the rejected payout, subject to eligibility criteria and program limitations outlined in these Terms and in the <strong> <a href="{{ url_for('dashboard_faq') }}"> FAQ.</a></strong> </p></p>
+
+    <h2>Not Insurance</h2>
+    <p>PropSurance is not a licensed insurance company, and our services do not constitute insurance coverage. We are a separate entity offering a risk mitigation program.</p>
+
+    <h2>Limitations</h2>
+    <p>PropSurance coverage is subject to limitations. These limitations are clearly outlined in the <a href="{{ url_for('dashboard_faq') }}">  FAQ </a> section.</p>
+
+    <h2>Additional Terms</h2>
+    <p>These Terms of Service are incorporated by reference into our Privacy Policy.</p>
+
+    <h2>Disclaimer</h2>
+    <p>We make no warranties, express or implied, regarding the Services and their ability to mitigate risk associated with prop firm payout rejections. Our role is to provide a service based on our program guidelines.</p>
+
+    <h2>Termination</h2>
+    <p>We reserve the right to terminate your access to the Services at any time for any reason.</p>
+
+    <h2>Governing Law</h2>
+    <p>These Terms shall be governed by and construed in accordance with the laws of Canada.</p>
+
+    <h2>Privacy Policy</h2>
+    <p>Protecting your privacy is important to PropSurance. This Privacy Policy explains how we collect, use, and disclose your information when you use our Services.</p>
+
+    <h3>Information We Collect</h3>
+    <p>We collect information you provide directly, such as your name, email address, and prop firm details to deliver our services effectively.</p>
+
+    <h3>Use of Information</h3>
+    <p>We use the information we collect to:</p>
+    <ul>
+        <li>Verify your eligibility for PropSurance services.</li>
+        <li>Administer your account and provide support related to our services.</li>
+        <li>Communicate with you about our services and program updates.</li>
+    </ul>
+
+    <h3>Information Sharing</h3>
+    <p>We will not share your information with third parties without your consent, except as necessary to comply with the law or to provide the Services. We maintain strict information security protocols to safeguard your data.</p>
+
+    <h3>Data Security</h3>
+    <p>We take reasonable steps to protect your information from unauthorized access, disclosure, alteration, or destruction.</p>
+
+    <h3>Your Rights</h3>
+    <p>You have certain rights regarding your information, including the right to access, correct, and delete your data.</p>
+
+    <h3>Changes to this Policy</h3>
+    <p>We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on our website.</p>
+
+    <h3>Contact Us</h3>
+    <p>If you have any questions about this Privacy Policy, please contact us at support@proppatrol.net</p>
+</main>
+
+
+{% endblock %}

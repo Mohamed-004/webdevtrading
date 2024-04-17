@@ -1,0 +1,837 @@
+.board-cont {
+    display: flex;
+    flex-flow: column nowrap;
+    width: 30%;
+    background: white;
+    padding: 1.8em;
+    border-radius: 10px;
+    position: relative;
+    /* height: 200px; */
+    box-shadow: 0 4px 8px rgba(128, 128, 128, 0.116); /* Box shadow */
+}
+
+.board-cont img {
+    max-width: 100px;
+    /* position: absolute; */
+    right: 0;
+}
+
+.board-cont .text-img {
+     
+display: flex;
+     
+flex-flow: row wrap;
+     
+justify-content: space-between;
+     
+position: relative;
+}
+
+
+.board-cont .text-img p:first-child {
+    font-size: 1.2em;
+    /* opacity: 0.8; */
+    color: #0c3594d1;
+    font-weight: bold;
+}
+
+p.header-text-board {
+    font-size: 2em;
+    font-weight: bold;
+    color: #0c35948a;
+}
+
+p.header-text-under {
+    position: absolute;
+    bottom: 1.8em;
+    font-size: 1.2em;
+    /* opacity: 0.6; */
+    color: #0c3594ad;
+}
+
+div#dashboard-container {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    margin-top: 3em;
+}
+
+.header-text-under.dropdown {
+    display: block ;
+    
+}
+
+.header-text-under.dropdown .btn-primary {
+    position: absolute;
+    bottom: 0em;
+    width: 180px;
+}
+
+.header-text-under.dropdown  ul.dropdown-menu {top: 100%;max-width: 180px;min-width: 180px;margin-top: 0.4em;cursor: pointer;}
+
+#menu3 {
+    background: #0c3594d1 !important;
+    border-color: #ffffff00 !important;
+}
+
+#menu4 {
+    background: #233DFF !important;
+    border-color: #ffffff00 !important;
+}
+
+.metrics-bar {
+    padding: 2em;
+    background: white;
+    margin-top: 2.5em;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(128, 128, 128, 0.116);
+    position: relative;
+    border-left: 0.5rem solid rgb(248, 214, 38);
+    border-left-color: #007bffab;
+}
+
+
+p.remaining, a.remaining,  span.remaining {
+    max-width: 100%;
+    font-size: 1em;
+    font-weight: bold;
+    color: #0c3594d1;
+    text-align: center;
+    margin-bottom: 0.3em;
+    font-size: 1em;
+    font-weight: bold;
+    color: #0c3594a6;
+    text-align: center;
+    width: max-content;
+    margin: 1.4em auto 0;
+    background-color: #f1f8ff;
+    padding: 1em;
+    border-radius: 10px;
+}
+
+
+
+.coverage-p {
+    font-size: 1.1em;
+    color: #0c3594a6;
+    font-weight: 500;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+}
+
+.coverage-p svg {
+    margin-right:0.6em;
+}
+
+#hero {
+    display: none;
+}
+
+header nav {
+padding-top: 0;
+padding-bottom: 0;
+}
+
+.firm-list {
+    padding: 0;
+}
+
+.report-details .tag {
+    font-weight: bold;
+    padding: 5px 10px;
+    margin-right: 5px;
+    border-radius: 10px;
+    background-color: #F1F8FF !important;
+    font-size: 1.1em;
+    width: max-content;
+    color: #0c3594a6;
+}
+
+.dropdown.header-text-under.account-dropdown {
+    height: 0;
+}
+
+#firm-account-info p.name.met-label   {
+margin-top: 2em;
+}
+
+#firm-account-info .name.sepr {
+margin-bottom: 3em;
+}
+
+button#account-firm-btn {
+    width: 180px;
+    background: #0c3594d1 !important;
+    border-color: transparent!important;
+}
+
+#account-dropdown.header-text-under.dropdown ul.dropdown-menu {
+    max-width: 180px;
+    min-width: 180px;
+}
+
+.remaining.hazard {
+    background: #ffc107;
+    color: #00000082;
+    border: none;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    border-left: 0.5rem solid rgb(248, 214, 38);
+    background-color: rgb(254, 242, 179);
+}
+
+.hazard-div {
+    text-align: center;
+}
+
+.hazard-icon-div {
+    display: flex;
+    margin-right: 0.6em;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    max-width: 500px;
+    margin: 20px auto;
+    padding: 2em;
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0px 10px 40px 0px rgba(109, 141, 173, 0.25);
+}
+
+form input[type='text'],
+form input[type='password'] {
+    font-weight: bold;
+    margin-bottom: 1em; /* Adjust as needed */
+    padding: 0.5em;
+    border: 1px solid #a7d4f6d9;
+    border-radius: 4px;
+    background: white;
+    outline: none;
+    color: #0c3594ba !important;
+    font-size: 1em; /* Adjust size as needed */
+}
+
+form input[type='submit'] {
+    padding: 0.5em;
+    border: none;
+    border-radius: 4px;
+    background: #0c3594; /* Match this to your button colors */
+    color: white;
+    font-weight: bold;
+    text-transform: uppercase; /* Optional style */
+    cursor: pointer; /* Makes it clear the button is clickable */
+    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+    margin-top: 1em;
+    color: #fff !important;
+    display: flex !important;
+    align-items: center !important;
+    /* opacity: 0.0; */
+    font-size: 1.02em !important;
+    justify-content: center !important;
+    width: 140px;
+    margin: 2em auto 0 !important;
+    max-height: 50px !important;
+    cursor: pointer !important;
+    border-radius: 1.8em !important;
+    box-shadow: 0px 4px 8px rgba(0, 123, 255, 0.2) !important;
+    font-family: "Poppins", sans-serif !important;
+    font-weight: 400 !important;
+    /* font-weight: bold !important; */
+    padding: 10px !important;
+    background: #2F88FF !important;
+    border: none !important;
+}
+
+form input[type='submit']:hover {
+    background: #0a214c; /* Darker shade for hover effect */
+}
+
+form label {
+    color: #0c3594d1;
+    margin-bottom: 0.5em; /* Space between label and input */
+    font-weight: bold; /* Optional style */
+}
+
+h2.form-h2 {
+    font-size: 1.3em;
+    /* opacity: 0.8; */
+    color: #0c3594d1;
+    font-weight: bold;
+    text-align: center;
+}
+
+form input[type='text'][readonly] {
+    font-weight: bold;
+    padding: 10px;
+    margin-bottom: 15px; /* Adds space below the input */
+    border-radius: 4px;
+    border: 1px solid #a7d4f6d9;
+    background: #f0f4f7; /* Light background color indicates read-only */
+    color: #0c35948a; /* Text color matches your theme */
+    cursor: not-allowed; /* Indicates the field is not interactive */
+    /* pointer-events: none; */ /* Prevents the field from receiving pointer events */
+    padding-left: 35px;
+}
+
+form input[type='text'][readonly]::placeholder {
+    color: #0c3594d1;
+    opacity: 0.4; /* Make placeholder fully visible */
+}
+
+.form-icon-cont {
+    position: relative;
+    /* padding-left: 10px; */
+}
+
+.form-icon svg {
+    position: absolute;
+    top: 8px;
+    left: 5px;
+    opacity: 0.6;
+}
+
+/* Container for the select to position the custom arrow */
+.select-container {
+    position: relative;
+    width: 100%;
+    max-width: 500px; /* Adjust based on your form width */
+    margin: 20px auto;
+}
+
+/* Style for the select element */
+select {
+    width: 100%;
+    padding: 10px 0px;
+    margin-bottom: 15px; /* Space below the select */
+    /* background-color: #f0f4f7; */
+    /* border: 2px solid #a7d4f6d9; */
+    border-radius: 5px;
+    color: #0c3594ba;
+    border: none;
+    outline: none;
+    -webkit-appearance: none; /* Removes default style in WebKit browsers */
+    -moz-appearance: none; /* Removes default style in Firefox */
+    appearance: none; /* Removes default style */
+    font-weight: bold;
+    cursor: pointer;
+    padding-left: 30px;
+    border-left: 0.5rem solid rgb(248, 214, 38);
+    background: #f1f8ff;
+    border-left-color: #007bffab;
+    border-radius: 10px;
+}
+
+/* Custom arrow */
+
+
+/* Optional: Style for option elements */
+option {
+    padding: 10px;
+}
+
+
+#arrow-select {
+    position: absolute;
+    top: 11px;
+    left: 11px;
+}
+
+.alert-success {
+    display: none;
+}
+
+span.remaining.hazard.not-error {
+    color: #0c3594a6;
+    background: #f1f8ff;
+    border-left-color: #007bffab;
+}
+
+.hazard-div u {
+    margin-left: 3px;
+}
+
+.radio-container {
+    display: flex;
+    flex-flow: row wrap;
+    gap: 30px;
+    align-items: center;
+    color: #0c3594ba;
+}
+
+.radio-container label {
+    color: #0c3594ba;
+}
+
+#validated a#form-hazard {
+    color: #0c3594a6;
+    background: #f1f8ff;
+    border-left-color: #007bffab;
+}
+
+#invalid-user .remaining.hazard {
+    background: #ffc107;
+    color: #00000082;
+    border: none;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    border-left: 0.5rem solid rgb(248, 214, 38);
+    background-color: rgb(254, 242, 179);
+}
+
+.change-id {
+    color: #0c3594ba;
+    text-align: center;
+    margin-top: 1.5em;
+    font-weight: 500;
+}
+
+  #remaining-success {
+    /* background-color: #d4edda; */
+    /* border-left: 0.5rem solid #28a745; */
+    /* color: #155724; */
+    color: #0c3594a6;
+    background: #f1f8ff;
+    border-left-color: #233DFF;
+  }  
+
+
+  .stage-pass {
+    font-size: 2.2em;
+    color: #233DFF;
+    margin: 1.5em 0 0.7em;
+    font-weight: bold;
+  }
+
+  /* update stat */
+  .stage-notification .remaining.hazard {
+    margin: 0;
+  }
+
+  #faq-info .stage-pass {
+    color: #007bffab;
+  }
+
+  
+
+  .link-icon-text {
+    
+color: #0c3594a6;
+    
+font-weight: bold;
+  }
+
+  #nav-links {
+
+justify-content: center;
+
+}
+
+footer {
+    display: none;
+}
+
+  @media (max-width: 1100px) {
+#nav-links {
+
+display: flex;
+}
+  }
+
+  .show-full.dropdown  {display: flex !important;position: relative;left: -50px;}
+
+  .show-full .btn-primary {
+    width: 180px !important;
+  }
+
+  .show-full ul.dropdown-menu {
+    max-width: 180px !important;
+    min-width: 180px !important;
+    margin-top: 1.2em !important;
+  }
+
+  .show-full  li {
+    padding: 0 !important;
+  }
+
+  .show-full a {
+    color: #0c3594a6 !important;
+    font-weight: normal !important;
+    font-size: 1.1em !important;
+  }
+
+/* payment div starts here */
+
+
+#payment form {
+     display: unset; 
+     flex-direction: unset; 
+    max-width: 100%; 
+   margin: 0; 
+    padding: 0; 
+    background: none; 
+   border-radius: unset; 
+    box-shadow: unset;
+}
+
+
+#full-coverage-bar {
+    border: none;
+    border-bottom: 0.5rem solid rgb(248, 214, 38);
+    border-bottom-color: #007bffab;
+}
+
+
+
+.payment-slider {
+    width: 100%;
+    position: relative;
+    border-top: 0.5rem solid rgb(248, 214, 38);
+    border-top-color: #007bffab;
+    max-width: 500px;
+    margin: 20px auto;
+    padding: 2em;
+    height: 650px;
+    background: #fff;
+    height: 600px;
+    /* gap: 10px; */
+    justify-content: space-between;
+    border-radius: 20px;
+    box-shadow: 0px 10px 40px 0px rgba(109, 141, 173, 0.25);
+    text-align: center;
+    height: 800px;
+}
+
+.slider {
+    -webkit-appearance: none;
+    width: 80%;
+    height: 15px;
+    border-radius: 5px;
+    background: #d7dcdf;
+    outline: none;
+    opacity: 0.7;
+    transition: opacity .2s;
+}
+
+.slider:hover {
+    opacity: 1;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: #0c3594d1;
+    cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: #0c3594d1;
+    cursor: pointer;
+}
+
+.slider-labels {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 10px;
+}
+
+.slider-label {
+    color: #0c3594d1;
+    font-weight: bold;
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 10px 15px;
+    background-color: #2F88FF;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-size: 1em;
+    font-weight: bold;
+}
+
+.submit-btn:hover {
+    /* background-color: #0a214c; */
+    color: #f1f8ff;
+}
+
+.styled-select {
+    padding: 0.8em 0 0.8em 35px;
+    border-radius: 10px;
+    background-color: #f1f8ff;
+    border: 1px solid #a7d4f6d9;
+    color: #0c3594d1;
+    width: 100%;
+    box-shadow: 0 4px 8px rgba(128, 128, 128, 0.116);
+    margin-bottom: 0;
+    border-left: 0.5rem solid rgb(248, 214, 38);
+    border-left-color: #007bffab;
+}
+
+.payment-info {
+    background: #f1f8ff;
+    padding: 10px 0 0;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(128, 128, 128, 0.116);
+    margin-top: 20px;
+    border-left: 0.5rem solid rgb(248, 214, 38);
+    border-left-color: #007bffab;
+}
+
+.payment-info p {
+    font-size: 1em;
+    color: #0c3594ba;
+    line-height: 1.5;  /* Ensures spacing between lines is adequate */
+    font-weight: 500;
+    margin-bottom: 10px;  /* Spaces out each info line */
+    /* border-bottom: 2px black solid; */
+}
+
+.payment-slider label {
+    color: #0c35948a;
+}
+
+.payment-svg-wrapper {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 0.8em;
+}
+
+.payment-svg-wrapper h2 {
+    margin: 0 0 0 0.5em;
+}
+
+.payment-svg-wrapper p {
+    margin: 0 0 0 1em;
+}
+
+.wrapper-p.payment-svg-wrapper {
+
+        margin: 0 0 1em 0;
+ 
+    
+}
+
+.info-border-bottom {
+
+    padding: 0.3em;
+    border-bottom: 1px solid #007bff33;
+}
+
+
+.info-border-bottom.last {
+    border: none;
+}
+
+
+#dropdown-svg {
+    
+    position: absolute;
+        top: 10px;
+        left: 10px;
+}
+
+.dropdown-svg-div {
+    position: relative;
+}
+
+.middle-wrapper {
+    margin-bottom: 0 !important;
+    padding: 0.8em 0;
+}
+
+.bottom-wrapper {
+    margin: 0.8em !important;
+}
+
+
+.payment-image.board-cont img {
+    max-width: unset;
+    width: 250px;
+    position: unset;
+}
+
+/* checkbox for payment */
+
+.checkbox-custom {
+    display: flex;
+    align-items: center;
+    /* margin: 10px 0; */
+}
+
+.custom-checkbox {
+    width: 20px; /* Checkbox size */
+    height: 20px; /* Checkbox size */
+    margin-right: 10px;
+    cursor: pointer;
+    appearance: none;
+    background-color: #fff; /* White background */
+    border: 2px solid #ccc; /* Light grey border */
+    border-radius: 4px; /* Rounded corners */
+    position: relative; /* Needed for pseudo-element positioning */
+    transition: background-color 0.3s, border-color 0.3s;
+    outline: none; /* Removes default focus outline */
+    box-shadow: none; /* Removes any default shadows */
+}
+
+.custom-checkbox:focus {
+    outline: none !important;
+}
+
+.custom-checkbox:checked {
+    background-color: #233DFF; /* Your theme blue */
+    border-color: #233DFF;
+}
+
+.custom-checkbox:checked::after {
+    content: "";
+    position: absolute;
+    left: 5px;
+    top: 1px;
+    width: 6px;
+    height: 11px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    transform: rotate(45deg);
+}
+
+.custom-checkbox:focus {
+    outline: none;
+    border-color: #0056b3; /* Focus color */
+}
+
+.checkbox-label {
+    font-size: 0.9em;
+    color: #333; /* Text color */
+}
+
+.checkbox-label a {
+    color: #007bff; /* Link color to match theme */
+    text-decoration: none;
+}
+
+.custom-checkbox::before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    outline: none;
+    left: -1px;
+    right: -1px;
+    bottom: -1px;
+    background: #fff;
+    /* border: 2px solid #0c3594; */
+    border-radius: 4px;
+    transition: transform .2s, opacity .2s;
+    transform: scale(0);
+    opacity: 0;
+    z-index: 0;
+}
+
+.custom-checkbox:checked::before {
+    transform: scale(1.5);
+    opacity: 0.4;
+    transition: transform .2s, opacity .5s;
+}
+
+.checkbox-custom label {
+
+margin: 0;
+margin-left: 1em;
+align-self: flex-end;
+}
+
+.submit-btn.disabled {
+    /* background-color: #ccc; */
+    /* color: #666; */
+    cursor: not-allowed;
+    pointer-events: none;
+    opacity: 0.4;
+    user-select: none;
+}
+
+#payment-link:focus-visible {
+    text-decoration: none !important;
+border: none !important;
+outline: none;
+}
+
+/* checkbox end */
+
+
+
+
+/* not for payment */
+
+.board-cont img {
+    max-width: 60px;
+    position: absolute;
+    /* left: -80px; */
+    right: -50px;
+    top: -50px;
+}
+
+@media (max-width:1250px) {
+
+
+
+    #dashboard-container .board-cont {
+        width: 100%;
+        height: 220px;
+        margin-bottom: 2.5em;
+    }
+
+}
+
+
+@media (max-width:1100px) {
+
+    main.content-main {
+        padding: 1.5em 2em;
+    }
+
+    #dashboard-container .board-cont .text-img {
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: space-between;
+        position: relative;
+        flex-direction: column-reverse;
+    }
+
+    
+    div#dashboard-container {
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: space-between;
+    }
+
+ 
+
+      
+}
+
+@media (max-width: 768px) {
+
+header nav {
+padding: 0em 1em;
+
+}
+
+}
+
+
+/* not for payment end */

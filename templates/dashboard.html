@@ -1,0 +1,431 @@
+{% extends "layout.html" %}
+{% block title %}
+<title>PropSurance - Home | User Dashboard</title>
+{% endblock %}
+
+{% block css %}    
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/cases.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dash.css') }}">
+{% endblock %}
+
+{% block dashlink_current_pg %}
+Dashboard
+                  {% endblock %}
+
+{% block dashlinks %}
+
+<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ url_for('home') }}">Home</a></li>
+<li role="presentation" class="divider"></li>
+<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ url_for('dashboard') }}"> PropSurance <br> Dashboard</a></li>
+<li role="presentation" class="divider"></li>
+<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ url_for('logout') }}">Logout</a></li>
+<li role="presentation" class="divider"></li>
+<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ url_for('dashboard_faq') }}">PropSurance-FAQ</a></li>
+<li role="presentation" class="divider"></li>
+
+<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ url_for('view_firm_reports') }}">Reported Firms </a></li>  
+<li role="presentation" class="divider"></li>
+
+<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ url_for('propsurance_service') }}">Terms of Service </a></li>   
+<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ url_for('propsurance_terms') }}">Privacy Policy </a></li>   
+<li role="presentation" class="divider"></li> 
+
+<li role="presentation"><a role="menuitem" tabindex="-1" href="https://twitter.com/PropPatrol" target="_blank"> Twitter</a></li> 
+<li role="presentation"><a role="menuitem" tabindex="-1" href="https://mailto:support@proppatrol.net" target="_blank"> Contact Us</a></li> 
+{% endblock %}
+
+{% block content %}
+
+  
+<main class="content-main">
+
+    
+{% if has_first_name  %}
+
+<h2 class="stage-pass">Welcome {{first_name}}</h2>
+
+{%else%}
+<h2 class="stage-pass">Dashboard</h2>
+{% endif %}
+
+
+
+    <div id="dashboard-container">
+        <!-- prop surance status -->
+        <div class="board-cont">
+            <div class="text-img">
+                <div>
+                <p>PropSurance Status</p>
+                <p class="header-text-board">
+
+                    {% if account_insured %}
+                Insured
+            {% else %}
+                Un-Insured
+            {% endif %}
+                </p>
+            </div>
+                <img src="{{ url_for('static', filename='images/info.png') }}" alt="Info Icon">
+            </div>
+           
+            <div class="dropdown header-text-under">
+                <button class="btn btn-primary dropdown-toggle" id="menu4" type="button" data-toggle="dropdown">Get Insured
+                <span class="caret"></span></button>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+                  <li role="presentation"><a role="menuitem" tabindex="-1" href="#payment">FTMO</a></li>
+                  <li role="presentation" class="divider"></li>
+                  <li role="presentation"><a role="menuitem" tabindex="-1"  href="#payment">5%ers</a></li>
+                </ul>
+              </div>
+        </div>
+    
+
+    <!-- total accounts -->
+    <div class="board-cont">
+        <div class="text-img">
+            <p>Insured Accounts</p>
+            <img src="{{ url_for('static', filename='images/profilepic.png') }}" alt="Profile Icon">
+        </div>
+        <p class="header-text-board">
+        {% if num_of_accounts %}
+            {% if num_of_accounts == 1 %}
+            {{ num_of_accounts }} Account
+             {% elif num_of_accounts > 1 %}
+            {{ num_of_accounts }} Accounts
+            {% endif %}
+        {% else %}
+            0 Accounts
+        {% endif %}
+        </p>
+      
+            <div class="dropdown header-text-under">
+                <button class="btn btn-primary dropdown-toggle" id="menu1" type="button" data-toggle="dropdown">Accounts
+                <span class="caret"></span></button>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+                    {% if insured_accounts %}
+                   
+                    {% for account in insured_accounts %}
+                        {% if account['account_url_fix'] %}
+                        {% if account['account_url_fix'] | int > 0 %}
+                        <li role="presentation" class="divider"></li>
+                        {% else%}
+                        {% endif %}
+
+                            <li role="presentation">
+                                <a role="menuitem" tabindex="-1" href="{{ url_for('access_account_dashboard', account_count=account['account_url_fix']) }}">
+                                    {{account['name']}} <br> {{ account['account_size'] }}  #{{account['account_url_fix'] |int + 1 }}
+                                </a>
+                            </li>
+                          
+                        {% endif %}
+                    {% endfor %}
+                    {% if not insured_accounts %}
+                        <li role="presentation"><a role="menuitem" tabindex="-1">No Accounts</a></li>
+                    {% endif %}
+                {% else %}
+                    <li role="presentation"><a role="menuitem" tabindex="-1">No Accounts</a></li>
+                {% endif %}
+                  
+                </ul>
+              </div>
+        
+    </div>
+
+
+    <div class="board-cont">
+        <div class="text-img">
+            <p>PropSurance Awards</p>
+            <img src="{{ url_for('static', filename='images/rewards.png') }}" alt="Info Icon">
+        </div>
+        <p class="header-text-board">
+            Perks
+        </p>
+        <div class="dropdown header-text-under">
+            <button class="btn btn-primary dropdown-toggle" id="menu3" type="button" data-toggle="dropdown">Rewards
+            <span class="caret"></span></button>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+              <li role="presentation"><a role="menuitem" tabindex="-1" >Coming Soon</a></li>
+              
+            </ul>
+          </div>
+    </div>
+
+
+    <!-- Update Us on Account -->
+
+    <!-- update status -->
+
+    <!-- File a Claim -->
+</div>
+
+
+{% if insured_accounts %}
+<h2 class="stage-pass">Coverage Metrics</h2>
+<div class="metrics-bar" id="full-coverage-bar">
+    <div class="metrics-bars">
+        
+        <p class="name sepr">Prop Firm Coverage<span class="prop-name">200k Max </span></p>
+        <ul>
+
+            <li class="coverage-p"><svg fill="#0c3594d1" width="25px" height="25px" viewBox="-3 0 19 19" xmlns="http://www.w3.org/2000/svg" class="cf-icon-svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M12.365 10.832a.473.473 0 0 1-.012.106q.012.179.012.37c0 3.239-5.865 5.063-5.865 5.063S.635 14.547.635 11.307q0-.19.012-.37a.473.473 0 0 1-.012-.105V3.643a.476.476 0 0 1 .475-.475h10.78a.476.476 0 0 1 .475.475zm-3.617-.387a1.653 1.653 0 0 0-.409-1.087 2.23 2.23 0 0 0-.617-.491l-.002-.001a2.599 2.599 0 0 0-.641-.232h-.002a2.797 2.797 0 0 0-.59-.062 2.196 2.196 0 0 1-.364-.028 1.405 1.405 0 0 1-.384-.123h-.001a.918.918 0 0 1-.294-.236v-.002a.596.596 0 0 1-.141-.358.604.604 0 0 1 .336-.509 1.67 1.67 0 0 1 .858-.23 1.722 1.722 0 0 1 .304.05l.036.008a1.926 1.926 0 0 1 .365.127 1.024 1.024 0 0 1 .3.206.554.554 0 1 0 .782-.785 2.145 2.145 0 0 0-.627-.431 2.961 2.961 0 0 0-.585-.2l-.036-.008h-.002v-.626a.554.554 0 0 0-1.109 0v.609a2.646 2.646 0 0 0-.878.343 1.712 1.712 0 0 0-.853 1.446 1.688 1.688 0 0 0 .39 1.058 2.01 2.01 0 0 0 .659.529 2.481 2.481 0 0 0 .697.225 3.281 3.281 0 0 0 .548.044 1.686 1.686 0 0 1 .355.036 1.47 1.47 0 0 1 .362.13 1.128 1.128 0 0 1 .3.24.552.552 0 0 1 .135.358c0 .124-.036.289-.31.466a1.69 1.69 0 0 1-.875.243 2.678 2.678 0 0 1-.38-.046 1.845 1.845 0 0 1-.354-.113.762.762 0 0 1-.284-.218.554.554 0 1 0-.838.726 1.852 1.852 0 0 0 .71.521 2.827 2.827 0 0 0 .577.176l.04.007v.625a.554.554 0 1 0 1.108 0v-.63a2.667 2.667 0 0 0 .9-.36 1.628 1.628 0 0 0 .814-1.397z"></path></g></svg>Total Insured Accounts: ${{account_size}}</li>
+        </ul>
+        <div class="metric">
+                    <p class="name met-label"><span class="percent-num">{{account_percentage}}% </span></p>
+                    <div class="progress-container">
+        
+                    <div class="progress-bar bar-1" id="myBar1" style="width: {{ account_percentage }}%;"></div>
+                    </div>
+                </div>
+
+                <div class="hazard-div">
+
+                    <span class="remaining hazard not-error"><div class="hazard-icon-div "><svg viewBox="0 -0.5 25 25" width="25px" height="25px" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M5.50002 18.211V9.737C5.49724 9.30439 5.84541 8.9513 6.27802 8.948H9.38902C9.82162 8.9513 10.1698 9.30439 10.167 9.737V5.789C10.1642 5.35678 10.5118 5.00385 10.944 5H14.056C14.4886 5.0033 14.8368 5.35639 14.834 5.789V8.158C14.8312 7.72539 15.1794 7.3723 15.612 7.369H18.723C19.1552 7.37285 19.5028 7.72578 19.5 8.158V18.211C19.5028 18.6436 19.1546 18.9967 18.722 19H6.27802C5.84541 18.9967 5.49724 18.6436 5.50002 18.211V18.211Z" stroke="#0c3594a6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M9.41699 19C9.41699 19.4142 9.75278 19.75 10.167 19.75C10.5812 19.75 10.917 19.4142 10.917 19H9.41699ZM10.917 9.73696C10.917 9.32275 10.5812 8.98696 10.167 8.98696C9.75278 8.98696 9.41699 9.32275 9.41699 9.73696H10.917ZM14.083 19C14.083 19.4142 14.4188 19.75 14.833 19.75C15.2472 19.75 15.583 19.4142 15.583 19H14.083ZM15.583 8.15796C15.583 7.74375 15.2472 7.40796 14.833 7.40796C14.4188 7.40796 14.083 7.74375 14.083 8.15796H15.583ZM10.917 19V9.73696H9.41699V19H10.917ZM15.583 19V8.15796H14.083V19H15.583Z" fill="#0c3594a6"></path> </g></svg></div> Remaining Account Prop Coverage ${{remaining_size}} </span>
+                </div>
+
+                
+       </div>
+</div>
+{% endif %}
+
+{% if insured_accounts %}
+<h2 class="stage-pass">Accounts</h2>
+<div class="firm-list" id="firm-account-info">
+
+                   
+    {% for account in insured_accounts %}
+        {% if account['account_url_fix'] %}
+
+        <div class="metrics-bar" >
+            <div class="num-rank">{{ (account['account_url_fix']|int + 1) }}</div>
+            <div class="metrics-bars">
+                <p class="name sepr">{{account['name']}}<span class="prop-name">${{ account['current_size'] }} </span></p>
+                <div class="dropdown header-text-under account-dropdown" id="account-dropdown">
+                    <button class="btn btn-primary dropdown-toggle" id="account-firm-btn" type="button" data-toggle="dropdown">Account Info
+                        <span class="caret"></span></button>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+                    <li role="presentation">
+                        <a role="menuitem"  tabindex="-1" href="{{account['invoice_url']}}">Invoice</a>
+                    </a>
+                    </li>
+                    <li role="presentation" class="divider"></li>
+                    <li role="presentation">  <a  role="menuitem" tabindex="-1" href="{{url_for('access_ticket_handler', account_count=account['account_url_fix'])}}">File a Case</a></li>
+                    <li role="presentation" class="divider"></li>
+                    <li role="presentation">     <a  role="menuitem" tabindex="-1"a href="{{url_for('access_ticket_handler', account_count=account['account_url_fix'])}}">Recieved a <br> Payout</a></li>
+                    <li role="presentation" class="divider"></li>
+                    <li role="presentation">     <a   role="menuitem" tabindex="-1" href="{{url_for('access_ticket_handler', account_count=account['account_url_fix'])}}">Passed Current <br> Phase</a></li>
+                    <li role="presentation" class="divider"></li>
+                    <li role="presentation">     <a   role="menuitem" tabindex="-1" href="{{url_for('access_ticket_handler', account_count=account['account_url_fix'])}}">Contact Us</a></li>
+
+                    <!-- <li class="coverage-p"><a href="">Billing</a></li>
+                    <li class="coverage-p"><a href="">File a Case</a></li>
+                    <li class="coverage-p"><a href="">Recieved a Payout</a></li>
+                    <li class="coverage-p"><a href="">Passed Current Phase</a></li> -->
+                </ul>
+                </div>
+                <div class="metric">
+                            <p class="name met-label"><span class="percent-num">{{account['current_percentage']}}% </span> Total Prop Firm Coverage</p>
+                            <div class="progress-container">
+                
+                            <div class="progress-bar bar-1" id="myBar1" style="width: {{ account['current_percentage'] }}%;"></div>
+                            </div>
+                        </div>
+                        <div class="report-details">
+
+                            <span class="tag">{{account['phase_status']}}</span>
+                        </div>
+                       
+                        {% if account['account_status'] == 'pending' %}
+                        <div class="hazard-div">
+
+                            <a class="remaining hazard" href="{{url_for('submit_mt_account', account=account['account_url_fix'])}}"><div class="hazard-icon-div "><svg fill="#00000082" width="25px" height="25px" viewBox="0 0 64 64" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <rect id="Icons" x="-640" y="-64" width="1280" height="800" style="fill:none;"></rect> <g id="Icons1" serif:id="Icons"> <g id="Strike"> </g> <g id="H1"> </g> <g id="H2"> </g> <g id="H3"> </g> <g id="list-ul"> </g> <g id="hamburger-1"> </g> <g id="hamburger-2"> </g> <g id="list-ol"> </g> <g id="list-task"> </g> <g id="trash"> </g> <g id="vertical-menu"> </g> <g id="horizontal-menu"> </g> <g id="sidebar-2"> </g> <g id="Pen"> </g> <g id="Pen1" serif:id="Pen"> </g> <g id="clock"> </g> <g id="external-link"> </g> <g id="hr"> </g> <g id="info"> </g> <g id="warning"> <path d="M32.427,7.987c2.183,0.124 4,1.165 5.096,3.281l17.936,36.208c1.739,3.66 -0.954,8.585 -5.373,8.656l-36.119,0c-4.022,-0.064 -7.322,-4.631 -5.352,-8.696l18.271,-36.207c0.342,-0.65 0.498,-0.838 0.793,-1.179c1.186,-1.375 2.483,-2.111 4.748,-2.063Zm-0.295,3.997c-0.687,0.034 -1.316,0.419 -1.659,1.017c-6.312,11.979 -12.397,24.081 -18.301,36.267c-0.546,1.225 0.391,2.797 1.762,2.863c12.06,0.195 24.125,0.195 36.185,0c1.325,-0.064 2.321,-1.584 1.769,-2.85c-5.793,-12.184 -11.765,-24.286 -17.966,-36.267c-0.366,-0.651 -0.903,-1.042 -1.79,-1.03Z" style="fill-rule:nonzero;"></path> <path d="M33.631,40.581l-3.348,0l-0.368,-16.449l4.1,0l-0.384,16.449Zm-3.828,5.03c0,-0.609 0.197,-1.113 0.592,-1.514c0.396,-0.4 0.935,-0.601 1.618,-0.601c0.684,0 1.223,0.201 1.618,0.601c0.395,0.401 0.593,0.905 0.593,1.514c0,0.587 -0.193,1.078 -0.577,1.473c-0.385,0.395 -0.929,0.593 -1.634,0.593c-0.705,0 -1.249,-0.198 -1.634,-0.593c-0.384,-0.395 -0.576,-0.886 -0.576,-1.473Z" style="fill-rule:nonzero;"></path> </g> <g id="plus-circle"> </g> <g id="minus-circle"> </g> <g id="vue"> </g> <g id="cog"> </g> <g id="logo"> </g> <g id="radio-check"> </g> <g id="eye-slash"> </g> <g id="eye"> </g> <g id="toggle-off"> </g> <g id="shredder"> </g> <g id="spinner--loading--dots-" serif:id="spinner [loading, dots]"> </g> <g id="react"> </g> <g id="check-selected"> </g> <g id="turn-off"> </g> <g id="code-block"> </g> <g id="user"> </g> <g id="coffee-bean"> </g> <g id="coffee-beans"> <g id="coffee-bean1" serif:id="coffee-bean"> </g> </g> <g id="coffee-bean-filled"> </g> <g id="coffee-beans-filled"> <g id="coffee-bean2" serif:id="coffee-bean"> </g> </g> <g id="clipboard"> </g> <g id="clipboard-paste"> </g> <g id="clipboard-copy"> </g> <g id="Layer1"> </g> </g> </g></svg></div> Status Pending <u> Requires User Validation</u> </a>
+                        </div>
+                        {% else %}
+                        <div class="hazard-div">
+
+                            <a class="remaining hazard not-error"  id="remaining-success" href="{{url_for('access_account_dashboard', account_count=account['account_url_fix'])}}"><div class="hazard-icon-div "><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" stroke="#233DFF"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" stroke="#CCCCCC" stroke-width="0.048"></g><g id="SVGRepo_iconCarrier"> <path d="M15.197 3.35462C16.8703 1.67483 19.4476 1.53865 20.9536 3.05046C22.4596 4.56228 22.3239 7.14956 20.6506 8.82935L18.2268 11.2626M10.0464 14C8.54044 12.4882 8.67609 9.90087 10.3494 8.22108L12.5 6.06212" stroke="#233DFF" stroke-width="2.4" stroke-linecap="round"></path> <path d="M13.9536 10C15.4596 11.5118 15.3239 14.0991 13.6506 15.7789L11.2268 18.2121L8.80299 20.6454C7.12969 22.3252 4.55237 22.4613 3.0464 20.9495C1.54043 19.4377 1.67609 16.8504 3.34939 15.1706L5.77323 12.7373" stroke="#233DFF" stroke-width="2.4" stroke-linecap="round"></path> </g></svg></div> Account Info </a>
+                        </div>
+
+                        {% endif %}
+               </div>
+        </div>
+
+
+ 
+        {% endif %}
+        {% endfor %}
+</div>
+{% endif %}
+
+{% if remaining_size == 0  %}
+
+{% else%}
+
+<form class="board-cont payment-slider payment-image paymentForm" id="payment"  action="{{url_for('process_payment')}}" method="POST" >
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <div>
+    <img src=" {{ url_for('static', filename='images/propsurance.png') }}" alt="Prop Surance">
+</div>
+
+
+
+    <div class="payment-svg-wrapper">
+    
+    <svg viewBox="0 0 24 24" width="25px" height="25px" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Edit / Add_To_Queue"> <path id="Vector" d="M3 9V19.4C3 19.9601 3 20.2399 3.10899 20.4538C3.20487 20.642 3.35774 20.7952 3.5459 20.8911C3.7596 21 4.0395 21 4.59846 21H15.0001M14 13V10M14 10V7M14 10H11M14 10H17M7 13.8002V6.2002C7 5.08009 7 4.51962 7.21799 4.0918C7.40973 3.71547 7.71547 3.40973 8.0918 3.21799C8.51962 3 9.08009 3 10.2002 3H17.8002C18.9203 3 19.4801 3 19.9079 3.21799C20.2842 3.40973 20.5905 3.71547 20.7822 4.0918C21.0002 4.51962 21.0002 5.07969 21.0002 6.19978L21.0002 13.7998C21.0002 14.9199 21.0002 15.48 20.7822 15.9078C20.5905 16.2841 20.2842 16.5905 19.9079 16.7822C19.4805 17 18.9215 17 17.8036 17H10.1969C9.07899 17 8.5192 17 8.0918 16.7822C7.71547 16.5905 7.40973 16.2842 7.21799 15.9079C7 15.4801 7 14.9203 7 13.8002Z" stroke="#007bffab" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg>
+    <h2 class="form-h2">Choose Your Account Size and Firm</h2>
+</div>
+
+<!-- <label for="propFirmSelect">Select Prop Firm</label> -->
+    <!-- Prop Firm Selection -->  <div class="payment-svg-wrapper wrapper-p dropdown-svg-div">
+  <svg width="25px" height="25px" id="dropdown-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M12.7071 14.7071C12.3166 15.0976 11.6834 15.0976 11.2929 14.7071L6.29289 9.70711C5.90237 9.31658 5.90237 8.68342 6.29289 8.29289C6.68342 7.90237 7.31658 7.90237 7.70711 8.29289L12 12.5858L16.2929 8.29289C16.6834 7.90237 17.3166 7.90237 17.7071 8.29289C18.0976 8.68342 18.0976 9.31658 17.7071 9.70711L12.7071 14.7071Z" fill="#0c3594d1"></path> </g></svg> 
+    <select name="firm"  id="propFirmSelect" class="styled-select">
+        <option value="FTMO">FTMO</option>
+        <option value="5ers">5%ers</option>
+        <option value="LuxTrading">LuxTrading</option>
+    </select>
+
+
+</div>
+
+<div class="payment-svg-wrapper wrapper-p dropdown-svg-div" id="phase-svg-div">
+    <svg width="25px" height="25px" id="dropdown-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M12.7071 14.7071C12.3166 15.0976 11.6834 15.0976 11.2929 14.7071L6.29289 9.70711C5.90237 9.31658 5.90237 8.68342 6.29289 8.29289C6.68342 7.90237 7.31658 7.90237 7.70711 8.29289L12 12.5858L16.2929 8.29289C16.6834 7.90237 17.3166 7.90237 17.7071 8.29289C18.0976 8.68342 18.0976 9.31658 17.7071 9.70711L12.7071 14.7071Z" fill="#0c3594d1"></path> </g></svg> 
+    <select id="phaseSelect" name="phase" class="styled-select">
+        <option value="phase1">Phase 1</option>
+        <option value="phase2">Phase 2</option>
+        <option value="live">Live</option>
+    </select>
+</div>
+
+
+<input type="range" min="1" max="{{ '3' if remaining_size >= 200000 else '2' if remaining_size >= 100000 else '1' }}" value="1" class="slider" name="accountSize" id="accountSizeRange">
+<div class="slider-labels">
+    <span class="slider-label">$50k</span>
+    {% if remaining_size >= 100000 %}
+    <span class="slider-label">$100k</span>
+    {% endif %}
+    {% if remaining_size >= 200000 %}
+    <span class="slider-label">$200k</span>
+    {% endif %}
+</div>
+
+
+
+
+
+    
+    
+    <!-- Account Size Slider -->
+    <!-- <label for="accountSizeRange">Account Size</label> -->
+
+
+ 
+    
+    <!-- Dynamic Info Display -->
+    <div class="payment-info">
+        <div class="info-border-bottom">
+        <div class="payment-svg-wrapper wrapper-p">
+        <svg viewBox="0 0 24 24" width="25px" height="20px" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M14.9453 1.25C13.5778 1.24998 12.4754 1.24996 11.6085 1.36652C10.7084 1.48754 9.95048 1.74643 9.34857 2.34835C8.82363 2.87328 8.55839 3.51836 8.41916 4.27635C8.28387 5.01291 8.25799 5.9143 8.25196 6.99583C8.24966 7.41003 8.58357 7.74768 8.99778 7.74999C9.41199 7.7523 9.74964 7.41838 9.75194 7.00418C9.75803 5.91068 9.78643 5.1356 9.89448 4.54735C9.99859 3.98054 10.1658 3.65246 10.4092 3.40901C10.686 3.13225 11.0746 2.9518 11.8083 2.85315C12.5637 2.75159 13.5648 2.75 15.0002 2.75H16.0002C17.4356 2.75 18.4367 2.75159 19.1921 2.85315C19.9259 2.9518 20.3144 3.13225 20.5912 3.40901C20.868 3.68577 21.0484 4.07435 21.1471 4.80812C21.2486 5.56347 21.2502 6.56459 21.2502 8V16C21.2502 17.4354 21.2486 18.4365 21.1471 19.1919C21.0484 19.9257 20.868 20.3142 20.5912 20.591C20.3144 20.8678 19.9259 21.0482 19.1921 21.1469C18.4367 21.2484 17.4356 21.25 16.0002 21.25H15.0002C13.5648 21.25 12.5637 21.2484 11.8083 21.1469C11.0746 21.0482 10.686 20.8678 10.4092 20.591C10.1658 20.3475 9.99859 20.0195 9.89448 19.4527C9.78643 18.8644 9.75803 18.0893 9.75194 16.9958C9.74964 16.5816 9.41199 16.2477 8.99778 16.25C8.58357 16.2523 8.24966 16.59 8.25196 17.0042C8.25799 18.0857 8.28387 18.9871 8.41916 19.7236C8.55839 20.4816 8.82363 21.1267 9.34857 21.6517C9.95048 22.2536 10.7084 22.5125 11.6085 22.6335C12.4754 22.75 13.5778 22.75 14.9453 22.75H16.0551C17.4227 22.75 18.525 22.75 19.392 22.6335C20.2921 22.5125 21.0499 22.2536 21.6519 21.6517C22.2538 21.0497 22.5127 20.2919 22.6337 19.3918C22.7503 18.5248 22.7502 17.4225 22.7502 16.0549V7.94513C22.7502 6.57754 22.7503 5.47522 22.6337 4.60825C22.5127 3.70814 22.2538 2.95027 21.6519 2.34835C21.0499 1.74643 20.2921 1.48754 19.392 1.36652C18.525 1.24996 17.4227 1.24998 16.0551 1.25H14.9453Z" fill="#0c3594ba"></path> <path d="M2.00098 11.249C1.58676 11.249 1.25098 11.5848 1.25098 11.999C1.25098 12.4132 1.58676 12.749 2.00098 12.749L13.9735 12.749L12.0129 14.4296C11.6984 14.6991 11.662 15.1726 11.9315 15.4871C12.2011 15.8016 12.6746 15.838 12.9891 15.5685L16.4891 12.5685C16.6553 12.426 16.751 12.218 16.751 11.999C16.751 11.7801 16.6553 11.5721 16.4891 11.4296L12.9891 8.42958C12.6746 8.16002 12.2011 8.19644 11.9315 8.51093C11.662 8.82543 11.6984 9.2989 12.0129 9.56847L13.9735 11.249L2.00098 11.249Z" fill="#0c3594ba"></path> </g></svg>
+        <p id="feeInfo">Sign-up <span>$100</span></p></div></div>
+
+        <div class="info-border-bottom">
+            <div class="payment-svg-wrapper middle-wrapper wrapper-p">
+                <svg viewBox="0 0 24 24" width="25px" height="20px"  fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M9 2H15C20 2 22 4 22 9V15C22 20 20 22 15 22H9C4 22 2 20 2 15V9C2 4 4 2 9 2Z" stroke="#0c3594ba" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M8.57007 15.27L15.11 8.72998" stroke="#0c3594ba" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M8.98001 10.3699C9.65932 10.3699 10.21 9.81923 10.21 9.13992C10.21 8.46061 9.65932 7.90991 8.98001 7.90991C8.3007 7.90991 7.75 8.46061 7.75 9.13992C7.75 9.81923 8.3007 10.3699 8.98001 10.3699Z" stroke="#0c3594ba" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M15.52 16.0899C16.1993 16.0899 16.75 15.5392 16.75 14.8599C16.75 14.1806 16.1993 13.6299 15.52 13.6299C14.8407 13.6299 14.29 14.1806 14.29 14.8599C14.29 15.5392 14.8407 16.0899 15.52 16.0899Z" stroke="#0c3594ba" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+        <p id="commissionInfo">Fee: 5% of Every Payout</p></div></div>
+
+
+        <div class="info-border-bottom last">
+            <div class="payment-svg-wrapper bottom-wrapper  wrapper-p">
+            <svg viewBox="0 0 24 24" width="25px" height="20px" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M14 8.9999C13.5 8.87589 12.6851 8.87132 12 8.87589M12 8.87589C11.7709 8.87741 11.9094 8.86767 11.6 8.87589C10.7926 8.90107 10.0016 9.23665 10 10.1874C9.99825 11.2002 11 11.4999 12 11.4999C13 11.4999 14 11.7311 14 12.8124C14 13.625 13.1925 13.981 12.1861 14.099C11.3861 14.099 11 14.1249 10 13.9999M12 8.87589L12 7.49999M12 14.0994V15.5M20 12C20 16.4611 14.54 19.6937 12.6414 20.683C12.4361 20.79 12.3334 20.8435 12.191 20.8712C12.08 20.8928 11.92 20.8928 11.809 20.8712C11.6666 20.8435 11.5639 20.79 11.3586 20.683C9.45996 19.6937 4 16.4611 4 12V8.21759C4 7.41808 4 7.01833 4.13076 6.6747C4.24627 6.37113 4.43398 6.10027 4.67766 5.88552C4.9535 5.64243 5.3278 5.50207 6.0764 5.22134L11.4382 3.21067C11.6461 3.13271 11.75 3.09373 11.857 3.07827C11.9518 3.06457 12.0482 3.06457 12.143 3.07827C12.25 3.09373 12.3539 3.13271 12.5618 3.21067L17.9236 5.22134C18.6722 5.50207 19.0465 5.64243 19.3223 5.88552C19.566 6.10027 19.7537 6.37113 19.8692 6.6747C20 7.01833 20 7.41808 20 8.21759V12Z" stroke="#0c3594ba" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+        <p id="coverageInfo">Coverage for Rejected Payouts</p></div>   </div>
+    </div>
+
+    <!-- Agreement Checkbox -->
+    <div class="agreement-section checkbox-custom">
+        <input type="checkbox" required id="termsCheckbox" name="agreeTerms" class="custom-checkbox">
+        <label for="agreeTerms" class="checkbox-label">I agree to the <a href="{{url_for('propsurance_service')}}" target="_blank">Terms of Service *</a></label>
+    </div>
+
+    <!-- FAQ Read Checkbox -->
+    <div class="faq-section checkbox-custom">
+        <input type="checkbox" required id="faqCheckbox" name="readFaq" class="custom-checkbox">
+        <label for="readFaq"  class="checkbox-label">I have read the <a href="{{url_for('dashboard_faq')}}" target="_blank">FAQ *</a> </label>
+    </div>
+    
+    <button id="submitBtn" type="submit" draggable="false" class="submit-btn" >Sign Up</button>
+</form>
+{% endif %}
+
+
+   
+
+
+</main>
+
+
+{% endblock %}
+
+{% block script %}
+<script>
+
+
+
+const forms = document.getElementsByClassName('paymentForm');
+
+// Function to execute when an input event is triggered
+function updatePaymentDetails() {
+    const submitBtn = document.getElementById('submitBtn');
+    const termsChecked = document.getElementById('termsCheckbox').checked;
+    const faqChecked = document.getElementById('faqCheckbox').checked;
+
+    // submitBtn.classList.toggle('disabled', !(termsChecked && faqChecked));
+    // submitBtn.disabled = !(termsChecked && faqChecked);
+}
+
+// Add the event listener to all form elements
+Array.from(forms).forEach(form => {
+    form.addEventListener('input', updatePaymentDetails);
+});
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    const accountSizeRange = document.getElementById('accountSizeRange');
+    const phaseSelect = document.getElementById('phaseSelect');
+    const priceInfo = document.getElementById('feeInfo');
+
+    // Pricing data structure
+    const pricing = {
+        '50k': { 'phase1': 120, 'phase2': 169, 'live': 220 },
+        '100k': { 'phase1': 240, 'phase2': 338, 'live': 440 },
+        '200k': { 'phase1': 480, 'phase2': 676, 'live': 880 }
+    };
+
+    // Function to update the displayed price
+    function updatePriceDisplay() {
+        const accountSizeIndex = accountSizeRange.value; // 1, 2, or 3
+        const phase = phaseSelect.value; // 'phase1', 'phase2', or 'live'
+
+        // Determine the account size label
+        let accountSizeLabel;
+        if (accountSizeIndex === '1') accountSizeLabel = '50k';
+        else if (accountSizeIndex === '2') accountSizeLabel = '100k';
+        else if (accountSizeIndex === '3') accountSizeLabel = '200k';
+
+        // Get the price based on the account size and phase
+        const price = pricing[accountSizeLabel][phase];
+
+        // Update the DOM
+        priceInfo.innerHTML = 'Sign-up Fee: <span>$' + price + '</span>';
+    }
+
+    // Event listeners
+    accountSizeRange.addEventListener('input', updatePriceDisplay);
+    phaseSelect.addEventListener('change', updatePriceDisplay);
+
+    // Initialize with default values
+    updatePriceDisplay();
+});
+
+
+
+</script>
+{% endblock %}

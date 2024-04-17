@@ -15,8 +15,10 @@
   
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favi.png') }}">
     {% block seo %} {% endblock %}
-    <meta name="description" content="Prop Patrol is dedicated to advocating for traders, providing dispute resolution services, and ensuring fair practices by prop firms.">
-    <meta name="keywords" content="prop firm, trading, dispute resolution, trader advocacy, prop trading, payout disputes, funded next, The 5%ers, FTMO">
+
+
+  
+    <meta name="keywords" content="prop firm, trading, dispute resolution, trader advocacy, prop trading, payout disputes, funded next, The 5%ers, FTMO, propsurance, PropSurance, Prop Firm Insurance, Payout Coverage, Rejected payout, Futures Firms">
     <meta name="robots" content="index, follow">
     <meta name="MobileOptimized" content="width">
   <meta name="HandheldFriendly" content="true">
@@ -82,7 +84,9 @@
                 <a href="{{url_for('home')}}"> <img src="{{ url_for('static', filename='images/logo.svg') }}" alt="Prop Patrol Logo"></a>
             </div>
    
+            {% if dashboard_nav %}
 
+            {%  else %}
     <div class="dropdown">
         <button class="btn btn-primary dropdown-toggle" id="menu1" type="button" data-toggle="dropdown">Home
         <span class="caret"></span></button>
@@ -99,14 +103,37 @@
           <li role="presentation"><a role="menuitem" tabindex="-1" href="https://twitter.com/PropPatrol" target="_blank"> Twitter</a></li>   
         </ul>
       </div>
+    
+      {% endif %}
 
-            <ul id="nav-links">
+
+
+           
+              {% if dashboard_nav %}
+
+              <div class="dropdown show-full">
+                <button class="btn btn-primary dropdown-toggle" id="menu1" type="button" data-toggle="dropdown"> {% block dashlink_current_pg %}
+                    
+                  {% endblock %}
+                <span class="caret"></span></button>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+                  {% block dashlinks %}
+                    
+                  {% endblock %}
+                </ul>
+              </div>
+  
+
+              {%  else %}
+              <ul id="nav-links">
                 <li><a href="{{ url_for('home') }}" class="special-link">Home</a></li>
                 <li><a href="{{ url_for('featured_firms') }}">Featured Props</a></li>
                 <li><a href="{{ url_for('home') }}#faq">FAQ</a></li>
                 <li><a href="{{ url_for('home') }}#about-ref">About</a></li>
                 <li><a href="{{ url_for('view_firm_reports') }}" class="special-2">Reported Firms</a></li>
-            </ul>
+              </ul>
+                {% endif %}
+           
         </nav>
     </header>
 
@@ -145,6 +172,7 @@
             <a href="https://twitter.com/PropPatrol" target="_blank">Twitter</a>
             <a href="mailto:support@proppatrol.net">Contact Us</a>
             <a href="{{url_for('tos')}}#terms">Terms Of Service</a>
+            <a href="mailto:support@proppatrol.net">Partner with Us</a>
         </div>
     </div>
     
