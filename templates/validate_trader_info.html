@@ -1,9 +1,10 @@
 {% extends "layout.html" %}
 {% block title %}
-<title>PropSurance - Validate Account</title>
+<title>PropSurance - Validate Account | Profile</title>
 {% endblock %}
 
 {% block css %}    
+<meta name="robots" content="noindex, nofollow">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/cases.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/dash.css') }}">
 
@@ -16,9 +17,36 @@
 </script>
 {% endblock %}
 
+{% block dashlink_current_pg %}
+Account Info
+                  {% endblock %}
+
+{% block dashlinks %}
+<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ url_for('home') }}">Home</a></li>
+<li role="presentation" class="divider"></li>
+<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ url_for('home') }}">Home</a></li>
+<li role="presentation" class="divider"></li>
+<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ url_for('dashboard') }}"> PropSurance <br> Dashboard</a></li>
+<li role="presentation" class="divider"></li>
+<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ url_for('logout') }}">Logout</a></li>
+<li role="presentation" class="divider"></li>
+<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ url_for('dashboard_faq') }}">PropSurance-FAQ</a></li>
+<li role="presentation" class="divider"></li>
+
+<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ url_for('view_firm_reports') }}">Reported Firms </a></li>  
+<li role="presentation" class="divider"></li>
+
+<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ url_for('propsurance_service') }}">Terms of Service </a></li>   
+<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ url_for('propsurance_terms') }}">Privacy Policy </a></li>   
+<li role="presentation" class="divider"></li> 
+
+<li role="presentation"><a role="menuitem" tabindex="-1" href="https://twitter.com/PropPatrol" target="_blank"> Twitter</a></li> 
+<li role="presentation"><a role="menuitem" tabindex="-1" href="https://mailto:support@proppatrol.net" target="_blank"> Contact Us</a></li> 
+{% endblock %}
+
 {% block content %}
 
-
+<main class="content-main" >
 <h2 class="form-h2">Account Information</h2>
 <form id="form-validation" action="{{ url_for('submit_mt_account', account=prop_count) }}" method="post">
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
@@ -30,6 +58,15 @@
             <div class="form-icon"> <svg width="25px" height="25px" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M15 7L18 10M10 12L7 15L6 19L10 18L13 15M12 10L17 5L20 8L15 13M19 19L5 5" stroke="#0c3594d1" stroke-width="1.2"></path> </g></svg></div>
         </div>
         <input type="text" id="account_stage" name="account-stage" value="{{ accounts.customer_name }}" readonly required><br>
+
+
+        <label for="account-stage" >Registration Date</label>
+    
+        <div class="form-icon-cont">
+    
+            <div class="form-icon"> <svg width="25px" height="25px" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M15 7L18 10M10 12L7 15L6 19L10 18L13 15M12 10L17 5L20 8L15 13M19 19L5 5" stroke="#0c3594d1" stroke-width="1.2"></path> </g></svg></div>
+        </div>
+        <input type="text" id="account_stage" name="account-stage" value="{{ accounts.date }}" readonly required><br>
 
         
 
@@ -150,20 +187,12 @@
 
 
 </form>
-
+</main>
 
 
 <!-- return the form from here -->
 
 
-
-
-
-
-
-
-   
-</form>
 
 
 

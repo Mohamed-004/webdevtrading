@@ -1,0 +1,114 @@
+{% extends "layout.html" %}
+{% block title %}
+<title>PropSurance - | Submit Case </title>
+{% endblock %}
+
+{% block css %}    
+<link rel="stylesheet" href="{{ url_for('static', filename='css/cases.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dash.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/policies.css') }}">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/current_user.css') }}">
+{% endblock %}
+
+{% block dashlink_current_pg %}
+Privacy Policy
+                  {% endblock %}
+
+{% block dashlinks %}
+
+<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ url_for('home') }}">Home</a></li>
+<li role="presentation" class="divider"></li>
+<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ url_for('dashboard') }}"> PropSurance <br> Dashboard</a></li>
+<li role="presentation" class="divider"></li>
+<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ url_for('logout') }}">Logout</a></li>
+<li role="presentation" class="divider"></li>
+
+
+
+<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ url_for('view_firm_reports') }}">Reported Firms </a></li>  
+<li role="presentation" class="divider"></li>
+
+<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ url_for('propsurance_service') }}">Terms of Service </a></li>   
+<!-- <li role="presentation"><a role="menuitem" tabindex="-1" href="{{ url_for('view_firm_reports') }}">Privacy Policy </a></li>    -->
+<li role="presentation" class="divider"></li> 
+
+<li role="presentation"><a role="menuitem" tabindex="-1" href="https://twitter.com/PropPatrol" target="_blank"> Twitter</a></li> 
+<li role="presentation"><a role="menuitem" tabindex="-1" href="https://mailto:support@proppatrol.net" target="_blank"> Contact Us</a></li> 
+{% endblock %}
+
+{% block content %}
+
+<main class="content-main">
+    
+
+
+<div class="section">
+    <p class="header-text-board">Privacy Policy</p>
+    <h2>Introduction</h2>
+    <p>Welcome to PropPatrol, the dedicated warranty provider for proprietary firm traders. We offer financial assurance to traders committed to proprietary firms, helping to safeguard their interests and financial investments in the trading environment.</p>
+    
+    <h2>Information Collection</h2>
+    <p>We collect the following categories of personal information:</p>
+    <ul>
+        <li>Personal Identification Information: This includes your name, address, and phone number.</li>
+        <li>Contact Details: We collect your email address to communicate with you effectively.</li>
+        <li>Payment Information: We collect card details required to process payments for our services.</li>
+        <li>Investor Password: We require your investor password from your proprietary firm to facilitate risk assessments and other necessary services.</li>
+    </ul>
+
+    <h2>Purpose of Data Collection</h2>
+    <p>The information we collect is used for the following purposes:</p>
+    <ul>
+        <li>Underwriting and managing insurance policies</li>
+        <li>Processing claims</li>
+        <li>Conducting risk assessments and fraud prevention activities</li>
+        <li>Ensuring compliance with our legal obligations</li>
+    </ul>
+
+    <h2>Legal Basis for Processing</h2>
+    <p>The processing of your personal data is based on several legal grounds:</p>
+    <ul>
+        <li>Consent: We process certain data based on your explicit consent, which you may withdraw at any time.</li>
+        <li>Contractual Necessity: Processing is necessary for the performance of our insurance contracts with you.</li>
+        <li>Legal Obligations: We are required to process certain information in compliance with the law.</li>
+        <li>Legitimate Interests: Processing is also based on our legitimate interests in conducting and managing our business to enable us to give you the best service/products and secure experience.</li>
+    </ul>
+
+    <h2>Data Sharing and Disclosure</h2>
+    <p>We only use or disclose your personal information for the reasons it’s collected, for other purposes you consent to, or when it is required or allowed by law. This may include sharing personal information with:</p>
+    <ul>
+        <li>Reinsurers, to provide necessary coverage and manage risks.</li>
+        <li>Agents or Representatives, who act on our behalf.</li>
+        <li>Service Providers, such as payment facilitation services</li>
+    </ul>
+    <p>In some cases, and where allowed by law, your personal information may be shared with these parties in jurisdictions other than where it was collected, and would therefore be subject to the laws of those jurisdictions. We will not share your personal information, without your consent, with any organization outside our group of companies for the purpose of that organization marketing its products or services to you.</p>
+
+    <h2>Data Security Measures</h2>
+    <p>We implement a variety of security measures to maintain the safety of your personal information. These include encryption of data in transit and at rest, secure server configurations, and access controls. Our security policies are regularly reviewed and updated to ensure we are in line with best practices and legal requirements.</p>
+
+    <h2>Rights of Data Subjects</h2>
+    <p>You have several rights regarding your personal data, including:</p>
+    <ul>
+        <li>Access: You can request access to the personal data we hold about you.</li>
+        <li>Correction: You have the right to ask us to correct any inaccurate or incomplete data.</li>
+        <li>Deletion: You may request the deletion of your personal data, subject to certain exceptions.</li>
+        <li>Restriction: You can request that we restrict the processing of your personal data under certain conditions.</li>
+        <li>Portability: You have the right to receive the personal data you have provided to us in a structured, commonly used, and machine-readable format.</li>
+    </ul>
+    <p>To exercise any of these rights, please contact us at <a href="mailto:support@proppatrol.net">support@proppatrol.net</a></p>
+
+    <h2>Changes to the Privacy Policy</h2>
+    <p>We reserve the right to update this privacy policy at any time. Any changes will be posted on our website and effective immediately upon the update being published. We encourage you to periodically review this page for the latest information on our privacy practices.</p>
+
+    <h2>Contact Information</h2>
+    <p>For any questions or concerns regarding this privacy policy or our privacy practices, please contact us at:</p>
+    <p>Email: <a href="mailto:support@proppatrol.net"> <strong> support@proppatrol.net</strong></a></p>
+    <p>Twitter: <a href="https://twitter.com/PropPatrol"><strong> PropPatrol</strong></a></p>
+</div>
+
+
+</main>
+
+
+{% endblock %}

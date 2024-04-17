@@ -1,7 +1,7 @@
 .board-cont {
     display: flex;
     flex-flow: column nowrap;
-    width: 25%;
+    width: 30%;
     background: white;
     padding: 1.8em;
     border-radius: 10px;
@@ -12,21 +12,23 @@
 
 .board-cont img {
     max-width: 100px;
-    position: absolute;
+    /* position: absolute; */
     right: 0;
 }
 
 .board-cont .text-img {
      
-        display: flex;
-        flex-flow: row nowrap;
-        justify-content: space-between;
-        position: relative;
-    
+display: flex;
+     
+flex-flow: row wrap;
+     
+justify-content: space-between;
+     
+position: relative;
 }
 
 
-.board-cont .text-img p {
+.board-cont .text-img p:first-child {
     font-size: 1.2em;
     /* opacity: 0.8; */
     color: #0c3594d1;
@@ -51,6 +53,7 @@ div#dashboard-container {
     display: flex;
     flex-flow: row wrap;
     justify-content: space-between;
+    margin-top: 3em;
 }
 
 .header-text-under.dropdown {
@@ -64,7 +67,7 @@ div#dashboard-container {
     width: 180px;
 }
 
-.header-text-under.dropdown  ul.dropdown-menu {top: 100%;max-width: 180px;min-width: 180px;margin-top: 0.4em;}
+.header-text-under.dropdown  ul.dropdown-menu {top: 100%;max-width: 180px;min-width: 180px;margin-top: 0.4em;cursor: pointer;}
 
 #menu3 {
     background: #0c3594d1 !important;
@@ -409,12 +412,56 @@ span.remaining.hazard.not-error {
     margin: 0;
   }
 
+  #faq-info .stage-pass {
+    color: #007bffab;
+  }
+
+  
 
   .link-icon-text {
     
 color: #0c3594a6;
     
 font-weight: bold;
+  }
+
+  #nav-links {
+
+justify-content: center;
+
+}
+
+footer {
+    display: none;
+}
+
+  @media (max-width: 1100px) {
+#nav-links {
+
+display: flex;
+}
+  }
+
+  .show-full.dropdown  {display: flex !important;position: relative;left: -50px;}
+
+  .show-full .btn-primary {
+    width: 180px !important;
+  }
+
+  .show-full ul.dropdown-menu {
+    max-width: 180px !important;
+    min-width: 180px !important;
+    margin-top: 1.2em !important;
+  }
+
+  .show-full  li {
+    padding: 0 !important;
+  }
+
+  .show-full a {
+    color: #0c3594a6 !important;
+    font-weight: normal !important;
+    font-size: 1.1em !important;
   }
 
 /* payment div starts here */
@@ -504,7 +551,7 @@ font-weight: bold;
 }
 
 .submit-btn:hover {
-    background-color: #0a214c;
+    /* background-color: #0a214c; */
     color: #f1f8ff;
 }
 
@@ -549,10 +596,11 @@ font-weight: bold;
     flex-flow: row nowrap;
     justify-content: center;
     align-items: center;
+    margin-bottom: 0.8em;
 }
 
 .payment-svg-wrapper h2 {
-    margin: 0 0 0 1em;
+    margin: 0 0 0 0.5em;
 }
 
 .payment-svg-wrapper p {
@@ -605,3 +653,172 @@ font-weight: bold;
     position: unset;
 }
 
+/* checkbox for payment */
+
+.checkbox-custom {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+}
+
+.custom-checkbox {
+    width: 20px; /* Checkbox size */
+    height: 20px; /* Checkbox size */
+    margin-right: 10px;
+    cursor: pointer;
+    appearance: none;
+    background-color: #fff; /* White background */
+    border: 2px solid #ccc; /* Light grey border */
+    border-radius: 4px; /* Rounded corners */
+    position: relative; /* Needed for pseudo-element positioning */
+    transition: background-color 0.3s, border-color 0.3s;
+    outline: none; /* Removes default focus outline */
+    box-shadow: none; /* Removes any default shadows */
+}
+
+.custom-checkbox:focus {
+    outline: none !important;
+}
+
+.custom-checkbox:checked {
+    background-color: #233DFF; /* Your theme blue */
+    border-color: #233DFF;
+}
+
+.custom-checkbox:checked::after {
+    content: "";
+    position: absolute;
+    left: 5px;
+    top: 1px;
+    width: 6px;
+    height: 11px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    transform: rotate(45deg);
+}
+
+.custom-checkbox:focus {
+    outline: none;
+    border-color: #0056b3; /* Focus color */
+}
+
+.checkbox-label {
+    font-size: 0.9em;
+    color: #333; /* Text color */
+}
+
+.checkbox-label a {
+    color: #007bff; /* Link color to match theme */
+    text-decoration: none;
+}
+
+.custom-checkbox::before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    outline: none;
+    left: -1px;
+    right: -1px;
+    bottom: -1px;
+    background: #fff;
+    /* border: 2px solid #0c3594; */
+    border-radius: 4px;
+    transition: transform .2s, opacity .2s;
+    transform: scale(0);
+    opacity: 0;
+    z-index: 0;
+}
+
+.custom-checkbox:checked::before {
+    transform: scale(1.5);
+    opacity: 0.4;
+    transition: transform .2s, opacity .5s;
+}
+
+.checkbox-custom label {
+
+margin: 0;
+margin-left: 1em;
+align-self: flex-end;
+}
+
+.submit-btn.disabled {
+    /* background-color: #ccc; */
+    /* color: #666; */
+    cursor: not-allowed;
+    pointer-events: none;
+    opacity: 0.4;
+    user-select: none;
+}
+
+#payment-link:focus-visible {
+    text-decoration: none !important;
+border: none !important;
+outline: none;
+}
+
+/* checkbox end */
+
+
+
+
+/* not for payment */
+
+.board-cont img {
+    max-width: 60px;
+    position: absolute;
+    /* left: -80px; */
+    right: -50px;
+    top: -50px;
+}
+
+@media (max-width:1250px) {
+
+
+
+    #dashboard-container .board-cont {
+        width: 100%;
+        height: 220px;
+        margin-bottom: 2.5em;
+    }
+
+}
+
+
+@media (max-width:1100px) {
+
+    main.content-main {
+        padding: 1.5em 2em;
+    }
+
+    #dashboard-container .board-cont .text-img {
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: space-between;
+        position: relative;
+        flex-direction: column-reverse;
+    }
+
+    
+    div#dashboard-container {
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: space-between;
+    }
+
+ 
+
+      
+}
+
+@media (max-width: 768px) {
+
+header nav {
+padding: 0em 1em;
+
+}
+
+}
+
+
+/* not for payment end */

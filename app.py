@@ -8,19 +8,21 @@ from flask_wtf.csrf import CSRFProtect, validate_csrf
 from urllib.parse import quote_plus, urlencode
 import stripe 
 import sparkpost
-# import requestsf
+import requests
 from datetime import datetime
 
 # email api key e0292a01d4005f36ecc119c1ea1cf1dd04ea111c
-
+spark_api = 'e0292a01d4005f36ecc119c1ea1cf1dd04ea111c'
 stripe.api_key = 'sk_test_51Oyi2xP649Efo4kCYt2kWsW0hPJjptfuWapRJB8ZMCHvhfI4HJF0FuAdEaNJ6JzbQVp0pj1BBOsMEQwf4XJvQSRA00ELDbyNAC'
-
 endpoint_secret = 'whsec_5943b6c6ce120203812d73889dcc757cd73be09a7d93150736be55b115ca5d68'
-
 app = Flask(__name__)
 app.secret_key = '1799d3118e5549432de9b191ba8003c8826585499ebba1974de60d36c8c2c2e6'
 app.config['WTF_CSRF_SECRET_KEY'] =   'Dv1vKfzX6Eo5h_C9cSbX4Q'
 app.config['DEBUG'] = True
+
+# only for the live account
+# app.config['PREFERRED_URL_SCHEME'] = 'https'
+# app.config['SERVER_NAME'] = 'www.proppatrol.net'
 csrf = CSRFProtect(app)
 
 
@@ -29,6 +31,9 @@ firebase_admin.initialize_app(cred)
 db = firestore.client()
 
 oauth = OAuth(app)
+# # Updated URL with custom domain for live
+# conf_url = 'https://auth.proppatrol.net/.well-known/openid-configuration'
+
 conf_url = 'https://dev-ct0rwl0778orlwvk.us.auth0.com/.well-known/openid-configuration'
 oauth.register(
     name='proppatrol',
@@ -73,6 +78,39 @@ oauth.register(
 #             # Here you can handle the specific case where access was denied
             
 #             return 'you didnt provide consent', 403 
+
+def send_email(recipient, template_id, substitution_data):
+    url = "https://api.sparkpost.com/api/v1/transmissions"
+    headers = {
+        "Authorization": spark_api,
+        "Content-Type": "application/json"
+    }
+    payload = {
+        "options": {
+            "sandbox": False
+        },
+        "content": {
+            "template_id": template_id,
+            "use_draft_template": False
+        },
+        "recipients": [{
+            "address": recipient,
+            "substitution_data": substitution_data
+        }]
+    }
+    # example of sub data
+    # substitution_data = {
+#     "first_name": "John",
+#     "last_name": "Doe"
+# }
+
+    response = requests.post(url, json=payload, headers=headers)
+    return response.json()
+
+
+@app.errorhandler(404)
+def not_found(error):
+    return render_template('404.html'), 404
     
 
 @app.route("/callback", methods=["GET", "POST"])
@@ -116,10 +154,10 @@ def callback():
     except OAuthError as e:
         if 'access_denied' in str(e):
             # Handle specific case where access was denied
-            return 'You did not provide consent', 403
+            return render_template('noaccess.html', error='You do not have access to PropSurance!'), 403
         else:
             # Handle other OAuth errors
-            return 'Authentication failed', 403
+            return render_template('noaccess.html', error='Registration Failed, No access.'), 403
 
 
 
@@ -145,6 +183,36 @@ def logout():
             quote_via=quote_plus,
         )
     )
+
+@app.route('/dashboard/faq/', methods=['GET'])
+@app.route('/dashboard/faq', methods=['GET'])
+def dashboard_faq():
+    if 'user' not in session:
+        return redirect(url_for("login"))
+
+    else:
+        return render_template("faq-dashboard.html",dashboard_nav=True)
+    
+
+
+@app.route('/dashboard/terms-of-service/', methods=['GET'])
+@app.route('/dashboard/terms-of-service', methods=['GET'])
+def propsurance_service():
+    if 'user' not in session:
+        return redirect(url_for("login"))
+
+    else:
+        return render_template("terms-propsurance.html",dashboard_nav=True)
+
+@app.route('/dashboard/privacy-policy/', methods=['GET'])
+@app.route('/dashboard/privacy-policy', methods=['GET'])
+def propsurance_terms():
+    if 'user' not in session:
+        return redirect(url_for("login"))
+
+    else:
+        return render_template("privacy-propsurance.html",dashboard_nav=True)
+ 
 
 @app.route('/dashboard/raise-ticket/<int:account_count>', methods=['GET'])
 def access_ticket_handler(account_count):
@@ -221,7 +289,7 @@ def access_ticket_handler(account_count):
         raise err
         # pass
 
-    return render_template("ticket_handler.html", account_info=account, prop_count=account_count)
+    return render_template("ticket_handler.html", account_info=account, prop_count=account_count,dashboard_nav=True)
 
 @app.route('/dashboard/user/<int:account_count>', methods=['GET'])
 def access_account_dashboard(account_count):
@@ -287,6 +355,7 @@ def access_account_dashboard(account_count):
                 'server_type': account_info.get('trading_account_type', ''),
                 'account_stage': account_stage,
                 'account_access_url': account_access_url,
+                
                 'current_rate': account_info.get('current_rate', '40%')
             }
 
@@ -296,7 +365,7 @@ def access_account_dashboard(account_count):
         raise err
         # pass
 
-    return render_template("user_dashboard.html", account_info=account, prop_count=account_count, has_first_name=True, first_name=first_name)
+    return render_template("user_dashboard.html", account_info=account, prop_count=account_count, has_first_name=True, first_name=first_name, dashboard_nav=True)
 
 
 
@@ -359,7 +428,8 @@ def submit_mt_account(account):
                 'server': account_info.get('server', ''),
                 'server_type': account_info.get('trading_account_type', ''),
                 'account_stage': account_stage,
-                'customer_name': customer_name
+                'customer_name': customer_name ,
+                'date': trader_info_data_parsed.get('insured_date', '')
             }
 
             # print(accounts)
@@ -408,7 +478,7 @@ def submit_mt_account(account):
         # Redirect back to the same page to potentially show updated data or messages
         return redirect(url_for('submit_mt_account', account=account))
 
-    return render_template("validate_trader_info.html", accounts=accounts, prop_count=account)
+    return render_template("validate_trader_info.html", accounts=accounts, prop_count=account, dashboard_nav=True)
 
 
 
@@ -497,7 +567,7 @@ def dashboard():
                     remaining_size = 200000 - account_size        
 
             else: 
-                return render_template("dashboard.html", session=user_info, user_email=user_email, user_validated_email=user_validated_email)        
+                return render_template("dashboard.html", session=user_info, user_email=user_email, user_validated_email=user_validated_email, dashboard_nav=True)        
                     
     
 
@@ -527,20 +597,20 @@ def dashboard():
         
 
     if account_insured:
-        return render_template("dashboard.html", session=user_info, user_email=user_email, user_name=user_name, account_insured=True, num_of_accounts = num_of_accounts, insured_accounts =insured_accounts, account_percentage=account_percentage, remaining_size=remaining_size, account_size=account_size, has_first_name=True,first_name=first_name )
+        return render_template("dashboard.html", session=user_info, user_email=user_email, user_name=user_name, account_insured=True, num_of_accounts = num_of_accounts, insured_accounts =insured_accounts, account_percentage=account_percentage, remaining_size=remaining_size, account_size=account_size, has_first_name=True,first_name=first_name, dashboard_nav=True)
     # # print(user_data + " the value for user data came")
     
         
     # firebase_user_data = list(user_data.values())[0]
     
-    return render_template("dashboard.html", session=user_info, user_email=user_email, user_validated_email=user_validated_email)
+    return render_template("dashboard.html", session=user_info, user_email=user_email, user_validated_email=user_validated_email, dashboard_nav=True)
 
 
 
 
 
 
-@app.route('/webhook', methods=['POST'])
+@app.route('/webhook/aurt5dfte63462asfd33', methods=['POST'])
 @csrf.exempt
 def webhook():
 
@@ -549,6 +619,7 @@ def webhook():
     sig_header = request.headers['STRIPE_SIGNATURE']
     check_for_count = True
     prop_count = 0
+    template_id = 'payment-confirmation'
     try:
         event = stripe.Webhook.construct_event(
             payload, sig_header, endpoint_secret
@@ -607,6 +678,8 @@ def webhook():
             account_count = sum(1 for _ in accounts_docs)  # Count documents and prepare the next index
             account_doc_id = f"account_info_{account_count}"
             first_name = customer.name.split()[0]
+
+            
 
             account_info = {
                 'propsurance_count': account_count,
@@ -675,6 +748,7 @@ def webhook():
             accounts_collection = user_ref.collection('trader_info')
             accounts_docs = accounts_collection.stream()  # Get all documents to count them
             accounts_count = sum(1 for _ in accounts_docs)  # Count documents
+            first_name = customer.name.split()[0]
 
             # Extract custom field values
             trader_account_info = payment_intent['metadata']
@@ -687,21 +761,36 @@ def webhook():
             account_size = int(trader_account_info['account_value'])
             prop_firm_name =  trader_account_info['firm_name']
             sub_type = trader_account_info['service']
+            current_phase = trader_account_info['phase']
+            purchase_cost = trader_account_info['price']
 
-            phase_value = payment_intent.get("custom_fields", [{}])[0].get("dropdown", {}).get("value", "")
+            # phase_value = payment_intent.get("custom_fields", [{}])[0].get("dropdown", {}).get("value", "")
             mt4mt5_investor_id = payment_intent.get("custom_fields", [{}])[1].get("text", {}).get("value", "")
             mt4mt5_investor_password = payment_intent.get("custom_fields", [{}])[2].get("text", {}).get("value", "")
 
+            sub_data = {
+                'customer_name': first_name,
+                'customer_purchase_id': account_size,
+                'prop_firm_name': prop_firm_name,
+                'signup_url': url_for('submit_mt_account', account=accounts_count, _external=True),
+                'dashboard_url' : url_for('dashboard', _external=True),
+                'faq_url' : url_for('dashboard_faq', _external=True),
+                'url_privacy': url_for('propsurance_terms', _external=True)
+            }
+
+            # send_email(client_reference_id_email , template_id, sub_data )
+
             trader_account_info = {
                 'propsurance_count': accounts_count,  # Dynamic count based on the number of documents
-                'account_status': phase_value,
+                'account_status': current_phase,
                 'account_size': account_size,
                 'sub-type': sub_type,
                 'prop_firm_name': prop_firm_name,
                 'investor_id': mt4mt5_investor_id,
                 'investor_password': mt4mt5_investor_password,
                 'insured_date': datetime.now().strftime('%Y-%m-%d'),
-                'customer-purchase-id': customer.id  # Ensure customer.id is passed correctly
+                'customer-purchase-id': customer.id ,
+                'price_cost': purchase_cost
             }
 
             # Add a new document to the sub-collection

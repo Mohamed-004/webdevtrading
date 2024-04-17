@@ -1,14 +1,43 @@
 {% extends "layout.html" %}
 {% block title %}
-<title>PropSurance - | Account Profile</title>
+<title>PropSurance - | Submit Case </title>
 {% endblock %}
 
-{% block css %}    
+{% block css %}   
+<meta name="robots" content="noindex, nofollow"> 
 <link rel="stylesheet" href="{{ url_for('static', filename='css/cases.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/dash.css') }}">
 
 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/current_user.css') }}">
+{% endblock %}
+
+{% block dashlink_current_pg %}
+Raise Ticket
+                  {% endblock %}
+
+{% block dashlinks %}
+
+<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ url_for('home') }}">Home</a></li>
+<li role="presentation" class="divider"></li>
+<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ url_for('home') }}">Home</a></li>
+<li role="presentation" class="divider"></li>
+<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ url_for('dashboard') }}"> PropSurance <br> Dashboard</a></li>
+<li role="presentation" class="divider"></li>
+<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ url_for('logout') }}">Logout</a></li>
+<li role="presentation" class="divider"></li>
+<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ url_for('dashboard_faq') }}">PropSurance-FAQ</a></li>
+<li role="presentation" class="divider"></li>
+
+<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ url_for('view_firm_reports') }}">Reported Firms </a></li>  
+<li role="presentation" class="divider"></li>
+
+<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ url_for('propsurance_service') }}">Terms of Service </a></li>   
+<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ url_for('propsurance_terms') }}">Privacy Policy </a></li>   
+<li role="presentation" class="divider"></li> 
+
+<li role="presentation"><a role="menuitem" tabindex="-1" href="https://twitter.com/PropPatrol" target="_blank"> Twitter</a></li> 
+<li role="presentation"><a role="menuitem" tabindex="-1" href="https://mailto:support@proppatrol.net" target="_blank"> Contact Us</a></li> 
 {% endblock %}
 
 {% block content %}
@@ -303,6 +332,29 @@
             </div>
             </div>
             </div>
+
+            <div   class="board-cont ticket-border rate-id">
+                <div class="rate-flex">
+                    <svg fill="#233DFF" class="info-icon" width="35px" height="35px" class="left-top" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" class="icon"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm32 664c0 4.4-3.6 8-8 8h-48c-4.4 0-8-3.6-8-8V456c0-4.4 3.6-8 8-8h48c4.4 0 8 3.6 8 8v272zm-32-344a48.01 48.01 0 0 1 0-96 48.01 48.01 0 0 1 0 96z"></path> </g></svg>
+                  
+                    <div id="cover-text-div">
+                    <p id="rate-header">General</p>
+                    <p class="header-text-board">
+                        Can I insure an account whose<span class="propsurance-color">   Payout was already rejected? </span> 
+                    </p>
+                
+               
+        
+                <ul class="coverage-ul">
+        
+                    <p class="coverage-p">
+                        No, we do not allow an account to be insured retroactively before registering it with Prop Patrol. This is because the account was not insured at the time the payout was rejected, so it is not eligible for insurance. Additionally, if you insure a new account and experience a rejected payout, You must inform us of any rejected payouts only after the initial 30-day threshold period has passed following the insurance of your new account.
+                    </p>
+                </ul>
+       
+                </div>
+                </div>
+                </div>
                     
               
 

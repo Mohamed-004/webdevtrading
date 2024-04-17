@@ -4,8 +4,35 @@
 {% endblock %}
 
 {% block css %}    
+<meta name="robots" content="noindex, nofollow">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/cases.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/dash.css') }}">
+{% endblock %}
+
+{% block dashlink_current_pg %}
+Dashboard
+                  {% endblock %}
+
+{% block dashlinks %}
+
+<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ url_for('home') }}">Home</a></li>
+<li role="presentation" class="divider"></li>
+<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ url_for('dashboard') }}"> PropSurance <br> Dashboard</a></li>
+<li role="presentation" class="divider"></li>
+<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ url_for('logout') }}">Logout</a></li>
+<li role="presentation" class="divider"></li>
+<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ url_for('dashboard_faq') }}">PropSurance-FAQ</a></li>
+<li role="presentation" class="divider"></li>
+
+<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ url_for('view_firm_reports') }}">Reported Firms </a></li>  
+<li role="presentation" class="divider"></li>
+
+<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ url_for('propsurance_service') }}">Terms of Service </a></li>   
+<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ url_for('propsurance_terms') }}">Privacy Policy </a></li>   
+<li role="presentation" class="divider"></li> 
+
+<li role="presentation"><a role="menuitem" tabindex="-1" href="https://twitter.com/PropPatrol" target="_blank"> Twitter</a></li> 
+<li role="presentation"><a role="menuitem" tabindex="-1" href="https://mailto:support@proppatrol.net" target="_blank"> Contact Us</a></li> 
 {% endblock %}
 
 {% block content %}
@@ -19,7 +46,7 @@
 <h2 class="stage-pass">Welcome {{first_name}}</h2>
 
 {%else%}
-<h2 class="stage-pass">Welcome {{first_name}}</h2>
+<h2 class="stage-pass">Dashboard</h2>
 {% endif %}
 
 
@@ -28,24 +55,27 @@
         <!-- prop surance status -->
         <div class="board-cont">
             <div class="text-img">
+                <div>
                 <p>PropSurance Status</p>
+                <p class="header-text-board">
+
+                    {% if account_insured %}
+                Insured
+            {% else %}
+                Un-Insured
+            {% endif %}
+                </p>
+            </div>
                 <img src="{{ url_for('static', filename='images/info.png') }}" alt="Info Icon">
             </div>
-            <p class="header-text-board">
-
-                {% if account_insured %}
-            Insured
-        {% else %}
-            Un-Insured
-        {% endif %}
-            </p>
+           
             <div class="dropdown header-text-under">
                 <button class="btn btn-primary dropdown-toggle" id="menu4" type="button" data-toggle="dropdown">Get Insured
                 <span class="caret"></span></button>
                 <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
-                  <li role="presentation"><a role="menuitem" tabindex="-1" >Ftmo</a></li>
+                  <li role="presentation"><a role="menuitem" tabindex="-1" href="#payment">FTMO</a></li>
                   <li role="presentation" class="divider"></li>
-                  <li role="presentation"><a role="menuitem" tabindex="-1" >5%ers</a></li>
+                  <li role="presentation"><a role="menuitem" tabindex="-1"  href="#payment">5%ers</a></li>
                 </ul>
               </div>
         </div>
@@ -77,12 +107,17 @@
                    
                     {% for account in insured_accounts %}
                         {% if account['account_url_fix'] %}
-                         
+                        {% if account['account_url_fix'] | int > 0 %}
+                        <li role="presentation" class="divider"></li>
+                        {% else%}
+                        {% endif %}
+
                             <li role="presentation">
-                                <a role="menuitem" tabindex="-1" href="{{ url_for('dashboard', account_number=account['account_number']) }}">
-                                    {{account['name']}} <br> {{ account['account_size'] }} 
+                                <a role="menuitem" tabindex="-1" href="{{ url_for('access_account_dashboard', account_count=account['account_url_fix']) }}">
+                                    {{account['name']}} <br> {{ account['account_size'] }}  #{{account['account_url_fix'] |int + 1 }}
                                 </a>
                             </li>
+                          
                         {% endif %}
                     {% endfor %}
                     {% if not insured_accounts %}
@@ -174,11 +209,13 @@
                     </a>
                     </li>
                     <li role="presentation" class="divider"></li>
-                    <li role="presentation">  <a  role="menuitem" tabindex="-1" href="">File a Case</a></li>
+                    <li role="presentation">  <a  role="menuitem" tabindex="-1" href="{{url_for('access_ticket_handler', account_count=account['account_url_fix'])}}">File a Case</a></li>
                     <li role="presentation" class="divider"></li>
-                    <li role="presentation">     <a  role="menuitem" tabindex="-1"a href="">Recieved a <br> Payout</a></li>
+                    <li role="presentation">     <a  role="menuitem" tabindex="-1"a href="{{url_for('access_ticket_handler', account_count=account['account_url_fix'])}}">Recieved a <br> Payout</a></li>
                     <li role="presentation" class="divider"></li>
-                    <li role="presentation">     <a   role="menuitem" tabindex="-1" href="">Passed Current <br> Phase</a></li>
+                    <li role="presentation">     <a   role="menuitem" tabindex="-1" href="{{url_for('access_ticket_handler', account_count=account['account_url_fix'])}}">Passed Current <br> Phase</a></li>
+                    <li role="presentation" class="divider"></li>
+                    <li role="presentation">     <a   role="menuitem" tabindex="-1" href="{{url_for('access_ticket_handler', account_count=account['account_url_fix'])}}">Contact Us</a></li>
 
                     <!-- <li class="coverage-p"><a href="">Billing</a></li>
                     <li class="coverage-p"><a href="">File a Case</a></li>
@@ -206,7 +243,7 @@
                         {% else %}
                         <div class="hazard-div">
 
-                            <a class="remaining hazard not-error"  id="remaining-success"><div class="hazard-icon-div "><svg viewBox="0 -0.5 25 25" width="25px" height="25px" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M5.50002 18.211V9.737C5.49724 9.30439 5.84541 8.9513 6.27802 8.948H9.38902C9.82162 8.9513 10.1698 9.30439 10.167 9.737V5.789C10.1642 5.35678 10.5118 5.00385 10.944 5H14.056C14.4886 5.0033 14.8368 5.35639 14.834 5.789V8.158C14.8312 7.72539 15.1794 7.3723 15.612 7.369H18.723C19.1552 7.37285 19.5028 7.72578 19.5 8.158V18.211C19.5028 18.6436 19.1546 18.9967 18.722 19H6.27802C5.84541 18.9967 5.49724 18.6436 5.50002 18.211V18.211Z" stroke="#0c3594a6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M9.41699 19C9.41699 19.4142 9.75278 19.75 10.167 19.75C10.5812 19.75 10.917 19.4142 10.917 19H9.41699ZM10.917 9.73696C10.917 9.32275 10.5812 8.98696 10.167 8.98696C9.75278 8.98696 9.41699 9.32275 9.41699 9.73696H10.917ZM14.083 19C14.083 19.4142 14.4188 19.75 14.833 19.75C15.2472 19.75 15.583 19.4142 15.583 19H14.083ZM15.583 8.15796C15.583 7.74375 15.2472 7.40796 14.833 7.40796C14.4188 7.40796 14.083 7.74375 14.083 8.15796H15.583ZM10.917 19V9.73696H9.41699V19H10.917ZM15.583 19V8.15796H14.083V19H15.583Z" fill="#0c3594a6"></path> </g></svg></div> Account Info </a>
+                            <a class="remaining hazard not-error"  id="remaining-success" href="{{url_for('access_account_dashboard', account_count=account['account_url_fix'])}}"><div class="hazard-icon-div "><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" stroke="#233DFF"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" stroke="#CCCCCC" stroke-width="0.048"></g><g id="SVGRepo_iconCarrier"> <path d="M15.197 3.35462C16.8703 1.67483 19.4476 1.53865 20.9536 3.05046C22.4596 4.56228 22.3239 7.14956 20.6506 8.82935L18.2268 11.2626M10.0464 14C8.54044 12.4882 8.67609 9.90087 10.3494 8.22108L12.5 6.06212" stroke="#233DFF" stroke-width="2.4" stroke-linecap="round"></path> <path d="M13.9536 10C15.4596 11.5118 15.3239 14.0991 13.6506 15.7789L11.2268 18.2121L8.80299 20.6454C7.12969 22.3252 4.55237 22.4613 3.0464 20.9495C1.54043 19.4377 1.67609 16.8504 3.34939 15.1706L5.77323 12.7373" stroke="#233DFF" stroke-width="2.4" stroke-linecap="round"></path> </g></svg></div> Account Info </a>
                         </div>
 
                         {% endif %}
@@ -222,8 +259,7 @@
 
 
 
-
-<div class="board-cont payment-slider payment-image">
+<div class="board-cont payment-slider payment-image" id="payment">
     <div>
     <img src=" {{ url_for('static', filename='images/propsurance.png') }}" alt="Prop Surance">
 </div>
@@ -243,7 +279,7 @@
   <svg width="25px" height="25px" id="dropdown-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M12.7071 14.7071C12.3166 15.0976 11.6834 15.0976 11.2929 14.7071L6.29289 9.70711C5.90237 9.31658 5.90237 8.68342 6.29289 8.29289C6.68342 7.90237 7.31658 7.90237 7.70711 8.29289L12 12.5858L16.2929 8.29289C16.6834 7.90237 17.3166 7.90237 17.7071 8.29289C18.0976 8.68342 18.0976 9.31658 17.7071 9.70711L12.7071 14.7071Z" fill="#0c3594d1"></path> </g></svg> 
     <select id="propFirmSelect" class="styled-select">
         <option value="FTMO">FTMO</option>
-        <option value="5ers">5ers</option>
+        <option value="5ers">5%ers</option>
         <option value="LuxTrading">LuxTrading</option>
     </select></div>
     
@@ -270,7 +306,7 @@
         <div class="info-border-bottom">
             <div class="payment-svg-wrapper middle-wrapper wrapper-p">
                 <svg viewBox="0 0 24 24" width="25px" height="20px"  fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M9 2H15C20 2 22 4 22 9V15C22 20 20 22 15 22H9C4 22 2 20 2 15V9C2 4 4 2 9 2Z" stroke="#0c3594ba" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M8.57007 15.27L15.11 8.72998" stroke="#0c3594ba" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M8.98001 10.3699C9.65932 10.3699 10.21 9.81923 10.21 9.13992C10.21 8.46061 9.65932 7.90991 8.98001 7.90991C8.3007 7.90991 7.75 8.46061 7.75 9.13992C7.75 9.81923 8.3007 10.3699 8.98001 10.3699Z" stroke="#0c3594ba" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M15.52 16.0899C16.1993 16.0899 16.75 15.5392 16.75 14.8599C16.75 14.1806 16.1993 13.6299 15.52 13.6299C14.8407 13.6299 14.29 14.1806 14.29 14.8599C14.29 15.5392 14.8407 16.0899 15.52 16.0899Z" stroke="#0c3594ba" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
-        <p id="commissionInfo">Fee: 5% of every Payout</p></div></div>
+        <p id="commissionInfo">Fee: 5% of Every Payout</p></div></div>
 
 
         <div class="info-border-bottom last">
@@ -278,8 +314,20 @@
             <svg viewBox="0 0 24 24" width="25px" height="20px" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M14 8.9999C13.5 8.87589 12.6851 8.87132 12 8.87589M12 8.87589C11.7709 8.87741 11.9094 8.86767 11.6 8.87589C10.7926 8.90107 10.0016 9.23665 10 10.1874C9.99825 11.2002 11 11.4999 12 11.4999C13 11.4999 14 11.7311 14 12.8124C14 13.625 13.1925 13.981 12.1861 14.099C11.3861 14.099 11 14.1249 10 13.9999M12 8.87589L12 7.49999M12 14.0994V15.5M20 12C20 16.4611 14.54 19.6937 12.6414 20.683C12.4361 20.79 12.3334 20.8435 12.191 20.8712C12.08 20.8928 11.92 20.8928 11.809 20.8712C11.6666 20.8435 11.5639 20.79 11.3586 20.683C9.45996 19.6937 4 16.4611 4 12V8.21759C4 7.41808 4 7.01833 4.13076 6.6747C4.24627 6.37113 4.43398 6.10027 4.67766 5.88552C4.9535 5.64243 5.3278 5.50207 6.0764 5.22134L11.4382 3.21067C11.6461 3.13271 11.75 3.09373 11.857 3.07827C11.9518 3.06457 12.0482 3.06457 12.143 3.07827C12.25 3.09373 12.3539 3.13271 12.5618 3.21067L17.9236 5.22134C18.6722 5.50207 19.0465 5.64243 19.3223 5.88552C19.566 6.10027 19.7537 6.37113 19.8692 6.6747C20 7.01833 20 7.41808 20 8.21759V12Z" stroke="#0c3594ba" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
         <p id="coverageInfo">Coverage for Rejected Payouts</p></div>   </div>
     </div>
+
+    <!-- Agreement Checkbox -->
+    <div class="agreement-section checkbox-custom">
+        <input type="checkbox" id="termsCheckbox" name="agreeTerms" class="custom-checkbox">
+        <label for="agreeTerms" class="checkbox-label">I agree to the <a href="/terms-of-service" target="_blank">Terms of Service *</a></label>
+    </div>
+
+    <!-- FAQ Read Checkbox -->
+    <div class="faq-section checkbox-custom">
+        <input type="checkbox" id="faqCheckbox" name="readFaq" class="custom-checkbox">
+        <label for="readFaq" class="checkbox-label">I have read the <a href="/faq" target="_blank">FAQ *</a> </label>
+    </div>
     
-    <a  id="paymentLink" class="submit-btn">Sign Up</a>
+    <a  id="paymentLink" draggable="false" class="submit-btn disabled" onclick="return false;">Sign Up</a>
 </div>
 
 
@@ -293,32 +341,55 @@
 
 {% block script %}
 <script>
-    document.getElementById('propFirmSelect').addEventListener('change', updatePaymentDetails);
     document.getElementById('accountSizeRange').addEventListener('input', updatePaymentDetails);
 
-    function updatePaymentDetails() {
-        const accountSizes = ['$50k', '{{ "$100k" if remaining_size >= 100000 }}', '{{ "$200k" if remaining_size >= 200000 }}'].filter(Boolean);
-        const sizeIndex = parseInt(document.getElementById('accountSizeRange').value) - 1;
-        const selectedSize = accountSizes[sizeIndex];
-        const firm = document.getElementById('propFirmSelect').value;
+function updatePaymentDetails() {
+    const accountSizes = ['$50k', '{{ "$100k" if remaining_size >= 100000 }}', '{{ "$200k" if remaining_size >= 200000 }}'].filter(Boolean);
+    const sizeIndex = parseInt(document.getElementById('accountSizeRange').value) - 1;
+    const selectedSize = accountSizes[sizeIndex];
+    const firm = document.getElementById('propFirmSelect').value;
 
-        // Simulated fees based on account size
-        const signUps = [100, 200, 300].slice(0, accountSizes.length); // Adjust fees based on available sizes
-        const payouts = [5, 10, 15].slice(0, accountSizes.length); // Adjust percentages based on available sizes
+    // Fees based on account size
+    const signUps = [169, 269, 369].slice(0, accountSizes.length); // Adjust fees based on available sizes
+    const payouts = [5, 5, 5].slice(0, accountSizes.length); // Adjust percentages based on available sizes
 
-        // document.getElementById('feeInfo').innerHTML = 'Sign-up Fee: <span>$' + signUps[sizeIndex] + '</span>';
-        // document.getElementById('commissionInfo').innerText = payouts[sizeIndex] + '% of every payout';
+    document.getElementById('feeInfo').innerHTML = 'Sign-up Fee: <span>$' + signUps[sizeIndex] + '</span>';
+    document.getElementById('commissionInfo').innerText = 'Fee: ' + payouts[sizeIndex] + '% of Every Payout';
 
-        // Update the payment link based on the selected firm and size
-        const urls = {
-            'FTMO': ['https://buy.stripe.com/ftmo50k', 'https://buy.stripe.com/ftmo100k', 'https://buy.stripe.com/ftmo200k'],
-            '5ers': ['https://buy.stripe.com/5ers50k', 'https://buy.stripe.com/5ers100k', 'https://buy.stripe.com/5ers200k'],
-            'LuxTrading': ['https://buy.stripe.com/lux50k', 'https://buy.stripe.com/lux100k', 'https://buy.stripe.com/lux200k']
-        };
-        document.getElementById('paymentLink').href = urls[firm][sizeIndex];
+    // Update the payment link based on the selected firm and size
+    const urls = {
+        'FTMO': ['https://buy.stripe.com/test_3cs5kC9CM6Z79ry144', 'https://buy.stripe.com/ftmo100k', 'https://buy.stripe.com/ftmo200k'],
+        '5ers': ['https://buy.stripe.com/5ers50k', 'https://buy.stripe.com/5ers100k', 'https://buy.stripe.com/5ers200k'],
+        'LuxTrading': ['https://buy.stripe.com/lux50k', 'https://buy.stripe.com/lux100k', 'https://buy.stripe.com/lux200k']
+    };
+    document.getElementById('paymentLink').href = urls[firm][sizeIndex];
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const termsCheckbox = document.getElementById('termsCheckbox');
+    const faqCheckbox = document.getElementById('faqCheckbox');
+    const paymentButton = document.getElementById('paymentLink');
+
+    // Function to update the button's state based on the checkbox
+    function updateButtonState() {
+        if (termsCheckbox.checked && faqCheckbox.checked) {
+            paymentButton.classList.remove('disabled');
+            paymentButton.removeAttribute('onclick'); // Enable the link
+        } else {
+            paymentButton.classList.add('disabled');
+            paymentButton.setAttribute('onclick', 'return false;'); // Keep the link disabled
+        }
     }
 
-    // Initialize with default values
-    window.onload = updatePaymentDetails;
+    // Initial check in case the checkboxes are pre-checked or saved in state
+    updateButtonState();
+
+    // Event listener for checkbox changes
+    termsCheckbox.addEventListener('change', updateButtonState);
+    faqCheckbox.addEventListener('change', updateButtonState);
+});
+
+// Initialize with default values
+window.onload = updatePaymentDetails;
 </script>
 {% endblock %}
