@@ -22,8 +22,8 @@ app.config['WTF_CSRF_SECRET_KEY'] =   'Dv1vKfzX6Eo5h_C9cSbX4Q'
 app.config['DEBUG'] = True
 
 # only for the live account
-# app.config['PREFERRED_URL_SCHEME'] = 'https'
-# app.config['SERVER_NAME'] = 'www.proppatrol.net'
+app.config['PREFERRED_URL_SCHEME'] = 'https'
+app.config['SERVER_NAME'] = 'www.proppatrol.net'
 csrf = CSRFProtect(app)
 
 cred_dict = {
@@ -115,6 +115,9 @@ def send_email(recipient, template_id, substitution_data):
     response = requests.post(url, json=payload, headers=headers)
     return response.json()
 
+@app.route('/propsurance-application')
+def propsurance_application():
+    return render_template('propsurance_application.html')
 
 @app.errorhandler(404)
 def not_found(error):
@@ -208,7 +211,7 @@ def login():
         redirect_uri=("https://www.proppatrol.net/callback"),
     )
     
-
+# for all auth routes make it direct url
 @app.route("/logout")
 def logout():
     session.clear()

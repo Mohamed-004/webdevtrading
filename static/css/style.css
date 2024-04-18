@@ -80,13 +80,13 @@ header nav {
     padding: 1em 5em;
     box-shadow: inset 0 4px 80px #2196f357;
     color: #0c3594a6;
-    border-radius: 0 0 40px 40px;
+    border-radius: 0 0 40px 80px;
     background: #f1f8ff;
     border: #007bffab;
     height: max-content;
     background: #f1f8ff;
     border-bottom: 0.8rem solid rgb(248, 214, 38);
-    border-bottom-color: #007bffab;
+    border-bottom-color: #233dff;
 }
 
 #logo {
@@ -165,6 +165,7 @@ color: #0c3594d1;
     /* font-style: normal; */
     width: 100% !important;
     color: #050a30fc;
+    text-align: left;
 }
 
 span.unline {
@@ -177,10 +178,10 @@ span.blue-text {
 
 #hero p {
     font-size: 1.5em;
-    margin-top: -1.9em;
+    margin-top: 0.8em;
     /* flex-basis: max-content; */
     text-align: left;
-    margin-left: 1em;
+    /* margin-left: 1em; */
 }
 
 .hero-flex-1 {
@@ -188,7 +189,8 @@ span.blue-text {
     flex-flow: row wrap;
     /* justify-content: space-around; */
     width: 100%;
-    max-height: 400px;
+    max-height: 540px;
+    align-items: center;
 }
 
 .hero-flex-2 {
@@ -201,6 +203,7 @@ span.blue-text {
     /* flex-basis: fit-content; */
     display: flex;
     flex-flow: row nowrap;
+    align-items: flex-end;
 }
 
 #advocate-button, #report-button {
@@ -209,6 +212,7 @@ span.blue-text {
     display: flex;
     align-items: center;
     /* opacity: 0.0; */
+    height: 50px;
     font-size: 1.02em;
     justify-content: center;
     width: 20%;
@@ -224,7 +228,7 @@ span.blue-text {
 
 span.s-left {
     display: inline-block;
-    margin-left: -1em;
+    /* margin-left: -1em; */
 }
 
 #advocate-button:hover, #report-button:hover {
@@ -1410,7 +1414,404 @@ span.blacklisted-h2 {
     background-color: #050a30d8;
 }
 
+
+/*beginning payment  */
+
+
+/* #payment form {
+    display: unset; 
+    flex-direction: unset; 
+   max-width: 100%; 
+  margin: 0; 
+   padding: 0; 
+   background: none; 
+  border-radius: unset; 
+   box-shadow: unset;
+} */
+
+
+.hero-payment #full-coverage-bar {
+   border: none;
+   border-bottom: 0.5rem solid rgb(248, 214, 38);
+   border-bottom-color: #007bffab;
+}
+
+.hero-payment h2.form-h2 {
+    font-size: 1.3em;
+    /* opacity: 0.8; */
+    color: #0c3594d1;
+    font-weight: bold;
+    text-align: center;
+}
+
+
+.payment-slider.hero-payment {
+    display: flex;
+    flex-flow: column nowrap;
+    height: 600px;
+    background-color: #ffffff;
+} 
+
+.hero-payment.payment-slider svg {
+    top: 11px;
+}
+
+.payment-slider.hero-payment img {
+    max-width: 200px;
+    text-align: center;
+    margin: 0 auto;
+}
+
+
+.payment-slider.hero-payment {
+   width: 100%;
+   position: relative;
+   border-left: 0.5rem solid rgb(248, 214, 38);
+   border-left-color: #007bffab;
+   max-width: 500px;
+   margin: 20px auto;
+   padding: 2em;
+   height: 650px;
+   background: #fff;
+   height: 600px;
+   /* gap: 10px; */
+   justify-content: space-between;
+   border-radius: 20px;
+   box-shadow: 0px 10px 40px 0px rgba(109, 141, 173, 0.25);
+   text-align: center;
+   /* height: 800px; */
+}
+
+.hero-payment .slider::-webkit-slider-thumb {
+    -webkit-appearance: none; /* Required to disable the default appearance */
+    appearance: none;
+    width: 25px;               /* Width of the thumb */
+    height: 25px;              /* Height of the thumb */
+    background: #4CAF50;      /* Specific color of the thumb */
+    cursor: pointer;          /* Cursor on hover */
+    border-radius: 50%;       /* Rounded thumb */
+    border: none;             /* Remove border if any */
+}
+
+.hero-payment .slider {
+   -webkit-appearance: none !important;
+   height: 15px;
+   border-radius: 5px;
+   background: #d7dcdf;
+   outline: none;
+   opacity: 0.7;
+   transition: opacity .2s;
+   opacity: 1;
+}
+
+.hero-payment .slider:hover {
+   opacity: 1;
+}
+
+
+.hero-payment .slider::-webkit-slider-thumb {
+   -webkit-appearance: none !important;
+   appearance: none !important;
+   width: 25px !important;
+   height: 25px !important;
+   border-radius: 50% !important;
+   background: #233dff !important;
+   cursor: pointer !important;
+}
+
+.hero-payment .slider::-moz-range-thumb {
+   width: 25px !important;
+   height: 25px !important;
+   border-radius: 50% !important;
+   background: #233dff !important;
+   cursor: pointer !important;
+}
+
+.hero-payment .slider-labels {
+   display: flex;
+   justify-content: space-between;
+   padding: 0 10px;
+   margin-top: 1em;
+}
+
+.hero-payment .slider-label {
+   color: #0c3594d1;
+   font-weight: bold;
+}
+
+.hero-payment .submit-btn {
+   width: 100%;
+   padding: 10px 15px;
+   background-color: rgba(42,67,255,1);
+   color: white;
+   border: none;
+   border-radius: 10px;
+   cursor: pointer;
+   transition: background-color 0.3s;
+   font-size: 1em;
+   font-weight: bold;
+}
+
+.hero-payment .submit-btn:hover {
+   /* background-color: #0a214c; */
+   color: #f1f8ff;
+}
+
+.hero-payment .styled-select {
+   appearance: none;       /* Removes native drop-down arrow in modern browsers */
+   -webkit-appearance: none; /* Safari */
+   -moz-appearance: none;    /* Firefox */
+   padding: 0.8em 0 0.8em 35px;
+   border-radius: 10px;
+   background-color: #f1f8ff;
+   border: 1px solid #a7d4f6d9;
+   color: #0c3594d1;
+   width: 100%;
+   font-weight: bold;
+   box-shadow: 0 4px 8px rgba(128, 128, 128, 0.116);
+   margin-bottom: 0;
+   border-left: 0.5rem solid rgb(248, 214, 38);
+   border-left-color: #233dff;
+
+
+
+
+.payment-seperator {
+   position: relative;
+   top: -30px;
+}
+   p#coverageInfo-layout {
+    font-size: 1.1em;
+   margin: 0 0 0 0.8em;
+}
+
+.layout-payment .payment-info {
+   padding: 0;
+   margin-bottom: 1.4em;
+}
+
+.mg-top-payment {
+   margin-top: 2em;
+}
+   span.tag.preferred {
+    margin: 0;
+}
+
+.blacklisted.tag {
+   background-color: #050a30d9 !important;
+   color: #ffffff8c;
+   border: none;
+}
+   input[type='text']::placeholder {
+   opacity: 0.6; /* Blue color */
+}
+
+.show-full {
+   display: flex !important;
+}
+}
+
+.layout-payment  .payment-info {
+   background: #f1f8ff;
+   padding: 10px 0 0;
+   border-radius: 10px;
+   box-shadow: 0 4px 8px rgba(128, 128, 128, 0.116);
+   /* margin-top: 20px; */
+   border-left: 0.5rem solid rgb(248, 214, 38);
+   border-left-color: #233DFF;
+}
+
+.payment-info p {
+   font-size: 1em;
+   color: #0c3594ba;
+   line-height: 1.5;  /* Ensures spacing between lines is adequate */
+   font-weight: 500;
+   margin-bottom: 10px;  /* Spaces out each info line */
+   /* border-bottom: 2px black solid; */
+}
+
+.payment-slider label {
+   color: #0c35948a;
+}
+
+.payment-svg-wrapper {
+   display: flex;
+   flex-flow: row nowrap;
+   justify-content: center;
+   align-items: center;
+   margin-bottom: 0.8em;
+}
+
+.payment-svg-wrapper h2 {
+   margin: 0 0 0 0.5em;
+}
+
+.payment-svg-wrapper p {
+   margin: 0 0 0 1em;
+}
+
+.wrapper-p.payment-svg-wrapper {
+
+       margin: 0 0 1em 0;
+
+   
+}
+
+.hero-flex-1 .info-border-bottom {
+
+   padding: 0.3em;
+   border-bottom: 1px solid #007bff33;
+}
+
+
+.info-border-bottom.last {
+   border: none;
+}
+
+
+#dropdown-svg {
+   
+   position: absolute;
+       /* top: 10px; */
+       left: 10px;
+}
+
+.dropdown-svg-div {
+   position: relative;
+}
+
+.middle-wrapper {
+   margin-bottom: 0 !important;
+   padding: 0.8em 0;
+}
+
+.bottom-wrapper {
+   margin: 0.8em !important;
+}
+
+
+.payment-image.board-cont img {
+   max-width: unset;
+   width: 250px;
+   position: unset;
+}
+
+/* checkbox for payment */
+
+.checkbox-custom {
+   display: flex;
+   align-items: center;
+   /* margin: 10px 0; */
+}
+
+.custom-checkbox {
+   width: 20px; /* Checkbox size */
+   height: 20px; /* Checkbox size */
+   margin-right: 10px;
+   cursor: pointer;
+   appearance: none;
+   background-color: #fff; /* White background */
+   border: 2px solid #ccc; /* Light grey border */
+   border-radius: 4px; /* Rounded corners */
+   position: relative; /* Needed for pseudo-element positioning */
+   transition: background-color 0.3s, border-color 0.3s;
+   outline: none; /* Removes default focus outline */
+   box-shadow: none; /* Removes any default shadows */
+}
+
+.custom-checkbox:focus {
+   outline: none !important;
+}
+
+.custom-checkbox:checked {
+   background-color: #233DFF; /* Your theme blue */
+   border-color: #233DFF;
+}
+
+.custom-checkbox:checked::after {
+   content: "";
+   position: absolute;
+   left: 5px;
+   top: 1px;
+   width: 6px;
+   height: 11px;
+   border: solid white;
+   border-width: 0 3px 3px 0;
+   transform: rotate(45deg);
+}
+
+.custom-checkbox:focus {
+   outline: none;
+   border-color: #0056b3; /* Focus color */
+}
+
+.checkbox-label {
+   font-size: 0.9em;
+   color: #333; /* Text color */
+}
+
+.checkbox-label a {
+   color: #007bff; /* Link color to match theme */
+   text-decoration: none;
+}
+
+.custom-checkbox::before {
+   content: '';
+   position: absolute;
+   top: -1px;
+   outline: none;
+   left: -1px;
+   right: -1px;
+   bottom: -1px;
+   background: #fff;
+   /* border: 2px solid #0c3594; */
+   border-radius: 4px;
+   transition: transform .2s, opacity .2s;
+   transform: scale(0);
+   opacity: 0;
+   z-index: 0;
+}
+
+.custom-checkbox:checked::before {
+   transform: scale(1.5);
+   opacity: 0.4;
+   transition: transform .2s, opacity .5s;
+}
+
+.checkbox-custom label {
+
+margin: 0;
+margin-left: 1em;
+align-self: flex-end;
+}
+
+.submit-btn.disabled {
+   /* background-color: #ccc; */
+   /* color: #666; */
+   cursor: not-allowed;
+   pointer-events: none;
+   opacity: 0.4;
+   user-select: none;
+}
+
+#payment-link:focus-visible {
+   text-decoration: none !important;
+border: none !important;
+outline: none;
+}
+
+
+
+
+
+
+/* payment ending  */
+
 @media (min-width: 1600px) {
+
+    .payer-container-mobile, #payer-container-main {
+        display:none ;
+    }
 
     header nav {
       padding: 1em 10%;
@@ -1420,6 +1821,8 @@ span.blacklisted-h2 {
 
     #hero {
         padding: 2em 10%;
+        background: rgb(241,248,255);
+        background: linear-gradient(90deg, rgba(241,248,255,1) 70%, rgba(42,67,255,1) 80%);
     }
 
     main.content-main {
@@ -1427,19 +1830,33 @@ span.blacklisted-h2 {
     }
 
     #hero p {
+        color: #0c3594a6;
         position: relative;
-        top: -20px;
-
+        /* top: -20px; */
     }
 
 }
 
 @media (max-width: 1600px) {
 
+    .payer-container-mobile, #payer-container-main {
+        display:block ;
+    }
+
 .hero-flex-2 {
   /* Allow image to be more responsive  */
     display: none;
 }   
+
+main#payer-container-main {
+    background: rgb(42, 67, 255);
+    background: linear-gradient(0deg, rgba(42, 67, 255, 1) 43%, #F1F8FF 48%);
+}
+
+#hero {
+    padding-bottom: 0;
+}
+
 
 .phone-container p {
     width: 80%;
@@ -1451,14 +1868,20 @@ span.blacklisted-h2 {
     max-height: max-content;
 }
 
-h1.flex-full-child {
+.hero-flex-1 p.flex-full-child br {
+    display: none;
+}
+
+#hero  h1.flex-full-child {
     width: 100%;
     text-align: center;
+    text-align: center !important;
 }
 
 #hero p.flex-full-child {
     margin-top: 1em;
     text-align: center;
+    color: #0c3594a6;
 }
 
 #cta-buttons a {
@@ -1811,7 +2234,7 @@ width: 100%;
         padding: 1em; /* Reduce padding for hero section */
         flex-direction: column; /* Ensure vertical layout */
         /* margin-top: -3em; */
-        padding-bottom: 2.8em;
+        padding-bottom: 0;
     }
 
     #hero p.flex-full-child {
@@ -1861,6 +2284,15 @@ width: 85%;
         max-width: 80px;
     }
 
+    .hero-payment h2.form-h2 {
+        font-size: 0.9em;
+        
+    }
+
+    p#coverageInfo-layout {
+        font-size: 0.9em !important;
+    }
+
     button.el-button.cog-button--has-status.cog-button--primary.cog-button--navigation.cog-button--submit.el-button--default.cog-button {
         width: 163px !important;
     }
@@ -1885,7 +2317,7 @@ width: 85%;
     #cta-buttons a {
         width: 45%;
         font-size: 0.9em;
-        padding: 0.8em 0.9em;
+        padding: 0 0.9em;
     }
 
     #hero h1.flex-full-child, h2.num-text, h2.num-text, .phone-container h2, #faq h2.num-text{
@@ -1949,6 +2381,22 @@ margin: 0;
     color: #0c3594d1;
 }
 
+
+.payment-seperator {
+    position: relative;
+    top: -30px;
+}
+
+p#coverageInfo-layout {
+    font-size: 1.1em;
+    margin: 0 0 0 0.8em;
+}
+
+.layout-payment .payment-info {padding: 0;/* margin-bottom: 1.4em; */}
+
+.mg-top-payment {
+    margin-top: 2em;
+}
 
 
 span.tag.preferred {

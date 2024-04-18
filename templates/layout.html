@@ -93,8 +93,11 @@
         <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
           <li role="presentation"><a role="menuitem" tabindex="-1" href="{{ url_for('home') }}">Home</a></li>
           <li role="presentation"><a role="menuitem" tabindex="-1" href="{{ url_for('featured_firms') }}">Featured Props</a></li>
+          <li role="presentation" class="divider"></li>
+          <li role="presentation"><a role="menuitem" tabindex="-1" href="{{ url_for('propsurance_application') }}#propsurance-ref"> PropSurance <br> Application</a></li>
+          <li role="presentation" class="divider"></li>
           <li role="presentation"><a role="menuitem" tabindex="-1" href="{{ url_for('home') }}#faq">FAQ</a></li>
-          <li role="presentation"><a role="menuitem" tabindex="-1" href="{{ url_for('home') }}#about-ref">About</a></li>
+          <!-- <li role="presentation"><a role="menuitem" tabindex="-1" href="{{ url_for('home') }}#about-ref">About</a></li> -->
           <li role="presentation" class="divider"></li>
           
           <li role="presentation"><a role="menuitem" tabindex="-1" href="{{ url_for('view_firm_reports') }}">Reported Firms </a></li>   
@@ -127,9 +130,10 @@
               {%  else %}
               <ul id="nav-links">
                 <li><a href="{{ url_for('home') }}" class="special-link">Home</a></li>
-                <li><a href="{{ url_for('featured_firms') }}">Featured Props</a></li>
+                      <li><a href="">Apply to PropSurance</a></li>
+                <!-- <li><a href="{{ url_for('featured_firms') }}">Featured Props</a></li> -->
                 <li><a href="{{ url_for('home') }}#faq">FAQ</a></li>
-                <li><a href="{{ url_for('home') }}#about-ref">About</a></li>
+                <!-- <li><a href="{{ url_for('home') }}#about-ref">About</a></li> -->
                 <li><a href="{{ url_for('view_firm_reports') }}" class="special-2">Reported Firms</a></li>
               </ul>
                 {% endif %}
@@ -140,19 +144,189 @@
     <main>
         <section id="hero">
           <div class="hero-flex-1">
-
+<div>
+   
             <h1 class="flex-full-child"> You Secure <span class="unline">Your</span> Trades<br> <span class="blue-text">  <span class="s-left">W</span>e Guard <span class="unline"> Your</span> Gains </span></h1>
-            <p class="flex-full-child">Unfair Payout <strong> Denied</strong>? We'll Advocate for Your <br> <strong>  Rightful Earnings</strong>, at No Cost.</p>
+            <p class="flex-full-child">Complete your <a  href="{{url_for('propsurance_application')}}#propsurance-ref" style="color:#233dff; font-weight: bold;"> PropSurance  </a> <a href="{{url_for('propsurance_application')}}#propsurance-ref"> application</a> today!  <strong> Successful applicants </strong> will be notified of their <br> approval before <strong> May 12th</strong>, <strong> granting exclusive</strong> access to the <br> <span style="color:#233dff; font-weight: bold;"> PropSurance Platform </span></p>
+          </div>
             <div id="cta-buttons" class="flex-full-child">
-              <a id="advocate-button" href="{{ url_for('report_payout') }}#cog-input-auto-0">Report Denied Payout</a>
-             <a id="report-button" href="{{ url_for('report_payout') }}#cog-input-auto-0"> Prop Advocate </a>
+              <a id="advocate-button" href="/report-payout#cog-input-auto-0">
+    
+                <svg viewBox="0 0 24 24" width="18px" height="18px" style='margin-right:0.4em' fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M4 1C3.44772 1 3 1.44772 3 2V22C3 22.5523 3.44772 23 4 23C4.55228 23 5 22.5523 5 22V13.5983C5.46602 13.3663 6.20273 13.0429 6.99251 12.8455C8.40911 12.4914 9.54598 12.6221 10.168 13.555C11.329 15.2964 13.5462 15.4498 15.2526 15.2798C17.0533 15.1004 18.8348 14.5107 19.7354 14.1776C20.5267 13.885 21 13.1336 21 12.3408V5.72337C21 4.17197 19.3578 3.26624 18.0489 3.85981C16.9875 4.34118 15.5774 4.87875 14.3031 5.0563C12.9699 5.24207 12.1956 4.9907 11.832 4.44544C10.5201 2.47763 8.27558 2.24466 6.66694 2.37871C6.0494 2.43018 5.47559 2.53816 5 2.65249V2C5 1.44772 4.55228 1 4 1ZM5 4.72107V11.4047C5.44083 11.2247 5.95616 11.043 6.50747 10.9052C8.09087 10.5094 10.454 10.3787 11.832 12.4455C12.3106 13.1634 13.4135 13.4531 15.0543 13.2897C16.5758 13.1381 18.1422 12.6321 19 12.3172V5.72337C19 5.67794 18.9081 5.66623 18.875 5.68126C17.7575 6.18804 16.1396 6.81972 14.5791 7.03716C13.0776 7.24639 11.2104 7.1185 10.168 5.55488C9.47989 4.52284 8.2244 4.25586 6.83304 4.3718C6.12405 4.43089 5.46427 4.58626 5 4.72107Z" fill="#ffffff"></path> </g></svg>
+                
+                
+                
+                Report  Payout</a>
+             <a id="report-button" href="{{ url_for('report_payout') }}#cog-input-auto-0">
+              
+              <svg fill="#ffffff" version="1.1" id="Layer_1" style='margin-right:0.4em' xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="18px" height="18px" viewBox="0 0 72 72" enable-background="new 0 0 72 72" xml:space="preserve" stroke="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <path d="M61.729,13.492c-4.978,0-9.358-4.051-9.432-9.03c-0.018-1.094-0.906-1.975-2-1.975H20.613 c-1.094,0-1.847,0.881-1.864,1.975c-0.073,4.978-4.045,9.032-9.022,9.032c-1.105,0-1.727,0.896-1.727,2v28.609 C8,61.039,34.05,69.096,35.17,69.43c0.188,0.057,0.108,0.084,0.3,0.084c0.238,0,0.75-0.043,0.978-0.129 c1.114-0.418,27.553-10.436,27.553-25.271V15.494C64.001,14.389,62.832,13.492,61.729,13.492z M60,17.341v17.146H36v-28h12.475 C49.408,12.487,54,16.477,60,17.341z M22.434,6.487H34v28H12V17.341C17,16.477,21.499,12.487,22.434,6.487z M12,44.104v-7.617h22 v28.212C27.688,62.338,12,55.337,12,44.104z M36,65.374V36.487h24v7.626C60,53.817,43.296,62.483,36,65.374z"></path> <path d="M26.09,55.339c-3.479-1.748-6.159-4.204-7.748-7.106c-0.264-0.483-0.873-0.664-1.357-0.396 c-0.484,0.265-0.662,0.873-0.396,1.356c1.784,3.26,4.759,6.002,8.604,7.934c0.144,0.072,0.297,0.105,0.448,0.105 c0.366,0,0.718-0.201,0.894-0.551C26.783,56.188,26.584,55.587,26.09,55.339z"></path> <path d="M16.688,44.212c-0.144-0.515-0.205-0.827-0.209-0.849c-0.102-0.543-0.625-0.895-1.165-0.797 c-0.542,0.102-0.901,0.621-0.801,1.164c0,0,0.07,0.381,0.25,1.021c0.124,0.441,0.525,0.729,0.962,0.729 c0.089,0,0.18-0.012,0.272-0.037C16.528,45.296,16.838,44.743,16.688,44.212z"></path> </g> </g></svg>
+              Prop Advocate </a>
             </div>
           </div>
           <div class="hero-flex-2">
-            <img src="{{ url_for('static', filename='images/check.png') }}" alt="Prop Patrol | never get your payout rejected">
+            <!-- <img src="{{ url_for('static', filename='images/check.png') }}" alt="Prop Patrol | never get your payout rejected"> -->
+           
+            <!-- beginning payment div -->
+            
+
+
+            <div class="paymentForm payment-slider hero-payment layout-payment" id="payment">
+
+              <img src="{{ url_for('static', filename='images/propsurance.png') }}" alt="Prop Surance" class="logo">
+          
+          
+              <div class="payment-seperator">
+              <div class="payment-svg-wrapper">
+              
+                  <svg viewBox="0 0 24 24" width="25px" height="25px" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Edit / Add_To_Queue"> <path id="Vector" d="M3 9V19.4C3 19.9601 3 20.2399 3.10899 20.4538C3.20487 20.642 3.35774 20.7952 3.5459 20.8911C3.7596 21 4.0395 21 4.59846 21H15.0001M14 13V10M14 10V7M14 10H11M14 10H17M7 13.8002V6.2002C7 5.08009 7 4.51962 7.21799 4.0918C7.40973 3.71547 7.71547 3.40973 8.0918 3.21799C8.51962 3 9.08009 3 10.2002 3H17.8002C18.9203 3 19.4801 3 19.9079 3.21799C20.2842 3.40973 20.5905 3.71547 20.7822 4.0918C21.0002 4.51962 21.0002 5.07969 21.0002 6.19978L21.0002 13.7998C21.0002 14.9199 21.0002 15.48 20.7822 15.9078C20.5905 16.2841 20.2842 16.5905 19.9079 16.7822C19.4805 17 18.9215 17 17.8036 17H10.1969C9.07899 17 8.5192 17 8.0918 16.7822C7.71547 16.5905 7.40973 16.2842 7.21799 15.9079C7 15.4801 7 14.9203 7 13.8002Z" stroke="#2a43ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg>
+                  <h2 class="form-h2">Choose Your Account Size and Firm</h2>
+              </div>
+              
+              <!-- <label for="propFirmSelect">Select Prop Firm</label> -->
+                  <!-- Prop Firm Selection -->  <div class="payment-svg-wrapper wrapper-p dropdown-svg-div">
+                <svg width="25px" height="25px" id="dropdown-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M12.7071 14.7071C12.3166 15.0976 11.6834 15.0976 11.2929 14.7071L6.29289 9.70711C5.90237 9.31658 5.90237 8.68342 6.29289 8.29289C6.68342 7.90237 7.31658 7.90237 7.70711 8.29289L12 12.5858L16.2929 8.29289C16.6834 7.90237 17.3166 7.90237 17.7071 8.29289C18.0976 8.68342 18.0976 9.31658 17.7071 9.70711L12.7071 14.7071Z" fill="#0c3594d1"></path> </g></svg> 
+                  <select name="firm"  id="propFirmSelect" class="styled-select">
+                      <option value="Coming Soon">Coming May 12th</option>
+                      <option value="Coming Soon">Coming May 12th</option>
+                      <option value="Coming Soon">Coming May 12th</option>
+                  </select>
+              
+              
+              </div>
+              
+           
+          
+              <div class="mg-top-payment">
+                  <!-- <label for="accountSizeRange">Select Account Size</label> -->
+                  <input type="range" min="1" max="3" value="1" class="slider" name="accountSize" id="accountSizeRange">
+                  <div class="slider-labels">
+                      <span class="slider-label">$50k</span>
+                      <span class="slider-label">$100k</span>
+                      <span class="slider-label">$200k</span>
+                  </div>
+              </div>
+
+              <div  class="mg-top-payment">
+                <!-- <label for="accountSizeRange">Select Current Stages:</label> -->
+                <input type="range" min="1" max="3" value="1" class="slider" name="accountSize" id="accountSizeRange">
+                <div class="slider-labels">
+                    <span class="slider-label">Phase 1</span>
+                    <span class="slider-label">Phase 2</span>
+                    <span class="slider-label">Live</span>
+                </div>
+            </div>
+            </div>
+
+            <div class="payment-info">
+             
+      
+      
+              <div class="info-border-bottom last">
+                  <div class="payment-svg-wrapper bottom-wrapper  wrapper-p">
+                  <svg viewBox="0 0 24 24" width="25px" height="20px" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M14 8.9999C13.5 8.87589 12.6851 8.87132 12 8.87589M12 8.87589C11.7709 8.87741 11.9094 8.86767 11.6 8.87589C10.7926 8.90107 10.0016 9.23665 10 10.1874C9.99825 11.2002 11 11.4999 12 11.4999C13 11.4999 14 11.7311 14 12.8124C14 13.625 13.1925 13.981 12.1861 14.099C11.3861 14.099 11 14.1249 10 13.9999M12 8.87589L12 7.49999M12 14.0994V15.5M20 12C20 16.4611 14.54 19.6937 12.6414 20.683C12.4361 20.79 12.3334 20.8435 12.191 20.8712C12.08 20.8928 11.92 20.8928 11.809 20.8712C11.6666 20.8435 11.5639 20.79 11.3586 20.683C9.45996 19.6937 4 16.4611 4 12V8.21759C4 7.41808 4 7.01833 4.13076 6.6747C4.24627 6.37113 4.43398 6.10027 4.67766 5.88552C4.9535 5.64243 5.3278 5.50207 6.0764 5.22134L11.4382 3.21067C11.6461 3.13271 11.75 3.09373 11.857 3.07827C11.9518 3.06457 12.0482 3.06457 12.143 3.07827C12.25 3.09373 12.3539 3.13271 12.5618 3.21067L17.9236 5.22134C18.6722 5.50207 19.0465 5.64243 19.3223 5.88552C19.566 6.10027 19.7537 6.37113 19.8692 6.6747C20 7.01833 20 7.41808 20 8.21759V12Z" stroke="#0c3594ba" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+              <p id="coverageInfo-layout">Coverage for Rejected Payouts</p></div>   </div>
+          </div>
+
+          <div class="payment-info">
+             
+      
+      
+            <div class="info-border-bottom last">
+                <div class="payment-svg-wrapper bottom-wrapper  wrapper-p">
+                <svg width="25px" height="25px" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M21.2501 3C21.4925 3 21.7176 3.11688 21.8574 3.30983L21.9119 3.39706L25.9186 10.9098L25.9615 11.0122L25.9731 11.05L25.9901 11.1273L25.9994 11.2153L25.9973 11.3147L26.0001 11.25C26.0001 11.3551 25.9785 11.4552 25.9394 11.5461L25.9106 11.6057L25.87 11.6723L25.8173 11.7408L14.6 24.7047C14.4999 24.8391 14.3628 24.9277 14.2139 24.9703L14.1559 24.9844L14.0585 24.9979L13.9999 25L13.8993 24.9932L13.8142 24.9771L13.7109 24.9432L13.6852 24.931C13.5949 24.8911 13.5119 24.8316 13.4425 24.7535L2.17081 11.7263L2.1087 11.6387L2.06079 11.5456L2.02611 11.4463L2.00297 11.3152L2.00269 11.1878L2.01755 11.0891L2.02714 11.0499L2.06104 10.9538L2.08838 10.8971L6.08838 3.39706C6.20243 3.18321 6.41149 3.0396 6.64753 3.00704L6.75014 3H21.2501ZM17.9061 12H10.0911L14.0011 22.16L17.9061 12ZM8.48514 12H4.38914L11.7621 20.518L8.48514 12ZM23.6081 12H19.5151L16.2421 20.511L23.6081 12ZM10.0241 4.499H7.19914L3.99814 10.5H8.42314L10.0241 4.499ZM16.4231 4.499H11.5761L9.97514 10.5H18.0231L16.4231 4.499ZM20.8001 4.499H17.9751L19.5761 10.5H23.9991L20.8001 4.499Z" fill="#0c3594a6"></path> </g></svg>
+            <p id="coverageInfo-layout">PropSurance Perks
+            </p></div>   </div>
+        </div>
+          
+              <a  href="{{url_for('propsurance_application')}}#propsurance-ref" class="submit-btn">Apply Now</a>
+          </div>
+
+
+
+
+
+<!-- end payment div -->
           </div>
         </section>
     </main>
+
+    <main class="content-main" id="payer-container-main">
+
+    <!-- mobile payer -->
+<div class="payer-container-mobile">
+    <div class="paymentForm payment-slider hero-payment layout-payment mobile-payer" id="payment">
+
+      <img src="{{ url_for('static', filename='images/propsurance.png') }}" alt="Prop Surance" class="logo">
+  
+  
+      <div class="payment-seperator">
+      <div class="payment-svg-wrapper">
+      
+          <svg viewBox="0 0 24 24" width="25px" height="25px" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Edit / Add_To_Queue"> <path id="Vector" d="M3 9V19.4C3 19.9601 3 20.2399 3.10899 20.4538C3.20487 20.642 3.35774 20.7952 3.5459 20.8911C3.7596 21 4.0395 21 4.59846 21H15.0001M14 13V10M14 10V7M14 10H11M14 10H17M7 13.8002V6.2002C7 5.08009 7 4.51962 7.21799 4.0918C7.40973 3.71547 7.71547 3.40973 8.0918 3.21799C8.51962 3 9.08009 3 10.2002 3H17.8002C18.9203 3 19.4801 3 19.9079 3.21799C20.2842 3.40973 20.5905 3.71547 20.7822 4.0918C21.0002 4.51962 21.0002 5.07969 21.0002 6.19978L21.0002 13.7998C21.0002 14.9199 21.0002 15.48 20.7822 15.9078C20.5905 16.2841 20.2842 16.5905 19.9079 16.7822C19.4805 17 18.9215 17 17.8036 17H10.1969C9.07899 17 8.5192 17 8.0918 16.7822C7.71547 16.5905 7.40973 16.2842 7.21799 15.9079C7 15.4801 7 14.9203 7 13.8002Z" stroke="#2a43ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g> </g></svg>
+          <h2 class="form-h2">Choose Your Account Size and Firm</h2>
+      </div>
+      
+      <!-- <label for="propFirmSelect">Select Prop Firm</label> -->
+          <!-- Prop Firm Selection -->  <div class="payment-svg-wrapper wrapper-p dropdown-svg-div">
+        <svg width="25px" height="25px" id="dropdown-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M12.7071 14.7071C12.3166 15.0976 11.6834 15.0976 11.2929 14.7071L6.29289 9.70711C5.90237 9.31658 5.90237 8.68342 6.29289 8.29289C6.68342 7.90237 7.31658 7.90237 7.70711 8.29289L12 12.5858L16.2929 8.29289C16.6834 7.90237 17.3166 7.90237 17.7071 8.29289C18.0976 8.68342 18.0976 9.31658 17.7071 9.70711L12.7071 14.7071Z" fill="#0c3594d1"></path> </g></svg> 
+          <select name="firm"  id="propFirmSelect" class="styled-select">
+              <option value="Coming Soon">Coming Soon</option>
+              <option value="Coming Soon">Coming Soon</option>
+              <option value="Coming Soon">Coming Soon</option>
+          </select>
+      
+      
+      </div>
+      
+   
+  
+      <div class="mg-top-payment">
+          <!-- <label for="accountSizeRange">Select Account Size</label> -->
+          <input type="range" min="1" max="3" value="1" class="slider" name="accountSize" id="accountSizeRange">
+          <div class="slider-labels">
+              <span class="slider-label">$50k</span>
+              <span class="slider-label">$100k</span>
+              <span class="slider-label">$200k</span>
+          </div>
+      </div>
+
+      <div  class="mg-top-payment">
+        <!-- <label for="accountSizeRange">Select Current Stages:</label> -->
+        <input type="range" min="1" max="3" value="1" class="slider" name="accountSize" id="accountSizeRange">
+        <div class="slider-labels">
+            <span class="slider-label">Phase 1</span>
+            <span class="slider-label">Phase 2</span>
+            <span class="slider-label">Live</span>
+        </div>
+    </div>
+    </div>
+
+    <div class="payment-info">
+     
+
+
+      <div class="info-border-bottom last">
+          <div class="payment-svg-wrapper bottom-wrapper  wrapper-p">
+          <svg viewBox="0 0 24 24" width="25px" height="20px" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M14 8.9999C13.5 8.87589 12.6851 8.87132 12 8.87589M12 8.87589C11.7709 8.87741 11.9094 8.86767 11.6 8.87589C10.7926 8.90107 10.0016 9.23665 10 10.1874C9.99825 11.2002 11 11.4999 12 11.4999C13 11.4999 14 11.7311 14 12.8124C14 13.625 13.1925 13.981 12.1861 14.099C11.3861 14.099 11 14.1249 10 13.9999M12 8.87589L12 7.49999M12 14.0994V15.5M20 12C20 16.4611 14.54 19.6937 12.6414 20.683C12.4361 20.79 12.3334 20.8435 12.191 20.8712C12.08 20.8928 11.92 20.8928 11.809 20.8712C11.6666 20.8435 11.5639 20.79 11.3586 20.683C9.45996 19.6937 4 16.4611 4 12V8.21759C4 7.41808 4 7.01833 4.13076 6.6747C4.24627 6.37113 4.43398 6.10027 4.67766 5.88552C4.9535 5.64243 5.3278 5.50207 6.0764 5.22134L11.4382 3.21067C11.6461 3.13271 11.75 3.09373 11.857 3.07827C11.9518 3.06457 12.0482 3.06457 12.143 3.07827C12.25 3.09373 12.3539 3.13271 12.5618 3.21067L17.9236 5.22134C18.6722 5.50207 19.0465 5.64243 19.3223 5.88552C19.566 6.10027 19.7537 6.37113 19.8692 6.6747C20 7.01833 20 7.41808 20 8.21759V12Z" stroke="#0c3594ba" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+      <p id="coverageInfo-layout">Coverage for Rejected Payouts</p></div>   </div>
+  </div>
+
+  <div class="payment-info">
+     
+
+
+    <div class="info-border-bottom last">
+        <div class="payment-svg-wrapper bottom-wrapper  wrapper-p">
+        <svg width="25px" height="25px" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M21.2501 3C21.4925 3 21.7176 3.11688 21.8574 3.30983L21.9119 3.39706L25.9186 10.9098L25.9615 11.0122L25.9731 11.05L25.9901 11.1273L25.9994 11.2153L25.9973 11.3147L26.0001 11.25C26.0001 11.3551 25.9785 11.4552 25.9394 11.5461L25.9106 11.6057L25.87 11.6723L25.8173 11.7408L14.6 24.7047C14.4999 24.8391 14.3628 24.9277 14.2139 24.9703L14.1559 24.9844L14.0585 24.9979L13.9999 25L13.8993 24.9932L13.8142 24.9771L13.7109 24.9432L13.6852 24.931C13.5949 24.8911 13.5119 24.8316 13.4425 24.7535L2.17081 11.7263L2.1087 11.6387L2.06079 11.5456L2.02611 11.4463L2.00297 11.3152L2.00269 11.1878L2.01755 11.0891L2.02714 11.0499L2.06104 10.9538L2.08838 10.8971L6.08838 3.39706C6.20243 3.18321 6.41149 3.0396 6.64753 3.00704L6.75014 3H21.2501ZM17.9061 12H10.0911L14.0011 22.16L17.9061 12ZM8.48514 12H4.38914L11.7621 20.518L8.48514 12ZM23.6081 12H19.5151L16.2421 20.511L23.6081 12ZM10.0241 4.499H7.19914L3.99814 10.5H8.42314L10.0241 4.499ZM16.4231 4.499H11.5761L9.97514 10.5H18.0231L16.4231 4.499ZM20.8001 4.499H17.9751L19.5761 10.5H23.9991L20.8001 4.499Z" fill="#0c3594a6"></path> </g></svg>
+    <p id="coverageInfo-layout">PropSurance Perks
+    </p></div>   </div>
+</div>
+  
+      <a href="{{url_for('propsurance_application')}}#propsurance-ref" class="submit-btn">Apply Now</a>
+  </div>
+</div>
+</main>
+  <!-- end of mobile payout div -->
     
     {% block content %}{% endblock %}
     
