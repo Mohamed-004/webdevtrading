@@ -150,6 +150,7 @@ def process_payment():
 
 @app.route("/callback", methods=["GET", "POST"])
 def callback():
+    print(url_for('callback'))
     try:
         token = oauth.proppatrol.authorize_access_token()
         
@@ -201,7 +202,7 @@ def callback():
 @app.route("/login")
 def login():
     return oauth.proppatrol.authorize_redirect(
-        redirect_uri=url_for("callback", _external=True),
+        redirect_uri=("https://www.proppatrol.net/callback"),
     )
     
 
