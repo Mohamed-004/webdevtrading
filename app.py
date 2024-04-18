@@ -22,8 +22,8 @@ app.config['WTF_CSRF_SECRET_KEY'] =   'Dv1vKfzX6Eo5h_C9cSbX4Q'
 app.config['DEBUG'] = True
 
 # only for the live account
-app.config['PREFERRED_URL_SCHEME'] = 'https'
-app.config['SERVER_NAME'] = 'www.proppatrol.net'
+# app.config['PREFERRED_URL_SCHEME'] = 'https'
+# app.config['SERVER_NAME'] = 'www.proppatrol.net'
 csrf = CSRFProtect(app)
 
 cred_dict = {
@@ -67,7 +67,10 @@ XDB5FNJYelRHxHgG1ObSKInhiw==
 }
 
 firebase_admin_credential = credentials.Certificate(cred_dict)
-firebase_admin.initialize_app(firebase_admin_credential)
+# Initialize the app with the credentials
+firebase_app = firebase_admin.initialize_app(firebase_admin_credential)
+# Initialize Firestore
+db = firestore.client()
 
 oauth = OAuth(app)
 # # Updated URL with custom domain for live
