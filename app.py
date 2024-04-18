@@ -216,7 +216,7 @@ def logout():
         "https://dev-ct0rwl0778orlwvk.us.auth0.com/v2/logout?"
         + urlencode(
             {
-                "returnTo": url_for("home", _external=True),
+                "returnTo": ("https://www.proppatrol.net/"),
                 "client_id": 'qA5AwBA91VxeHowQQu6MDKOBYHWbWbmx',
             },
             quote_via=quote_plus,
