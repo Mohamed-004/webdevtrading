@@ -15,10 +15,10 @@ from datetime import datetime
 spark_api = 'e0292a01d4005f36ecc119c1ea1cf1dd04ea111c'
 stripe.api_key = 'sk_test_51Oyi2xP649Efo4kCYt2kWsW0hPJjptfuWapRJB8ZMCHvhfI4HJF0FuAdEaNJ6JzbQVp0pj1BBOsMEQwf4XJvQSRA00ELDbyNAC'
 
-# endpoint secret for live
+# endpoint secret for live stripe
 # endpoint_secret = 'whsec_qlg8ZykAnynXuzW4T0KpvLYaDrqnpDYe'
 
-# end point secret local host
+# end point secret local host stripe
 endpoint_secret = 'whsec_5943b6c6ce120203812d73889dcc757cd73be09a7d93150736be55b115ca5d68'
 
 app = Flask(__name__)
@@ -27,8 +27,8 @@ app.config['WTF_CSRF_SECRET_KEY'] =   'Dv1vKfzX6Eo5h_C9cSbX4Q'
 app.config['DEBUG'] = True
 
 # only for the live account
-app.config['PREFERRED_URL_SCHEME'] = 'https'
-app.config['SERVER_NAME'] = 'www.proppatrol.net'
+# app.config['PREFERRED_URL_SCHEME'] = 'https'
+# app.config['SERVER_NAME'] = 'www.proppatrol.net'
 
 csrf = CSRFProtect(app)
 
@@ -73,22 +73,32 @@ XDB5FNJYelRHxHgG1ObSKInhiw==
 }
 
 firebase_admin_credential = credentials.Certificate(cred_dict)
-# Initialize the app with the credentials
 firebase_app = firebase_admin.initialize_app(firebase_admin_credential)
-# Initialize Firestore
 db = firestore.client()
 
 oauth = OAuth(app)
-# # Updated URL with custom domain for live
+# # Updated URL with custom domain for live | dont use
 # conf_url = 'https://auth.proppatrol.net/.well-known/openid-configuration'
 
 conf_url = 'https://dev-ct0rwl0778orlwvk.us.auth0.com/.well-known/openid-configuration'
 oauth.register(
-    name='proppatrol',
-    client_id='qA5AwBA91VxeHowQQu6MDKOBYHWbWbmx',
-    client_secret='7FckIXvKm00XxFch0RDB9iGiATPnKZ_RqnL83Um_BILE4_gQyL7fYLi7MfW431hn',
-    server_metadata_url=conf_url,
-    client_kwargs={'scope': 'openid  email'},
+
+    # for development or testing app | default app
+    "auth0",
+    client_id= ("sX97fU3VZlMQhuV4aoqaH4lAMNLtJ2rP"),
+    client_secret= ("boC7oeG8C_3MEH0xMnqgDhOjiQj_813QBxRx52sXVFsCNud0ujin-gDuMTE8RYfS"),
+    client_kwargs={
+        "scope": "openid  email",
+    },
+    server_metadata_url='https://dev-ct0rwl0778orlwvk.us.auth0.com/.well-known/openid-configuration',
+
+
+    # the following is for the real app
+    # name='proppatrol',
+    # client_id='qA5AwBA91VxeHowQQu6MDKOBYHWbWbmx',
+    # client_secret='7FckIXvKm00XxFch0RDB9iGiATPnKZ_RqnL83Um_BILE4_gQyL7fYLi7MfW431hn',
+    # server_metadata_url=conf_url,
+    # client_kwargs={'scope': 'openid  email'},
 )
 
 
@@ -164,15 +174,22 @@ def process_payment():
 def callback():
     print(url_for('callback'))
     try:
-        token = oauth.proppatrol.authorize_access_token()
+        # for development this is the following code:
+        token = oauth.auth0.authorize_access_token()
+
+        # for live this is the following code
+        # token = oauth.proppatrol.authorize_access_token()
         
         user_info = {
             "email": token["userinfo"]["email"],
             "email_verified": token["userinfo"]["email_verified"]
         }
+
+        # for development
+        user = oauth.auth0.parse_id_token(token, nonce=session.get("nonce"))
         
-        # Parse the ID token to get the user details
-        user = oauth.proppatrol.parse_id_token(token, nonce=session.get("nonce"))
+        # for live
+        # user = oauth.proppatrol.parse_id_token(token, nonce=session.get("nonce"))
         
         # Check if the user's email is in the allowed_users collection
         allowed_user_ref = db.collection('allowed_users').document(user['email'])
@@ -197,15 +214,15 @@ def callback():
         else:
             # If the user is not allowed, do not store in session or 'users' collection
             flash('You are not authorized to access this page.', 'error')
-            return 'you are not eligible' # Redirect to a generic page or a denial information page
+            return render_template('noaccess.html', error='You did not complete your PropSurance application, please contact us at support@proppatrol.net') # Redirect to a generic page or a denial information page
 
     except OAuthError as e:
         if 'access_denied' in str(e):
             # Handle specific case where access was denied
-            return render_template('noaccess.html', error='You do not have access to PropSurance!'), 403
+            return render_template('noaccess.html', error='You do not have access to PropSurance, please contact us at support@proppatrol.net'), 403
         else:
             # Handle other OAuth errors
-            return render_template('noaccess.html', error='Registration Failed, No access.'), 403
+            return render_template('noaccess.html', error='You do not have access to PropSurance, please contact us at support@proppatrol.net'), 403
 
 
 
@@ -213,26 +230,50 @@ def callback():
 
 @app.route("/login")
 def login():
-    return oauth.proppatrol.authorize_redirect(
+     # live  mode
+    # return oauth.proppatrol.authorize_redirect(
+    #    
+        
+    #     redirect_uri=url_for("https://www.proppatrol.net/callback")
+
+    # )
+
+
+    return oauth.auth0.authorize_redirect(
         # local host for development
-        redirect_uri=("https://www.proppatrol.net/callback"),
+        redirect_uri=url_for("callback", _external=True)
     )
     
 # for all auth routes make it direct url
 @app.route("/logout")
 def logout():
     session.clear()
+    # for live mode
+    # return redirect(
+    #     "https://dev-ct0rwl0778orlwvk.us.auth0.com/v2/logout?"
+    #     + urlencode(
+    #         {
+    #             # for development make it local host
+    #             "returnTo": ("https://www.proppatrol.net/"),
+    #             "client_id": 'qA5AwBA91VxeHowQQu6MDKOBYHWbWbmx',
+    #         },
+    #         quote_via=quote_plus,
+    #     )
+    # )
+
+    # for development
+
     return redirect(
-        "https://dev-ct0rwl0778orlwvk.us.auth0.com/v2/logout?"
-        + urlencode(
-            {
-                # for development make it local host
-                "returnTo": ("https://www.proppatrol.net/"),
-                "client_id": 'qA5AwBA91VxeHowQQu6MDKOBYHWbWbmx',
-            },
-            quote_via=quote_plus,
+            "https://dev-ct0rwl0778orlwvk.us.auth0.com/v2/logout?"
+            + urlencode(
+                {
+                    # for development is the following
+                    "returnTo": url_for("home", _external=True),
+                    "client_id": 'sX97fU3VZlMQhuV4aoqaH4lAMNLtJ2rP',
+                },
+                quote_via=quote_plus,
+            )
         )
-    )
 
 @app.route('/dashboard/faq/', methods=['GET'])
 @app.route('/dashboard/faq', methods=['GET'])
@@ -557,8 +598,14 @@ def dashboard():
     insured_accounts = []
 
     account_insured = False
+
+    # for live  keep uncommented
     # token = oauth.proppatrol.authorize_access_token()
+    #  only for live
     # user_info_full = token
+
+
+
     try:
         user_email = user_info['email']
         user_validated_email = user_info["email_verified"]
@@ -833,7 +880,7 @@ def webhook():
                 'url_privacy': url_for('propsurance_terms', _external=True)
             }
 
-            # send_email(client_reference_id_email , template_id, sub_data )
+            send_email(client_reference_id_email , template_id, sub_data )
 
             trader_account_info = {
                 'propsurance_count': accounts_count,  # Dynamic count based on the number of documents

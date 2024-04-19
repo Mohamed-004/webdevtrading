@@ -8,16 +8,47 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/cases.css') }}">
 
 <style>
+
+#hero {
+    display: none !important;
+}
+
+main#payer-container-main {
+    display: none !important;
+}
+
+
     .remaining.hazard {
         background: #ffc107;
-        color: #00000082;
-        border: none;
-        display: flex;
-        flex-flow: row nowrap;
-        align-items: center;
-        border-left: 0.5rem solid rgb(248, 214, 38);
-        background-color: rgb(254, 242, 179);
+    color: #00000082;
+    border: none;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-items: center;
+    border-left: 0.5rem solid rgb(248, 214, 38);
+    background-color: rgb(254, 242, 179);
+    padding: 2em;
+    border-radius: 10px;
+    font-weight: bold;
+    width: 80%;
+    margin: 0 auto;
+    text-align: center;
     }
+
+    .hazard-icon-div {
+        margin-right: 1.3em !important;
+    }
+
+    footer {
+        display: none !important;
+    }
+
+    .bottom-footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
 
     </style>
 {% endblock %}

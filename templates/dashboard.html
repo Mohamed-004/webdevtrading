@@ -7,6 +7,51 @@
 <meta name="robots" content="noindex, nofollow">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/cases.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/dash.css') }}">
+
+ <script>
+//  function handleInputEvent(element) {
+//     console.log("Input event triggered, current value: ", element.value);
+//     // You can perform real-time updates here
+// }
+
+// function handleChangeEvent(element) {
+//     console.log("Change event triggered, final value: ", element.value);
+//     // Perform actions that should occur after the user has finalized the value
+// } 
+document.addEventListener('DOMContentLoaded', function() {
+    const accountSizeSelect = document.getElementById('accountSizeSelect');
+    const phaseSelect = document.getElementById('phaseSelect');
+    const priceInfo = document.getElementById('feeInfo');
+
+    const pricing = {
+        '50k': { 'phase1': 120, 'phase2': 169, 'live': 220 },
+        '100k': { 'phase1': 240, 'phase2': 338, 'live': 440 },
+        '200k': { 'phase1': 480, 'phase2': 676, 'live': 880 }
+    };
+
+    function updatePriceDisplay() {
+        const accountSizeIndex = accountSizeSelect.value; // 1, 2, or 3
+        const phase = phaseSelect.value; // 'phase1', 'phase2', 'live'
+
+        const sizeMap = {
+            '1': '50k',
+            '2': '100k',
+            '3': '200k'
+        };
+
+        const accountSizeLabel = sizeMap[accountSizeIndex];
+        const price = pricing[accountSizeLabel][phase];
+
+        priceInfo.innerHTML = 'Sign-up Fee: <span>$' + price + '</span>';
+    }
+
+    accountSizeSelect.addEventListener('change', updatePriceDisplay); // When a new size is selected
+    phaseSelect.addEventListener('change', updatePriceDisplay); // When a new phase is selected
+
+    // Initial update to display correct pricing on load
+    updatePriceDisplay();
+});
+</script>
 {% endblock %}
 
 {% block dashlink_current_pg %}
@@ -289,6 +334,19 @@ Dashboard
 
 <div class="payment-svg-wrapper wrapper-p dropdown-svg-div" id="phase-svg-div">
     <svg width="25px" height="25px" id="dropdown-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M12.7071 14.7071C12.3166 15.0976 11.6834 15.0976 11.2929 14.7071L6.29289 9.70711C5.90237 9.31658 5.90237 8.68342 6.29289 8.29289C6.68342 7.90237 7.31658 7.90237 7.70711 8.29289L12 12.5858L16.2929 8.29289C16.6834 7.90237 17.3166 7.90237 17.7071 8.29289C18.0976 8.68342 18.0976 9.31658 17.7071 9.70711L12.7071 14.7071Z" fill="#0c3594d1"></path> </g></svg> 
+<select id="accountSizeSelect" name="accountSize" class="styled-select">
+    <option value="1">50k</option>
+    {% if remaining_size >= 100000 %}
+    <option value="2">100k</option>
+    {% endif %}
+    {% if remaining_size >= 200000 %}
+    <option value="3">200k</option>
+    {% endif %}
+</select>
+</div>
+
+<div class="payment-svg-wrapper wrapper-p dropdown-svg-div" id="phase-svg-div">
+    <svg width="25px" height="25px" id="dropdown-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M12.7071 14.7071C12.3166 15.0976 11.6834 15.0976 11.2929 14.7071L6.29289 9.70711C5.90237 9.31658 5.90237 8.68342 6.29289 8.29289C6.68342 7.90237 7.31658 7.90237 7.70711 8.29289L12 12.5858L16.2929 8.29289C16.6834 7.90237 17.3166 7.90237 17.7071 8.29289C18.0976 8.68342 18.0976 9.31658 17.7071 9.70711L12.7071 14.7071Z" fill="#0c3594d1"></path> </g></svg> 
     <select id="phaseSelect" name="phase" class="styled-select">
         <option value="phase1">Phase 1</option>
         <option value="phase2">Phase 2</option>
@@ -297,16 +355,8 @@ Dashboard
 </div>
 
 
-<input type="range" min="1" max="{{ '3' if remaining_size >= 200000 else '2' if remaining_size >= 100000 else '1' }}" value="1" class="slider" name="accountSize" id="accountSizeRange">
-<div class="slider-labels">
-    <span class="slider-label">$50k</span>
-    {% if remaining_size >= 100000 %}
-    <span class="slider-label">$100k</span>
-    {% endif %}
-    {% if remaining_size >= 200000 %}
-    <span class="slider-label">$200k</span>
-    {% endif %}
-</div>
+
+
 
 
 
@@ -368,62 +418,6 @@ Dashboard
 <script>
 
 
-
-const forms = document.getElementsByClassName('paymentForm');
-
-// Function to execute when an input event is triggered
-function updatePaymentDetails() {
-    const submitBtn = document.getElementById('submitBtn');
-    const termsChecked = document.getElementById('termsCheckbox').checked;
-    const faqChecked = document.getElementById('faqCheckbox').checked;
-
-    // submitBtn.classList.toggle('disabled', !(termsChecked && faqChecked));
-    // submitBtn.disabled = !(termsChecked && faqChecked);
-}
-
-// Add the event listener to all form elements
-Array.from(forms).forEach(form => {
-    form.addEventListener('input', updatePaymentDetails);
-});
-
-
-document.addEventListener('DOMContentLoaded', function() {
-    const accountSizeRange = document.getElementById('accountSizeRange');
-    const phaseSelect = document.getElementById('phaseSelect');
-    const priceInfo = document.getElementById('feeInfo');
-
-    // Pricing data structure
-    const pricing = {
-        '50k': { 'phase1': 120, 'phase2': 169, 'live': 220 },
-        '100k': { 'phase1': 240, 'phase2': 338, 'live': 440 },
-        '200k': { 'phase1': 480, 'phase2': 676, 'live': 880 }
-    };
-
-    // Function to update the displayed price
-    function updatePriceDisplay() {
-        const accountSizeIndex = accountSizeRange.value; // 1, 2, or 3
-        const phase = phaseSelect.value; // 'phase1', 'phase2', or 'live'
-
-        // Determine the account size label
-        let accountSizeLabel;
-        if (accountSizeIndex === '1') accountSizeLabel = '50k';
-        else if (accountSizeIndex === '2') accountSizeLabel = '100k';
-        else if (accountSizeIndex === '3') accountSizeLabel = '200k';
-
-        // Get the price based on the account size and phase
-        const price = pricing[accountSizeLabel][phase];
-
-        // Update the DOM
-        priceInfo.innerHTML = 'Sign-up Fee: <span>$' + price + '</span>';
-    }
-
-    // Event listeners
-    accountSizeRange.addEventListener('input', updatePriceDisplay);
-    phaseSelect.addEventListener('change', updatePriceDisplay);
-
-    // Initialize with default values
-    updatePriceDisplay();
-});
 
 
 
