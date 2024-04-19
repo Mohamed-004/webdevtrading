@@ -14,6 +14,11 @@ from datetime import datetime
 # email api key e0292a01d4005f36ecc119c1ea1cf1dd04ea111c
 spark_api = 'e0292a01d4005f36ecc119c1ea1cf1dd04ea111c'
 stripe.api_key = 'sk_test_51Oyi2xP649Efo4kCYt2kWsW0hPJjptfuWapRJB8ZMCHvhfI4HJF0FuAdEaNJ6JzbQVp0pj1BBOsMEQwf4XJvQSRA00ELDbyNAC'
+
+# endpoint secret for live
+# endpoint_secret = 'whsec_qlg8ZykAnynXuzW4T0KpvLYaDrqnpDYe'
+
+# end point secret local host
 endpoint_secret = 'whsec_5943b6c6ce120203812d73889dcc757cd73be09a7d93150736be55b115ca5d68'
 
 app = Flask(__name__)
@@ -24,6 +29,7 @@ app.config['DEBUG'] = True
 # only for the live account
 app.config['PREFERRED_URL_SCHEME'] = 'https'
 app.config['SERVER_NAME'] = 'www.proppatrol.net'
+
 csrf = CSRFProtect(app)
 
 cred_dict = {
@@ -208,6 +214,7 @@ def callback():
 @app.route("/login")
 def login():
     return oauth.proppatrol.authorize_redirect(
+        # local host for development
         redirect_uri=("https://www.proppatrol.net/callback"),
     )
     
@@ -219,6 +226,7 @@ def logout():
         "https://dev-ct0rwl0778orlwvk.us.auth0.com/v2/logout?"
         + urlencode(
             {
+                # for development make it local host
                 "returnTo": ("https://www.proppatrol.net/"),
                 "client_id": 'qA5AwBA91VxeHowQQu6MDKOBYHWbWbmx',
             },
