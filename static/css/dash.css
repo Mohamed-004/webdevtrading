@@ -466,6 +466,14 @@ display: flex;
 
 /* payment div starts here */
 
+.payment-container-dashboard {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    gap: 20px;
+    justify-content: space-between;
+}
+
 
 #payment form {
      display: unset; 
@@ -666,6 +674,10 @@ display: flex;
     position: unset;
 }
 
+.payment-image.board-cont .patrolcti {
+    width: 200px;
+}
+
 /* checkbox for payment */
 
 .checkbox-custom {
@@ -835,3 +847,4 @@ padding: 0em 1em;
 
 
 /* not for payment end */
+
