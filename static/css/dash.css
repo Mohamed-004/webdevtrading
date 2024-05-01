@@ -871,7 +871,7 @@ padding: 0em 1em;
     align-items: center;
     /* border-right: 2px solid #e8e8e8; */
     /* flex: 1 1 5%; */ /* Adjust flex basis according to your layout */
-    width: 20% !important;
+    /* width: 20% !important; */
     /* border-radius: 20px; */
     justify-content: center;
     background-color: #ffffff;
@@ -879,7 +879,7 @@ padding: 0em 1em;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 20% !important;
+    width: 30% ;
     /* border-radius: 20px; */
     box-shadow: inset 0 4px 80px #2196f357;
     /* border: 1px solid #e8e8e8; */
@@ -974,6 +974,7 @@ padding: 0em 1em;
 
 .card-horizontal h2.form-h2 {
     text-align: left;
+    margin-top: 0;
 }
 
 .card-horizontal .label-text {
@@ -985,8 +986,8 @@ padding: 0em 1em;
     color: #0c35948a;
 }
 
-.card-horizontal .checkbox-custom-1 {
-    margin-top: 1em;
+.card-horizontal form .checkbox-custom-1 {
+    margin: 1em 0;
 }
 
 .card-horizontal .button {
@@ -1009,6 +1010,12 @@ padding: 0em 1em;
     cursor: pointer;
 }
 
+.card-horizontal hr {
+    width: 100%;
+    background-color: #007bff24;
+    height: 1px;
+}
+
 
 
 .card-horizontal .card-more-info  label {
@@ -1025,6 +1032,70 @@ padding: 0em 1em;
     margin-bottom: 0.4em;
 }
 
+.card-horizontal .benefit-list {
+    list-style: none;
+    padding: 0;
+    margin: 3em 0 0;
+}
+
+
+
+.card-horizontal .benefit-list li {
+    margin-bottom: 10px;
+    /* padding-left: 10px; */
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    font-size: 16px;
+    gap: 10px;
+    color: #0c3594a6;
+    font-weight: 500;
+}
+
+.card-horizontal .checkmark-benefits {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+    fill: #4CAF50;
+}
+
+.card-horizontal form {
+    display: unset;
+    flex-direction: unset;
+    max-width: unset;
+    margin:  unset;
+    padding: unset;
+    background: unset;
+    border-radius: unset;
+    box-shadow: unset;
+}
+
+.card-horizontal .mg-top {
+    margin-top: 1em;
+}
+
+@media (max-width:1250px) {
+    .card-horizontal {
+        flex-flow: row wrap;
+    }
+
+    .card-horizontal .header {
+        width: 100%;
+        height: 120px;
+    }
+
+    .card-horizontal .form {
+        padding: 20px 20px;
+    }
+
+
+}
+
 
 
 /* horizintal card ending */
+
+main#payer-container-main {
+    display: none !important;
+}
