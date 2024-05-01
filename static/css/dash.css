@@ -848,3 +848,183 @@ padding: 0em 1em;
 
 /* not for payment end */
 
+
+
+/* horizintal card beginning  */
+
+.card-horizontal {
+    display: flex;
+    /* width: 80%; */ /* Adjust based on your screen size */
+    margin: 3em 0;
+    min-height: 150px;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    border-radius: 15px;
+    overflow: hidden;
+    align-items: stretch; /* Align children vertically */
+}
+
+.card-horizontal .header {
+    background-color: #ffffff;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    /* border-right: 2px solid #e8e8e8; */
+    /* flex: 1 1 5%; */ /* Adjust flex basis according to your layout */
+    width: 20% !important;
+    /* border-radius: 20px; */
+    justify-content: center;
+    background-color: #ffffff;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20% !important;
+    /* border-radius: 20px; */
+    box-shadow: inset 0 4px 80px #2196f357;
+    /* border: 1px solid #e8e8e8; */
+    border-radius: 15px;
+    /* border-right: 0.24em solid #007bffab; */
+}
+
+.card-horizontal .logo {
+    width: 200px;
+    /* height: 40px; */
+    margin-right: 15px;
+    /* text-align: center; */
+}
+
+.card-horizontal .title {
+    font-size: 16px;
+    color: #333;
+}
+
+.card-horizontal .form {
+    padding: 20px 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    /* position: relative; */
+    flex: 2; /* Larger flex-grow to take more space */
+}
+
+.card-horizontal .input {
+    height: 40px;
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    /* padding: 0.8em 35px; */
+    border-radius: 10px;
+    background-color: #f1f8ff;
+    border: 1px solid #a7d4f6d9;
+    color: #0c3594d1;
+    width: 100%;
+    box-shadow: 0 4px 8px rgba(128, 128, 128, 0.116);
+    margin-bottom: 0;
+    border-left: 0.5rem solid rgb(248, 214, 38);
+    border-left-color: #007bff7a;
+}
+
+.card-horizontal .button, .sign-up-button {
+    padding: 10px 20px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.card-horizontal .svg-select-1 {
+
+    /* margin-right: 1em !important; */
+    opacity: 0.6;
+}
+
+.card-horizontal .footer {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border-left: 2px solid #e8e8e8;
+    flex: 1 1 20%; /* Similar flex basis as the header */
+}
+
+.card-horizontal .checkbox {
+    display: flex;
+    align-items: center;
+}
+
+.card-horizontal .checkbox input {
+    margin-right: 10px;
+}
+
+.card-horizontal .card-container-svg {
+    position: relative;
+}
+
+.card-horizontal .styled-select,  .card-horizontal .input  {
+ background-color: none;
+ border-top: none;
+ border-right: none;
+ border-bottom: none;
+ box-shadow: none;
+ color: #0c35948a;
+}
+
+.card-horizontal h2.form-h2 {
+    text-align: left;
+}
+
+.card-horizontal .label-text {
+    color: #0c3594bd;
+    margin: 0;
+}
+
+.card-horizontal .checkbox-custom label {
+    color: #0c35948a;
+}
+
+.card-horizontal .checkbox-custom-1 {
+    margin-top: 1em;
+}
+
+.card-horizontal .button {
+    margin-top: 2em;
+    width: 200px;
+    border-radius: 23px;
+    margin: 2em auto 0;
+}
+
+.card-horizontal .card-more-info {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    gap: 20px;
+    border-radius: 10px;
+    background-color: #f1f8ff;
+    border: 1px solid #a7d4f6d9;
+    width: max-content;
+    padding: 0.4em 1em;
+    cursor: pointer;
+}
+
+
+
+.card-horizontal .card-more-info  label {
+    cursor: pointer;
+    font-size: 1.1em;
+    color: #0c3594a6;
+    font-weight: 500;
+}
+
+.card-horizontal .card-desc {
+    font-size: 1.1em;
+    color: #0c3594a6;
+    font-weight: 500;
+    margin-bottom: 0.4em;
+}
+
+
+
+/* horizintal card ending */
