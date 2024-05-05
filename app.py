@@ -10,6 +10,8 @@ import stripe
 import sparkpost
 import requests
 from datetime import datetime
+import hmac
+import hashlib
 
 # email api key e0292a01d4005f36ecc119c1ea1cf1dd04ea111c
 spark_api = 'e0292a01d4005f36ecc119c1ea1cf1dd04ea111c'
@@ -596,6 +598,9 @@ def dashboard():
     account_percentage = 0
     remaining_size = 0
     insured_accounts = []
+    hash_code = 0
+    user_id = 0
+    
 
     account_insured = False
 
@@ -615,6 +620,16 @@ def dashboard():
         if user_data.exists:
 
             user_data = user_data.to_dict()
+
+            
+
+            hash_code = hmac.new(
+  b'O7zzlQjAFoiHvWq2Hh6ORxbRR2O7CUH3H7pl6qh1', # an Identity Verification secret key (web)
+  bytes(user_data['uid'], encoding='utf-8'), # a UUID to identify your user
+  digestmod=hashlib.sha256 # hash function
+).hexdigest()
+            
+            user_id = user_data['uid']
             
             
 
@@ -667,7 +682,7 @@ def dashboard():
                     remaining_size = 200000 - account_size        
 
             else: 
-                return render_template("dashboard.html", session=user_info, user_email=user_email, user_validated_email=user_validated_email, dashboard_nav=True, remaining_size=200000)        
+                return render_template("dashboard.html", session=user_info, user_email=user_email, user_validated_email=user_validated_email, dashboard_nav=True, remaining_size=200000, hash_code=hash_code, user_id=user_id)        
                     
     
 
@@ -697,13 +712,13 @@ def dashboard():
         
 
     if account_insured:
-        return render_template("dashboard.html", session=user_info, user_email=user_email, user_name=user_name, account_insured=True, num_of_accounts = num_of_accounts, insured_accounts =insured_accounts, account_percentage=account_percentage, remaining_size=remaining_size, account_size=account_size, has_first_name=True,first_name=first_name, dashboard_nav=True)
+        return render_template("dashboard.html", session=user_info, user_email=user_email, user_name=user_name, account_insured=True, num_of_accounts = num_of_accounts, insured_accounts =insured_accounts, account_percentage=account_percentage, remaining_size=remaining_size, account_size=account_size, has_first_name=True,first_name=first_name, dashboard_nav=True, hash_code=hash_code, user_id=user_id)
     # # print(user_data + " the value for user data came")
     
         
     # firebase_user_data = list(user_data.values())[0]
     
-    return render_template("dashboard.html", session=user_info, user_email=user_email, user_validated_email=user_validated_email, dashboard_nav=True, remaining_size=200000)
+    return render_template("dashboard.html", session=user_info, user_email=user_email, user_validated_email=user_validated_email, dashboard_nav=True, remaining_size=200000, user_id=user_id, hash_code=hash_code)
 
 
 
