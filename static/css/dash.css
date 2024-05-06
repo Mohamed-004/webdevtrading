@@ -1016,6 +1016,38 @@ padding: 0em 1em;
     height: 1px;
 }
 
+.card-horizontal .coverage-ul-info {
+    padding-left: 1em;
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 5px;
+}
+
+
+.card-horizontal .coverage-p {
+    flex-flow: row wrap;
+    display: inline-flex;
+    position: relative;
+}
+
+.card-horizontal  .coverage-p em {
+    color: #0c35948a;
+}
+
+.card-horizontal .coverage-p svg {
+    position: absolute;
+    top: 0;
+}
+
+.card-horizontal .coverage-stacked {
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+.card-horizontal .coverage-p div {
+    padding-left: 2em;
+}
+
 
 
 .card-horizontal .card-more-info  label {
@@ -1074,6 +1106,37 @@ padding: 0em 1em;
 .card-horizontal .mg-top {
     margin-top: 1em;
 }
+
+.card-horizontal .early-access {
+    font-size: 1em;
+    /* opacity: 0.8; */
+    color: #0c3594a6;
+    font-weight: bold;
+    margin: 0;
+    background-color: #2196f321;
+    /* color: #0c3594d1; */
+    /* display: block; */
+    align-items: center;
+    width: max-content;
+    padding: 0.5em 1em;
+    /* border: solid 2px #233dff00; */
+    border-radius: 10px;
+}
+
+.card-horizontal ul.benefit-list svg {
+        position: absolute;
+    left: 0;
+}
+
+.card-horizontal .benefit-list li {
+    padding-left: 2em;
+    position: relative;
+}
+
+.card-horizontal .coverage-p a {
+    font-style: italic;
+}
+
 
 @media (max-width:1250px) {
     .card-horizontal {

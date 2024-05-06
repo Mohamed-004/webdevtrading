@@ -315,13 +315,14 @@ Dashboard
     </div>
 
 
-    <div class="form">
+    <div class="form" style="justify-content: space-between;">
 
 
-        
+         <div>
         <h2 class="form-h2">PropSurance User Road-Map </h2>
 
         <p class="card-desc">Don't know where to start? Take a look at our Personalized User Roadmap!</p>
+    </div>
 
         <div class="card-more-info" onclick="toggleText0()">
            
@@ -352,24 +353,7 @@ Dashboard
 
 <!-- bronze card beginning -->
 
-<div class="card-horizontal">
-    <div class="header">
-        <img src=" {{ url_for('static', filename='images/tradeshieldbronze.svg') }}" alt="Prop Surance Logo" class="logo" style="width:320px;">
-        <!-- <div class="title">Free Payout Coverage x CTI</div> -->
-    </div>
-
-    <div class="form">
-
-        <h2 class="form-h2" style="line-height: 1.4em;"> <span style="color:#0c35948a; display: inline-block;"> Don’t Let a Breach Set You Back:</span> Unlock a New Live Account & more with
-             <span style="color: #233DFF; display: inline-block;"> Trade </span> <span style="color: #233DFF ; display: inline-block;">Shield</span> 
-              <span style="color: #D3896A ; display: inline-block;"> Bronze</span> ! </h2>
-
-
-    </div>
-
-
-</div>
-
+{% include "product-templates/trade-safe-bronze.html" %}
 
 <!-- bronze ending -->
 
@@ -542,14 +526,6 @@ Dashboard
     
     <button id="submitBtn" type="submit" draggable="false" class="submit-btn" >Sign Up</button>
 
-
-
-
-
-
-
-
-
 </div>
 
 
@@ -693,6 +669,37 @@ function toggleText0() {
     var infoLabel = document.getElementById('infoLabel0');
     var svgMore = document.getElementById('svg-more0')
     var svgLess = document.getElementById('svg-less0')
+
+    // if (infoLabel.innerText === "More Info") {
+    //     infoLabel.innerText = "Less Info";
+    //     svgMore.style.display = "none";
+    //     svgLess.style.display = 'block';
+    // }
+
+    // else {
+    //     infoLabel.innerText = "More Info";
+    //     svgMore.style.display = "block";
+    //     svgLess.style.display = 'none';
+    // }
+
+
+
+    if (textDiv.style.display === "none") {
+        textDiv.style.display = "block";
+            svgMore.style.display = "none";
+          svgLess.style.display = 'block';
+    } else {
+        textDiv.style.display = "none";
+        svgLess.style.display = 'none';
+        svgMore.style.display = "block";
+    }
+}
+
+function toggleTextBronze() {
+    var textDiv = document.querySelector('.card-show-text-bronze');
+    var infoLabel = document.getElementById('infoLabel-bronze');
+    var svgMore = document.getElementById('svg-more-bronze')
+    var svgLess = document.getElementById('svg-less-bronze')
 
     // if (infoLabel.innerText === "More Info") {
     //     infoLabel.innerText = "Less Info";
