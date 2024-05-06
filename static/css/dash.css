@@ -191,7 +191,7 @@ button#account-firm-btn {
     margin-right: 0.6em;
 }
 
-form {
+form:not(.card-horizintal form) {
     display: flex;
     flex-direction: column;
     max-width: 500px;
@@ -202,8 +202,7 @@ form {
     box-shadow: 0px 10px 40px 0px rgba(109, 141, 173, 0.25);
 }
 
-form input[type='text'],
-form input[type='password'] {
+form input[type='text'], form input[type='password'] {
     font-weight: bold;
     margin-bottom: 1em; /* Adjust as needed */
     padding: 0.5em;
@@ -215,7 +214,7 @@ form input[type='password'] {
     font-size: 1em; /* Adjust size as needed */
 }
 
-form input[type='submit'] {
+form input[type='submit']:not(.card-horizintal form input[type='submit']) {
     padding: 0.5em;
     border: none;
     border-radius: 4px;
@@ -246,13 +245,13 @@ form input[type='submit'] {
     border: none !important;
 }
 
-form input[type='submit']:hover {
+form input[type='submit']:hover:not(.card-horizintal form input[type='submit']) {
     background: #0a214c; /* Darker shade for hover effect */
 }
 
 form label {
     color: #0c3594d1;
-    margin-bottom: 0.5em; /* Space between label and input */
+    /* margin-bottom: 0.5em; */ /* Space between label and input */
     font-weight: bold; /* Optional style */
 }
 
@@ -277,7 +276,7 @@ form input[type='text'][readonly] {
     padding-left: 35px;
 }
 
-form input[type='text'][readonly]::placeholder {
+form input[type='text'][readonly]::placeholder:not(.card-horizintal form input[type='text'][readonly]) {
     color: #0c3594d1;
     opacity: 0.4; /* Make placeholder fully visible */
 }
@@ -987,7 +986,7 @@ padding: 0em 1em;
 }
 
 .card-horizontal form .checkbox-custom-1 {
-    margin: 1em 0;
+    /* margin: 1em 0; */
 }
 
 .card-horizontal .button {
@@ -1101,10 +1100,12 @@ padding: 0em 1em;
     background: unset;
     border-radius: unset;
     box-shadow: unset;
+    all: unset !important;
 }
 
 .card-horizontal .mg-top {
     margin-top: 1em;
+    margin-bottom: 0.5em;
 }
 
 .card-horizontal .early-access {
@@ -1135,6 +1136,89 @@ padding: 0em 1em;
 
 .card-horizontal .coverage-p a {
     font-style: italic;
+}
+
+.card-horizontal .payment-section .payment-top {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    margin-top: 1em;
+}
+
+.card-horizontal .payment-section {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+}
+
+.card-horizontal form label.checkbox-label {
+    margin-bottom: 0 !important;
+}
+
+.card-horizontal .payment-section .payment-top  p.payment-num {
+    font-size: 3em;
+    color: #0c3594d1;
+    font-weight: 500;
+}
+
+.card-horizontal .payment-section .payment-top .payment-symbol, .card-horizontal .payment-section .payment-top .payment-num-top  {
+    color: #0c3594c9;
+    font-size: 1.4em;
+}
+
+
+.card-horizontal .payment-section .payment-top .payment-symbol {
+    align-self: center;
+}
+
+.card-horizontal .payment-num-strike {
+    text-align: center;
+    font-size: 1.3em;
+    color: #0c35946e;
+    text-decoration: line-through;
+    align-self: center;
+    margin-right: 0.6em;
+}
+
+.card-horizontal .payment-button {
+    position: relative;
+    width: max-content;
+    margin: 0 auto;
+    padding: 20px 40px 20px 40px;
+    background-color: #0c3594d1;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding-left: 65px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-size: 1em;
+    font-weight: bold;
+    /* box-shadow: inset 0 4px 80px #2196f357; */
+}
+
+.card-horizontal form .checkbox-custom {
+    margin-top: 0.6em;
+}
+
+
+.card-horizontal .svg-pay {
+    left: 20px;
+    position: absolute;
+    top: 16px;
+}
+
+.card-horizontal form .styled-select {
+    padding: 0.8em 0 0.8em 35px !important;
+    border-radius: 10px !important;
+    background-color: #f1f8ff !important;
+    border: 1px solid #a7d4f6d9 !important;
+    color: #0c3594d1 !important;
+    width: 100% !important;
+    box-shadow: 0 4px 8px rgba(128, 128, 128, 0.116) !important;
+    margin-bottom: 0 !important;
+    border-left: 0.5rem solid rgb(248, 214, 38) !important;
+    border-left-color: #007bffab !important;
 }
 
 

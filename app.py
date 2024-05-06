@@ -751,6 +751,13 @@ def webhook():
 
 
     # Handle the event
+
+    if event['type'] == 'promotion_code.updated':
+        payment_intent = event['data']['object'] 
+        print('coupon was used')
+        print(payment_intent)
+
+
     if event['type'] == 'invoice.payment_succeeded':
         payment_intent = event['data']['object']  # The payment intent object
         
