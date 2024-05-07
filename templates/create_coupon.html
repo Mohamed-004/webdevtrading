@@ -1,0 +1,154 @@
+{% extends "layout.html" %}
+{% block title %}
+<title>PropSurance - Validate Account | Profile</title>
+{% endblock %}
+
+{% block css %}    
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/cases.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dash.css') }}">
+
+<style>
+    .bottom-footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+form input[type='text'], form input[type='password'] {
+    padding-left: 30px;
+    border-left: 0.5rem solid rgb(248, 214, 38) !important;
+    border-left-color: #007bffab !important;
+    border-radius: 10px;
+    padding: 0.8em 0 0.8em 35px !important;
+    margin-bottom: 0;
+}
+
+form input[type='submit']:not(.card-horizintal form input[type='submit']) {
+    margin-top: 0 !important;
+}
+
+form  input[type='text']::placeholder {
+            color: #0c3594a6 ; /* Light grey placeholder text */
+            
+        }
+
+.form-icon svg {
+    position: absolute;
+    top: 10px;
+    left: 8px;
+    opacity: 1 !important;
+}
+
+form input[type='submit'] {
+    margin: 0 auto 0 !important;
+}
+ 
+
+
+.alert {
+    padding: 10px;
+
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+form input[type='text'][readonly] {
+    border-radius: 10px;
+    opacity: 0.5;
+}
+
+.alert-success { color: #155724; background-color: #d4edda; border-color: #c3e6cb; display: block !important; }
+.alert-error { color: #721c24; background-color: #f8d7da; border-color: #f5c6cb; }
+</style>
+
+{% endblock %}
+
+
+{% block dashlink_current_pg %}
+Add Coupon
+                  {% endblock %}
+
+{% block dashlinks %}
+<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ url_for('home') }}">Home</a></li>
+
+<li role="presentation" class="divider"></li>
+<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ url_for('dashboard') }}"> PropSurance <br> Dashboard</a></li>
+<li role="presentation" class="divider"></li>
+<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ url_for('logout') }}">Logout</a></li>
+<li role="presentation" class="divider"></li>
+<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ url_for('dashboard_faq') }}">PropSurance-FAQ</a></li>
+<li role="presentation" class="divider"></li>
+
+<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ url_for('view_firm_reports') }}">Reported Firms </a></li>  
+<li role="presentation" class="divider"></li>
+
+<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ url_for('propsurance_service') }}">Terms of Service </a></li>   
+<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ url_for('propsurance_terms') }}">Privacy Policy </a></li>   
+<li role="presentation" class="divider"></li> 
+
+<li role="presentation"><a role="menuitem" tabindex="-1" href="https://twitter.com/PropPatrol" target="_blank"> Twitter</a></li> 
+<li role="presentation"><a role="menuitem" tabindex="-1" href="https://mailto:support@proppatrol.net" target="_blank"> Contact Us</a></li> 
+{% endblock %}
+
+
+
+{% block content %}
+
+<main class="content-main" >
+<h2 class="form-h2">Apply Discount Code </h2>
+<form id="form-validation" action="{{ url_for('create_coupon') }}" method="post">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+    {% if allowed_to_redeem and coupon_code == 'none' %}
+    <label for="coupon_code" >Apply Discount Code <i style="font-size: 0.9em;
+        font-style: italic;
+        color: #0c3594a6;">(Only Valid for first purchase)</i> </label>
+    
+    <div class="form-icon-cont">
+    
+        <div class="form-icon"> <svg width="25px" height="25px" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill="#3B5AA8" d="M224 704h576V318.336L552.512 115.84a64 64 0 0 0-81.024 0L224 318.336V704zm0 64v128h576V768H224zM593.024 66.304l259.2 212.096A32 32 0 0 1 864 303.168V928a32 32 0 0 1-32 32H192a32 32 0 0 1-32-32V303.168a32 32 0 0 1 11.712-24.768l259.2-212.096a128 128 0 0 1 162.112 0z"></path><path fill="#3B5AA8" d="M512 448a64 64 0 1 0 0-128 64 64 0 0 0 0 128zm0 64a128 128 0 1 1 0-256 128 128 0 0 1 0 256z"></path></g></svg></div>
+    </div>
+    <input type="text" id="coupon_code" name="coupon_code" placeholder="Add discount code here"  required><br>
+
+    {% endif %}
+
+    {% if allowed_to_redeem and coupon_code != 'none' %}
+    <label for="coupon_code" >5% Coupon Code Applied <i style="font-size: 0.9em;
+        font-style: italic;
+        color: #0c3594a6;">(Only Valid for your first purchase)</i> </label>
+    
+    <div class="form-icon-cont">
+    
+        <div class="form-icon"> <svg width="25px" height="25px" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill="#3B5AA8" d="M224 704h576V318.336L552.512 115.84a64 64 0 0 0-81.024 0L224 318.336V704zm0 64v128h576V768H224zM593.024 66.304l259.2 212.096A32 32 0 0 1 864 303.168V928a32 32 0 0 1-32 32H192a32 32 0 0 1-32-32V303.168a32 32 0 0 1 11.712-24.768l259.2-212.096a128 128 0 0 1 162.112 0z"></path><path fill="#3B5AA8" d="M512 448a64 64 0 1 0 0-128 64 64 0 0 0 0 128zm0 64a128 128 0 1 1 0-256 128 128 0 0 1 0 256z"></path></g></svg></div>
+    </div>
+    <input type="text" id="coupon_code" name="coupon_code" value="{{coupon_code}}" readonly  required><br>
+
+    {% endif %}
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div id="flash-messages">
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+
+    {% if allowed_to_redeem and coupon_code == 'none' %}
+
+    <input type="submit" value="Apply">
+
+    {% endif %}
+</form>
+
+
+
+
+
+</main>
+
+{% endblock %}
