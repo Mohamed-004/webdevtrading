@@ -443,13 +443,71 @@ def create_coupon():
 @app.route('/dashboard/verify-payment', methods=['POST'])
 def verify_payment():
     print(request.form)
-    email = request.form.get('email')
-    has_promo_code = True
+    email = request.form.get('user_email')
+    plan_type = request.form.get('plan_type')
+    firm_name = request.form.get('firm', 'none')
+    coupon_code = request.form.get('coupon_code', 'none')
+    price_plan = ''
+    price_firm = ''
+    price_num = 0
+    plan_name = ''
+    service_type = ''
+    account_size = request.form.get('account_size', '')
+    account_platform = request.form.get('account_type', '')
+
+        
+    
+    if plan_type == 'trade-shield-bronze':
+        if firm_name == 'ftmo':
+            price_firm = 'FTMO' 
+        elif firm_name == 'alpha_capital':
+            price_firm = 'Alpha Capital Group'
+        else:
+            return not_found(404)
+        price_num = '90'
+        service_type = 'one-time'
+    
+    elif plan_type == 'trade-shield-silver':
+        if firm_name == 'ftmo':
+            price_firm = 'FTMO' 
+        elif firm_name == 'alpha_capital':
+            price_firm = 'Alpha Capital Group'
+        else:
+            return not_found(404)
+        price_num = '190'
+        service_type = 'one-time'
+
+    elif plan_type == 'trade-shield-gold':
+        if firm_name == 'ftmo':
+            price_firm = 'FTMO' 
+        elif firm_name == 'alpha_capital':
+            price_firm = 'Alpha Capital Group'
+        else:
+            return not_found(404)
+        price_num = '470'
+        service_type = 'one-time'
+
+    else:
+        return not_found(404)
+    
+    # has_promo_code = True
     
 
     try:
         # Create a new Checkout Session for the order
         # For demonstration purposes, we use a hard-coded amount and currency
+        
+        user_data = db.collection('users').document(email).get()
+        
+
+        if user_data.exists:
+
+            user_data = user_data.to_dict()
+
+            allowed_to_redeem = not user_data['redeemed_coupon']
+            # coupon_code  =  user_data.get('coupon_code', 'none')
+
+
         session = stripe.checkout.Session.create(
             payment_method_types=['card'],
             line_items=[{
@@ -462,7 +520,7 @@ def verify_payment():
             success_url=url_for('success_payment', _external=True),
             cancel_url=url_for('cancel_payment', _external=True),
             automatic_tax={'enabled': True},
-            discounts= [{'coupon': 'UNnQzyHW'}] if has_promo_code else [],
+            discounts= [{'coupon': 'UNnQzyHW'}] if allowed_to_redeem else [],
             customer_email = email,
            custom_fields = [
     {
@@ -479,8 +537,15 @@ def verify_payment():
 ], 
              metadata={
                 'customer_email': email,  # Custom data
-                'product_type' : 'Trade-Shield Bronze',
-                'used_promo_code' : has_promo_code
+                'coupon_code' : coupon_code,
+                'allowed_to_redeem' : allowed_to_redeem,
+                'firm_name': price_firm,
+                'phase': 'phase1',
+                'price': price_num,
+                'plan_name': plan_type,
+                'account_size': account_size,
+                'plan_type': 'paid',
+                'trading_platform': account_platform
             },
             phone_number_collection={'enabled': True}
         )
@@ -590,6 +655,7 @@ def submit_mt_account(account):
     user_data = db.collection('users').document(user_email).get()
 
     accounts = {}
+    
 
     try:
         user_email = user_info['email']
@@ -883,7 +949,6 @@ def webhook():
         payment_intent = event['data']['object']  # The payment intent object
         customer_email = payment_intent.get('billing_details', {}).get('email')
         customer_name = payment_intent.get('billing_details', {}).get('name')
-        customer_phone = payment_intent.get('billing_details', {}).get('phone')
         receipt_url = payment_intent.get('receipt_url')
         purchase_id = payment_intent.get('payment_intent')
 
@@ -895,6 +960,7 @@ def webhook():
             user_info = users_query.to_dict()
             uid = user_info.get('uid', 0)
             sub_type = ''
+            
 
             # # print('Metadata', payment_intent['metadata'])
 
@@ -922,23 +988,25 @@ def webhook():
                 # 'account_size': account_size,
                 # 'prop_firm_name': prop_firm_name,
                 'status': 'pending',
-                'server': '',
+                # 'server': '',
                 'trading_account_type': '',
                 'insured_date': formatted_date_string,
                 'customer-purchase-id': purchase_id,
-                'sub_type' : sub_type,
-                'current_rate': '40%',
+                # 'sub_type' : sub_type,
+                # 'current_rate': '40%',
+                'plan_type': 'paid',
                 'customer_name': customer_name,
                 'first_name' : first_name
             }
 
             # Add to sub-collection
+            print('charge done')
+            print(account_info)
             accounts_ref = accounts_collection.document(account_doc_id).set(account_info)
 
             # Update user's basic information if necessary
             user_ref.update({
                 'user_name': customer_name,
-                'customer_phone_number': customer_phone,
                 'customer_email': customer_email,
                 'accounts_info_count' : account_count,
                 'first_name' : first_name
@@ -948,75 +1016,92 @@ def webhook():
 
          
 
-    # if event['type'] == 'checkout.session.completed':
-    #     payment_intent = event['data']['object']  # The payment intent object
-    #     customer_email = payment_intent.get('customer_details', {}).get('email')
-    #     customer_name = payment_intent.get('customer_details', {}).get('name')
-    #     purchase_id = payment_intent.get('payment_intent')
-
-    #     # Fetch the customer details from Stripe
+    if event['type'] == 'checkout.session.completed':
+        payment_intent = event['data']['object']  # The payment intent object
+        customer_email = payment_intent.get('customer_details', {}).get('email')
+        customer_name = payment_intent.get('customer_details', {}).get('name')
+        purchase_id = payment_intent.get('payment_intent')
+        customer_phone = payment_intent.get('billing_details', {}).get('phone')
+        # Fetch the customer details from Stripe
 
         
 
-    #     # Query Firestore for the user document by email
-    #     user_ref = db.collection('users').document(customer_email)
-    #     users_query = user_ref.get()
+        # Query Firestore for the user document by email
+        user_ref = db.collection('users').document(customer_email)
+        users_query = user_ref.get()
 
-    #     if users_query.exists:
-    #         user_info = users_query.to_dict()
-    #         uid = user_info.get('uid', 0)
-    #         account_size = ''
-    #         prop_firm_name = ''
+        if users_query.exists:
+            user_info = users_query.to_dict()
+            uid = user_info.get('uid', 0)
+            account_size = ''
+            prop_firm_name = ''
 
-    #         # Retrieve the current number of accounts to create a unique identifier for the new account
-    #         accounts_collection = user_ref.collection('trader_info')
-    #         accounts_docs = accounts_collection.stream()  # Get all documents to count them
-    #         accounts_count = sum(1 for _ in accounts_docs)  # Count documents
-    #         first_name = customer_name.split()[0]
+            # Retrieve the current number of accounts to create a unique identifier for the new account
+            accounts_collection = user_ref.collection('trader_info')
+            accounts_docs = accounts_collection.stream()  # Get all documents to count them
+            accounts_count = sum(1 for _ in accounts_docs)  # Count documents
+            first_name = customer_name.split()[0]
 
-    #         # Extract custom field values
-    #         trader_account_info = payment_intent['metadata']
+            # Extract custom field values
+            trader_account_info = payment_intent['metadata']
 
 
-    #         account_size = int(trader_account_info['account_size'])
-    #         prop_firm_name =  trader_account_info['firm_name']
-    #         sub_type = trader_account_info['service']
-    #         current_phase = trader_account_info['phase']
-    #         purchase_cost = trader_account_info['price']
+            account_size = int(trader_account_info['account_size'])
+            prop_firm_name =  trader_account_info['firm_name']
+            # sub_type = trader_account_info['service']
+            product_name = trader_account_info['plan_name']
+            current_phase = trader_account_info['phase']
+            purchase_cost = trader_account_info['price']
+            allowed_to_redeem = trader_account_info['allowed_to_redeem']
+            coupon_code = trader_account_info['coupon_code']
+            account_platform = trader_account_info['trading_platform']
 
-    #         # phase_value = payment_intent.get("custom_fields", [{}])[0].get("dropdown", {}).get("value", "")
-    #         mt4mt5_investor_id = payment_intent.get("custom_fields", [{}])[0].get("text", {}).get("value", "")
-    #         mt4mt5_investor_password = payment_intent.get("custom_fields", [{}])[1].get("text", {}).get("value", "")
+            # phase_value = payment_intent.get("custom_fields", [{}])[0].get("dropdown", {}).get("value", "")
+            # mt4mt5_investor_id = payment_intent.get("custom_fields", [{}])[0].get("text", {}).get("value", "")
+            # mt4mt5_investor_password = ''
+            mt4mt5_investor_id = ''
+            mt4mt5_investor_password = ''
 
-    #         sub_data = {
-    #             'customer_name': first_name,
-    #             'customer_purchase_id': account_size,
-    #             'prop_firm_name': prop_firm_name,
-    #             'signup_url': url_for('submit_mt_account', account=accounts_count, _external=True),
-    #             'dashboard_url' : url_for('dashboard', _external=True),
-    #             'faq_url' : url_for('dashboard_faq', _external=True),
-    #             'url_privacy': url_for('propsurance_terms', _external=True)
-    #         }
+            if coupon_code != 'none' and allowed_to_redeem:
+                # user used affiliate code, find the code and update both user info, and affiliate
+                pass
 
-    #         send_email(client_reference_id_email , template_id, sub_data )
+            sub_data = {
+                'customer_name': first_name,
+                'customer_purchase_id': account_size,
+                'prop_firm_name': prop_firm_name,
+                'signup_url': url_for('submit_mt_account', account=accounts_count, _external=True),
+                'dashboard_url' : url_for('dashboard', _external=True),
+                'faq_url' : url_for('dashboard_faq', _external=True),
+                'url_privacy': url_for('propsurance_terms', _external=True)
+            }
 
-    #         trader_account_info = {
-    #             'propsurance_count': accounts_count,  # Dynamic count based on the number of documents
-    #             'account_status': current_phase,
-    #             'account_size': account_size,
-    #             'sub-type': sub_type,
-    #             'prop_firm_name': prop_firm_name,
-    #             'investor_id': mt4mt5_investor_id,
-    #             'investor_password': mt4mt5_investor_password,
-    #             'insured_date': datetime.now().strftime('%Y-%m-%d'),
-    #             'customer-purchase-id': purchase_id ,
-    #             'price_cost': purchase_cost
-    #         }
+            send_email(customer_email , template_id, sub_data )
 
-    #         # Add a new document to the sub-collection
-    #         accounts_collection.document(f"trader_account_{accounts_count}").set(trader_account_info)
+            trader_account_info = {
+                'propsurance_count': accounts_count,  # Dynamic count based on the number of documents
+                'account_status': current_phase,
+                'account_size': account_size,
+                'product_name': product_name,
+                # 'sub-type': sub_type,
+                'prop_firm_name': prop_firm_name,
+                'investor_id': mt4mt5_investor_id,
+                'trading_platform': account_platform,
+                'investor_password': mt4mt5_investor_password,
+                'insured_date': datetime.now().strftime('%Y-%m-%d'),
+                'customer-purchase-id': purchase_id ,
+                'price_cost': purchase_cost,
+                'customer_phone': customer_phone
+            }
 
-    #         # Optionally update user's basic info
+            print('custom session')
+            print(trader_account_info)
+
+            # Add a new document to the sub-collection
+
+            accounts_collection.document(f"trader_account_{accounts_count}").set(trader_account_info)
+
+            # Optionally update user's basic info
             
 
             

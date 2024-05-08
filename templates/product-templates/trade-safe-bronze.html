@@ -66,6 +66,7 @@
 
         <form action="{{url_for('verify_payment')}}" method="post">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+        <input type="hidden" name="user_email" value="{{ user_email }}"/>
         <input type="hidden" name="plan_type" value="trade-shield-bronze"/>
 
         <label class="label-text mg-top" for="firm">Firm Choice *</label>
@@ -107,31 +108,73 @@
             </select>
         </div>
 
-        <label class="label-text mg-top" for="firm">Coupon Code <span style="font-size: 0.9em;font-style: italic;color: #0c3594a6;">
+        <label class="label-text mg-top" for="firm">Account Type *</label>
+
+<div class="card-container-svg">
+    <!-- Radio button for MT4 -->
+    <input type="radio" id="mt4" name="account_type" value="MT4" required>
+    <label for="mt4" style="margin-right: 2em;">MT4</label>
+
+    <!-- Radio button for MT5 -->
+    <input type="radio" id="mt5" name="account_type" value="MT5" required>
+    <label for="mt5">MT5</label>
+</div>
+
+       
             {% if allowed_to_redeem and coupon_code == 'none' %}
+            <!-- there is no coupon code, so you are able to apply one -->
+            <label class="label-text mg-top" for="firm">Coupon Code <span style="font-size: 0.9em;font-style: italic;color: #0c3594a6;">
             (To apply a coupon code click <a style="font-size: 1em;
             font-style: italic;
             color: #0c3594d1;
             font-weight: bold;" href="{{url_for('create_coupon')}}">Here</a>)
-        {% endif %}
+              </span> </label>
+        
     
-    </span> </label>
+  
 
-
+      
         <div class="card-container-svg" style="margin-bottom: 1em; opacity: 0.6;">
 
            <svg width="25px" id="dropdown-svg" height="25px" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill="#3B5AA8" d="M224 704h576V318.336L552.512 115.84a64 64 0 0 0-81.024 0L224 318.336V704zm0 64v128h576V768H224zM593.024 66.304l259.2 212.096A32 32 0 0 1 864 303.168V928a32 32 0 0 1-32 32H192a32 32 0 0 1-32-32V303.168a32 32 0 0 1 11.712-24.768l259.2-212.096a128 128 0 0 1 162.112 0z"></path><path fill="#3B5AA8" d="M512 448a64 64 0 1 0 0-128 64 64 0 0 0 0 128zm0 64a128 128 0 1 1 0-256 128 128 0 0 1 0 256z"></path></g></svg>
 
        
            
-                {% if allowed_to_redeem and coupon_code == 'none' %}
+           
             <input  type="text"  name="email" style="font-weight: bold; color: #0c3594a6 !important;" readonly value="No Coupon Code Applied"    id="propFirmSelect" class="styled-select">
              
 
-            {% endif %}
+          
 
         </div>
 
+        {% elif allowed_to_redeem and coupon_code != 'none' %}
+
+        <!-- the coupon code is applied so make it read only -->
+
+        <label class="label-text mg-top" for="firm"> <span style="font-size: 0.9em;font-style: italic;color: #0c3594a6;">
+            (5% Coupon Code will be Applied to Checkout)
+              </span> </label>
+        
+    
+  
+
+      
+        <div class="card-container-svg" style="margin-bottom: 1em; opacity: 0.6;">
+
+           <svg width="25px" id="dropdown-svg" height="25px" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill="#3B5AA8" d="M224 704h576V318.336L552.512 115.84a64 64 0 0 0-81.024 0L224 318.336V704zm0 64v128h576V768H224zM593.024 66.304l259.2 212.096A32 32 0 0 1 864 303.168V928a32 32 0 0 1-32 32H192a32 32 0 0 1-32-32V303.168a32 32 0 0 1 11.712-24.768l259.2-212.096a128 128 0 0 1 162.112 0z"></path><path fill="#3B5AA8" d="M512 448a64 64 0 1 0 0-128 64 64 0 0 0 0 128zm0 64a128 128 0 1 1 0-256 128 128 0 0 1 0 256z"></path></g></svg>
+
+       
+           
+           
+            <input  type="text"  name="coupon_code" style="font-weight: bold; color: #0c3594a6 !important;" readonly value="{{coupon_code}}"    id="propFirmSelect" class="styled-select"> </div>
+             
+
+
+            <!-- user already redeemed coupon for -->
+
+
+        {% endif %}
 
 
           

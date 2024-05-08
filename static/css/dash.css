@@ -1180,7 +1180,7 @@ padding: 0em 1em;
     margin-right: 0.6em;
 }
 
-.card-horizontal .payment-button {
+.card-horizontal .payment-button, .coupon-form .payment-button {
     position: relative;
     width: max-content;
     margin: 0 auto;
@@ -1197,12 +1197,14 @@ padding: 0em 1em;
     /* box-shadow: inset 0 4px 80px #2196f357; */
 }
 
-.card-horizontal form .checkbox-custom {
-    margin-top: 0.6em;
+.coupon-form .payment-button  {
+    margin-bottom: 2em;
 }
 
 
-.card-horizontal .svg-pay {
+
+
+.card-horizontal .svg-pay, .coupon-form .svg-pay {
     left: 20px;
     position: absolute;
     top: 16px;
