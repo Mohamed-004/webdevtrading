@@ -9,7 +9,7 @@ from urllib.parse import quote_plus, urlencode
 import stripe 
 import sparkpost
 import requests
-from datetime import datetime
+from datetime import datetime, timedelta
 import hmac
 import hashlib
 
@@ -174,7 +174,6 @@ def process_payment():
 
 @app.route("/callback", methods=["GET", "POST"])
 def callback():
-    print(url_for('callback'))
     try:
         # for development this is the following code:
         token = oauth.auth0.authorize_access_token()
@@ -197,6 +196,9 @@ def callback():
         allowed_user_ref = db.collection('allowed_users').document(user['email'])
         allowed_user_doc = allowed_user_ref.get()
         allowed_user_doc_info = allowed_user_doc.to_dict()
+
+        
+
         
         if allowed_user_doc.exists:
             # User is allowed, proceed with session creation and saving to users collection
@@ -218,7 +220,55 @@ def callback():
                 })
             
             return redirect(url_for('dashboard'))
+        
         else:
+            print('checking if affilaite exists')
+            # check if affiliate exists
+            allowed_affiliates_ref = db.collection('allowed_affiliates').document(user['email'])
+            allowed_affiliates_doc =  allowed_affiliates_ref.get()
+            allowed_affiliates_doc_info = allowed_affiliates_doc.to_dict()
+
+            
+
+
+            if allowed_affiliates_doc.exists:
+                
+                # affiliate is in database allowed_affiliates
+                user_info_affiliate = {
+            "email": token["userinfo"]["email"],
+            "email_verified": token["userinfo"]["email_verified"],
+            'is_affiliate': 'True'
+        }
+                session["user"] = user_info_affiliate
+                
+
+                affiliate_ref = db.collection('affiliates').document(user['email'])
+                affiliate_check_exist = affiliate_ref.get()
+
+                # user has never logged in so add his uid info
+                if not affiliate_check_exist.exists:
+                    affiliate_ref.set({
+                         'uid': user['sub'],
+                          'email': user['email'],
+                          'coupon_code': allowed_affiliates_doc_info.get('coupon_code', ''),
+                        'deposited_profit': 0,
+                        'trade_shield_bronze_profit': 0,
+                        'trade_shield_silver_profit': 0,
+                        'trade_shield_gold_profit': 0,
+                        'paypal_email': allowed_affiliates_doc_info.get('paypal_email', ''),
+                        'country': allowed_affiliates_doc_info.get('country', ''),
+                        'phone_number': allowed_affiliates_doc_info.get('phone_number', '')
+                    })
+                    return 'new affiliate account created'
+                else:
+                    return 'affiliate now exists and will be redirecting to his dashboard'
+
+
+
+
+
+
+            
             # If the user is not allowed, do not store in session or 'users' collection
             flash('You are not authorized to access this page.', 'error')
             return render_template('noaccess.html', error='You did not complete your PropSurance application, please contact us at support@proppatrol.net') # Redirect to a generic page or a denial information page
@@ -769,6 +819,14 @@ def dashboard():
     # Check if user is authenticated
     if 'user' not in session:
         return redirect(url_for("login"))
+    else:
+        user = session['user']
+        is_affiliate = user.get('is_affiliate', False)
+
+        if is_affiliate == 'True':
+            # redirect to affiliate page
+            return 'is affiliate'
+
     user_info = False
     user_data = False
     user_validated_email = 0
@@ -843,6 +901,19 @@ def dashboard():
                             # # print('line 275', account_info_data)
                             account_size += (trader_info_data_parsed.get('account_size'))
                             trade_status = ''
+                            plan_type = account_info_data.get('plan_type')
+                            insured_date = account_info_data.get('insured_date')
+                            failed_account = account_info_data.get('failed_account')
+
+                            # add 1 week for the refund date
+                            temp_date = datetime.strptime(insured_date, "%Y-%m-%d")
+
+                            new_date = temp_date + timedelta(days=7)
+
+                            new_refund_date_string = new_date.strftime("%Y-%m-%d")
+
+                            print(failed_account)
+
 
 
                             if trader_info_data_parsed.get('account_status') == 'phase2':
@@ -861,7 +932,8 @@ def dashboard():
                             'account_status':  account_info_data.get('status'),
                             'phase_status' : trade_status,
                             'current_percentage': int((trader_info_data_parsed['account_size'] / 200000) * 100),
-                            'current_size': trader_info_data_parsed['account_size']
+                            'current_size': trader_info_data_parsed['account_size'],
+                            'refund_date': new_refund_date_string
                             }
 
                             # print(account_info_data)
@@ -1091,27 +1163,21 @@ def webhook():
                 'insured_date': datetime.now().strftime('%Y-%m-%d'),
                 'customer-purchase-id': purchase_id ,
                 'price_cost': purchase_cost,
-                'customer_phone': customer_phone
+                'customer_phone': customer_phone,
+                'failed_account': False,
+                'current_payouts': 0
             }
 
-            print('custom session')
-            print(trader_account_info)
+        
 
             # Add a new document to the sub-collection
 
             accounts_collection.document(f"trader_account_{accounts_count}").set(trader_account_info)
 
             # Optionally update user's basic info
-            
-
-            
-
-        
-        
+       
     else:
         return jsonify({'status': 'error', 'message': f'Unhandled event type {event["type"]}'}), 400
-
-    
 
     return jsonify(success=True)
 
