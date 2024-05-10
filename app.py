@@ -215,7 +215,10 @@ def callback():
                     'uid': user['sub'],  # Assuming 'sub' field contains UID
                     'email': user['email'],
                     'coupon_code': coupon_code,
-                    'redeemed_coupon': False
+                    'redeemed_coupon': False,
+                    'trade_shield_bronze_allowed': True,
+                    'trade_shield_silver_allowed': True,
+                    'trade_shield_gold_allowed': True
                     # Add other necessary user information as needed
                 })
             
@@ -570,7 +573,7 @@ def verify_payment():
             success_url=url_for('success_payment', _external=True),
             cancel_url=url_for('cancel_payment', _external=True),
             automatic_tax={'enabled': True},
-            discounts= [{'coupon': 'UNnQzyHW'}] if allowed_to_redeem else [],
+            discounts= [{'coupon': '2141'}] if allowed_to_redeem else [],
             customer_email = email,
            custom_fields = [
     {
@@ -601,8 +604,7 @@ def verify_payment():
         )
         
     except Exception as e:
-        print(f"An error occurred: {e}")
-        return jsonify('Error happened')
+        return (f"An error occurred: {e}")
     
     return redirect(session.url, code=303)
 
@@ -723,6 +725,7 @@ def submit_mt_account(account):
             account_info = accounts_documents.to_dict()
             
             account_id = account_info['propsurance_count']
+
             
             account_stage = ''
 
@@ -771,7 +774,14 @@ def submit_mt_account(account):
             mt_account = request.form['server_type']
             password = request.form['password']
             server = request.form['server']
+            investor_id = request.form['mt_account']
             # prop_count = request.form['prop_count']
+
+            
+
+            trader_collection = db.collection('users').document(user_email).collection('trader_info')
+            trader_ref = trader_collection.document(f'trader_account_{str(account)}')
+            
             
             # Get a reference to the specific account document
             account_ref = db.collection('users').document(user_email).collection('accounts_info').document(f'account_info_{account}')
@@ -787,9 +797,14 @@ def submit_mt_account(account):
                     update_data = {
                         'status': 'needs_validation',  # Update status to needs validation
                         'server': server,              # Update server information
-                        'trading_account_type': mt_account  # Update account type information
                     }
+                    trader_data = {
+                         'investor_id': investor_id,
+                         'investor_password': password
+                    }
+
                     account_ref.update(update_data)
+                    trader_ref.update(trader_data)
                     send_email(user_email,  'validation-confirmation', {} )
                     flash('Account updated successfully and is awaiting validation.')
                 else:
@@ -838,7 +853,7 @@ def dashboard():
     num_of_accounts = 0
     account_size =0
     account_percentage = 0
-    remaining_size = 0
+    remaining_size = ''
     insured_accounts = []
     hash_code = 0
     user_id = 0
@@ -892,6 +907,8 @@ def dashboard():
                         # # print( 'here 270')
                         for account in accounts_collection:
                             # # print('here line 270')
+                            product_name = ''
+                            show_percent = ''
                             
                             account_info_data =  account.to_dict()
                             current_index = account_info_data['propsurance_count']
@@ -899,11 +916,13 @@ def dashboard():
                             trader_info_data = trader_info_collection.document(f"trader_account_{current_index}").get()
                             trader_info_data_parsed = trader_info_data.to_dict()
                             # # print('line 275', account_info_data)
-                            account_size += (trader_info_data_parsed.get('account_size'))
+                            plan_type = account_info_data.get('plan_type', '')
+                            if  plan_type == 'payout_coverage':
+                                account_size += trader_info_data_parsed.get('account_size')
                             trade_status = ''
-                            plan_type = account_info_data.get('plan_type')
                             insured_date = account_info_data.get('insured_date')
-                            failed_account = account_info_data.get('failed_account')
+                            failed_account = trader_info_data_parsed.get('failed_account', '')
+                           
 
                             # add 1 week for the refund date
                             temp_date = datetime.strptime(insured_date, "%Y-%m-%d")
@@ -912,7 +931,20 @@ def dashboard():
 
                             new_refund_date_string = new_date.strftime("%Y-%m-%d")
 
-                            print(failed_account)
+                            if trader_info_data_parsed.get('product_name', '') == 'trade-shield-bronze':
+                                product_name = 'Trade-Shield Bronze'
+                                show_percent = False
+                            elif trader_info_data_parsed.get('product_name', '') == 'trade-shield-silver':
+                                product_name = 'Trade-Shield Silver'
+                                show_percent = False
+                            elif trader_info_data_parsed.get('product_name', '') == 'trade-shield-gold':
+                                product_name = 'Trade-Shield Gold'
+                                show_percent = False
+                            elif trader_info_data_parsed.get('product_name', '') == 'free-payout-coverage':
+                                product_name = 'Denied Payout Coverage'
+                                show_percent = True
+
+                            
 
 
 
@@ -933,18 +965,22 @@ def dashboard():
                             'phase_status' : trade_status,
                             'current_percentage': int((trader_info_data_parsed['account_size'] / 200000) * 100),
                             'current_size': trader_info_data_parsed['account_size'],
-                            'refund_date': new_refund_date_string
+                            'refund_date': new_refund_date_string,
+                            'failed_account' : failed_account,
+                            'product_name': product_name,
+                            'show_percent': show_percent
                             }
 
                             # print(account_info_data)
 
                             insured_accounts.append(prop_firm_info)
 
+                    
                     account_percentage = int((account_size / 200000) * 100)
-                    remaining_size = 200000 - account_size        
+                    remaining_size = 50000 - account_size        
 
             else: 
-                return render_template("dashboard.html", session=user_info, user_email=user_email, user_validated_email=user_validated_email, dashboard_nav=True, remaining_size=200000, hash_code=hash_code, user_id=user_id, allowed_to_redeem=allowed_to_redeem, coupon_code=coupon_code)        
+                return render_template("dashboard.html", session=user_info, user_email=user_email, user_validated_email=user_validated_email, dashboard_nav=True, remaining_size=50000, hash_code=hash_code, user_id=user_id, allowed_to_redeem=allowed_to_redeem, coupon_code=coupon_code)        
                     
     
 
@@ -1135,7 +1171,7 @@ def webhook():
             mt4mt5_investor_password = ''
 
             if coupon_code != 'none' and allowed_to_redeem:
-                # user used affiliate code, find the code and update both user info, and affiliate
+                # user used affiliate code, find the code and update both user info, and affiliate say that user purchased with affiliate aswell, and the affiliate email, and then see the product name, and make it false, so there can be a limit to it's purchases
                 pass
 
             sub_data = {
