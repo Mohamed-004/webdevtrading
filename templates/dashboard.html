@@ -438,7 +438,7 @@ Dashboard
 
 <!-- bronze card beginning -->
 
-{% include "product-templates/trade-safe-bronze.html" %}
+{% include "product-templates/trade-safe-silver.html" %}
 
 <!-- bronze ending -->
 
@@ -667,6 +667,41 @@ function toggleTextBronze() {
 //     window.location.href = '{{ url_for("home") }}'; // Replace 'destination_page' with your target page route
 // });
 
+
+document.addEventListener('DOMContentLoaded', function() {
+    const phase1Radio = document.getElementById('phase1bronze');
+    const phase2Radio = document.getElementById('phase2bronze');
+    const currentPrice = document.getElementById('current-price-bronze');
+    const originalPrice = document.getElementById('original-price-bronze');
+
+    phase1Radio.addEventListener('change', updatePrice);
+    phase2Radio.addEventListener('change', updatePrice);
+
+    function updatePrice() {
+        if (phase2Radio.checked) {
+            currentPrice.textContent = '89';
+            originalPrice.textContent = '$169.99';
+        } else {
+            currentPrice.textContent = '79';
+            originalPrice.textContent = '$159.99';
+        }
+    }
+});
+
+
+document.getElementById('add-on-silver').addEventListener('change', function() {
+            const isChecked = this.checked;
+            const dailyDrawdownLi = document.getElementById('daily-drawdown-silver');
+            const maxDrawdownLi = document.getElementById('max-drawdown-silver');
+
+            if (isChecked) {
+                dailyDrawdownLi.innerHTML = '<svg width="22px" height="22px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill-rule="evenodd" clip-rule="evenodd" d="M4 12C4 7.58172 7.58172 4 12 4C13.6284 4 15.1432 4.48652 16.4068 5.32214L6.07523 17.3757C4.78577 15.9554 4 14.0694 4 12ZM7.59321 18.6779C8.85689 19.5135 10.3716 20 12 20C16.4183 20 20 16.4183 20 12C20 9.93057 19.2142 8.04467 17.9248 6.62436L7.59321 18.6779ZM12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2Z" fill="#0c3594"></path></g></svg> Reimbursement for Daily Drawdown Breaches (Live Account) (Add-On Applied)';
+                maxDrawdownLi.innerHTML = '<svg width="22px" height="22px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill-rule="evenodd" clip-rule="evenodd" d="M4 12C4 7.58172 7.58172 4 12 4C13.6284 4 15.1432 4.48652 16.4068 5.32214L6.07523 17.3757C4.78577 15.9554 4 14.0694 4 12ZM7.59321 18.6779C8.85689 19.5135 10.3716 20 12 20C16.4183 20 20 16.4183 20 12C20 9.93057 19.2142 8.04467 17.9248 6.62436L7.59321 18.6779ZM12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2Z" fill="#0c3594"></path></g></svg> Reimbursement for Max Drawdown Breaches (Live Account) (Add-On Applied)';
+            } else {
+                dailyDrawdownLi.innerHTML = '<svg width="22px" height="22px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill-rule="evenodd" clip-rule="evenodd" d="M4 12C4 7.58172 7.58172 4 12 4C13.6284 4 15.1432 4.48652 16.4068 5.32214L6.07523 17.3757C4.78577 15.9554 4 14.0694 4 12ZM7.59321 18.6779C8.85689 19.5135 10.3716 20 12 20C16.4183 20 20 16.4183 20 12C20 9.93057 19.2142 8.04467 17.9248 6.62436L7.59321 18.6779ZM12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2Z" fill="#ff8a8a"></path></g></svg> No Reimbursement for Daily Drawdown Breaches (Live Account) (No Add-On)';
+                maxDrawdownLi.innerHTML = '<svg width="22px" height="22px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill-rule="evenodd" clip-rule="evenodd" d="M4 12C4 7.58172 7.58172 4 12 4C13.6284 4 15.1432 4.48652 16.4068 5.32214L6.07523 17.3757C4.78577 15.9554 4 14.0694 4 12ZM7.59321 18.6779C8.85689 19.5135 10.3716 20 12 20C16.4183 20 20 16.4183 20 12C20 9.93057 19.2142 8.04467 17.9248 6.62436L7.59321 18.6779ZM12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2Z" fill="#ff8a8a"></path></g></svg> No Reimbursement for Max Drawdown Breaches (Live Account) (No Add-On)';
+            }
+        });
 
 
 </script>

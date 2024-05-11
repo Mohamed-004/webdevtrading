@@ -495,7 +495,8 @@ def create_coupon():
 # process the payment to a custom session
 @app.route('/dashboard/verify-payment', methods=['POST'])
 def verify_payment():
-    print(request.form)
+    # print(request.form)
+    return request.form
     email = request.form.get('user_email')
     plan_type = request.form.get('plan_type')
     firm_name = request.form.get('firm', 'none')
@@ -573,7 +574,7 @@ def verify_payment():
             success_url=url_for('success_payment', _external=True),
             cancel_url=url_for('cancel_payment', _external=True),
             automatic_tax={'enabled': True},
-            discounts= [{'coupon': '2141'}] if allowed_to_redeem else [],
+            discounts= [{'coupon': 'UNnQzyHW'}] if allowed_to_redeem else [],
             customer_email = email,
            custom_fields = [
     {
