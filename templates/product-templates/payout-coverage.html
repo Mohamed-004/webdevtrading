@@ -1,0 +1,89 @@
+<div id="payout-container" class="plan-container">
+<div class="card-horizontal">
+    <div class="header">
+        <img src=" {{ url_for('static', filename='images/propsurance.png') }}" alt="Prop Surance Logo" class="logo">
+        <!-- <div class="title">Free Payout Coverage x CTI</div> -->
+    </div>
+    <div class="form">
+
+
+        
+        <h2 class="form-h2">Free Payout Coverage </h2>
+
+        <div class="card-more-info" onclick="toggleText()">
+           
+
+            <label class="label-text" id="infoLabel" >More Info</label>
+
+            <svg id="svg-more" width="25px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M15 12L12 12M12 12L9 12M12 12L12 9M12 12L12 15" stroke="#0c3594d1" stroke-width="1.5" stroke-linecap="round"></path> <path d="M22 12C22 16.714 22 19.0711 20.5355 20.5355C19.0711 22 16.714 22 12 22C7.28595 22 4.92893 22 3.46447 20.5355C2 19.0711 2 16.714 2 12C2 7.28595 2 4.92893 3.46447 3.46447C4.92893 2 7.28595 2 12 2C16.714 2 19.0711 2 20.5355 3.46447C21.5093 4.43821 21.8356 5.80655 21.9449 8" stroke="#0c3594d1" stroke-width="1.5" stroke-linecap="round"></path> </g></svg>
+
+            <svg id="svg-less" style="display: none;" width="25px" height="20px" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g fill="none" fill-rule="evenodd"> <path d="m0 0h32v32h-32z"></path> <path d="m16 0c8.836556 0 16 7.163444 16 16s-7.163444 16-16 16-16-7.163444-16-16 7.163444-16 16-16zm0 2c-7.7319865 0-14 6.2680135-14 14s6.2680135 14 14 14 14-6.2680135 14-14-6.2680135-14-14-14zm5 13c.5522847 0 1 .4477153 1 1s-.4477153 1-1 1h-10c-.5522847 0-1-.4477153-1-1s.4477153-1 1-1z" fill="#0c3594d1" fill-rule="nonzero"></path> </g> </g></svg>
+        </div>
+
+        <div class="card-show-text"  style="display: none;">
+            <hr>
+            <li class="card-desc"><strong> Complimentary Coverage:</strong> The coverage is entirely free, requiring no additional fees  from the trader.</li>
+            <li class="card-desc"> <strong> Coverage Rate:</strong> We cover 40% of your rejected payouts, ensuring that a substantial portion of your trading results is protected.</li>
+
+            <li class="card-desc"><strong> Select Firms:</strong> Coverage is available exclusively for the firms listed in the dropdown menu.</li>
+            <hr>
+        </div>
+
+        <label class="label-text mg-top" for="firm">Firm Choice *</label>
+        <div class="card-container-svg">
+
+       
+        <svg width="25px" class="svg-select-1" height="25px" id="dropdown-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M12.7071 14.7071C12.3166 15.0976 11.6834 15.0976 11.2929 14.7071L6.29289 9.70711C5.90237 9.31658 5.90237 8.68342 6.29289 8.29289C6.68342 7.90237 7.31658 7.90237 7.70711 8.29289L12 12.5858L16.2929 8.29289C16.6834 7.90237 17.3166 7.90237 17.7071 8.29289C18.0976 8.68342 18.0976 9.31658 17.7071 9.70711L12.7071 14.7071Z" fill="#0c3594d1"></path> </g></svg> 
+
+        <select name="firm"  id="propFirmSelect" class="styled-select">
+            <option value="CTI">City Traders Imperium</option>
+         
+        </select>
+
+        
+        <ul class="benefit-list">
+            <hr>
+            <li>
+                <svg width="22px" height="22px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12ZM16.0303 8.96967C16.3232 9.26256 16.3232 9.73744 16.0303 10.0303L11.0303 15.0303C10.7374 15.3232 10.2626 15.3232 9.96967 15.0303L7.96967 13.0303C7.67678 12.7374 7.67678 12.2626 7.96967 11.9697C8.26256 11.6768 8.73744 11.6768 9.03033 11.9697L10.5 13.4393L12.7348 11.2045L14.9697 8.96967C15.2626 8.67678 15.7374 8.67678 16.0303 8.96967Z" fill="#233DFF"></path> </g></svg>
+
+            No  fees required</li>
+           
+            <li>
+                
+                <svg width="22px" height="22px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12ZM16.0303 8.96967C16.3232 9.26256 16.3232 9.73744 16.0303 10.0303L11.0303 15.0303C10.7374 15.3232 10.2626 15.3232 9.96967 15.0303L7.96967 13.0303C7.67678 12.7374 7.67678 12.2626 7.96967 11.9697C8.26256 11.6768 8.73744 11.6768 9.03033 11.9697L10.5 13.4393L12.7348 11.2045L14.9697 8.96967C15.2626 8.67678 15.7374 8.67678 16.0303 8.96967Z" fill="#233DFF"></path> </g></svg>
+            Easy access </li>
+            <hr>
+        </ul>
+
+       
+    </div>
+
+    <a href="{{url_for('home')}}"  class="button">Sign Up</a>
+
+</div>
+    
+        
+<!-- <div class="checkbox-custom checkbox-custom-1">
+       
+            <input required class="custom-checkbox" type="checkbox">
+              <label class="checkbox-label"> I agree to the <a href="{{url_for('propsurance_service')}}" target="_blank">Terms of Service *</a>
+        </label>
+
+    </div>
+
+            
+<div class="checkbox-custom">
+       
+            <input required class="custom-checkbox" type="checkbox">
+              <label class="checkbox-label">I have read the <a href="{{url_for('dashboard_faq')}}" target="_blank">FAQ *</a> </label> 
+        </label>
+</div> -->
+
+
+
+
+       
+
+    </div>
+    
+</div>

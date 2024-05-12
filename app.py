@@ -15,6 +15,8 @@ import hashlib
 
 # email api key e0292a01d4005f36ecc119c1ea1cf1dd04ea111c
 spark_api = 'e0292a01d4005f36ecc119c1ea1cf1dd04ea111c'
+
+# stripe api key for test
 stripe.api_key = 'sk_test_51Oyi2xP649Efo4kCYt2kWsW0hPJjptfuWapRJB8ZMCHvhfI4HJF0FuAdEaNJ6JzbQVp0pj1BBOsMEQwf4XJvQSRA00ELDbyNAC'
 
 # endpoint secret for live stripe
@@ -496,7 +498,10 @@ def create_coupon():
 @app.route('/dashboard/verify-payment', methods=['POST'])
 def verify_payment():
     # print(request.form)
-    return request.form
+    
+    drawdown_coverage_add_on_silver = request.form.get('add-on-silver', False)
+    drawdown_coverage_add_on_gold= request.form.get('add-on-gold', False)
+    current_phase =  request.form.get('current_phase', '')
     email = request.form.get('user_email')
     plan_type = request.form.get('plan_type')
     firm_name = request.form.get('firm', 'none')
@@ -506,9 +511,16 @@ def verify_payment():
     price_num = 0
     plan_name = ''
     service_type = ''
+    price_id = ''
     account_size = request.form.get('account_size', '')
     account_platform = request.form.get('account_type', '')
-
+    promotion_valid = True
+    got_add_on_0 = False
+    
+    if drawdown_coverage_add_on_silver == 'on' and current_phase == 'phase2':
+        return jsonify(status='error', message=f"Please try again!"), 500
+    if drawdown_coverage_add_on_gold == 'on' and current_phase == 'phase2':
+        return jsonify(status='error', message=f"Please try again!"), 500
         
     
     if plan_type == 'trade-shield-bronze':
@@ -517,8 +529,21 @@ def verify_payment():
         elif firm_name == 'alpha_capital':
             price_firm = 'Alpha Capital Group'
         else:
-            return not_found(404)
-        price_num = '90'
+            return jsonify(status='error', message=f"Please try again!"), 500
+        
+
+        if current_phase == 'phase1':
+            # test id
+            price_id = 'price_1PFPnVP649Efo4kC3NkEvBfr'
+            price_num = '80'
+        elif current_phase == 'phase2':
+            # test price id
+            price_id = 'price_1PDNMWP649Efo4kCfQL0w9RM'
+            price_num = '90'
+        else:
+            return jsonify(status='error', message=f"Please try again!"), 500
+        
+        
         service_type = 'one-time'
     
     elif plan_type == 'trade-shield-silver':
@@ -527,7 +552,27 @@ def verify_payment():
         elif firm_name == 'alpha_capital':
             price_firm = 'Alpha Capital Group'
         else:
-            return not_found(404)
+            return jsonify(status='error', message=f"Please try again!"), 500
+        
+        if current_phase == 'phase1' and drawdown_coverage_add_on_silver == 'on':
+            # for phase 1 but with add on for test
+            price_id = 'price_1PFQpnP649Efo4kCVWXF1FIR'
+            price_num = '270'    
+            got_add_on_0 = True
+
+        elif current_phase == 'phase1' and not drawdown_coverage_add_on_silver:
+            # for phase 1 with no add on 
+            price_id = 'price_1PFQpnP649Efo4kCQLWfb0WM'
+            price_num = '180'
+        
+        elif current_phase == 'phase2':
+            # for phase 1 and 
+            price_id = 'price_1PFQpnP649Efo4kCOJK3kK7y'
+            price_num = '210'
+        else:
+            return jsonify(status='error', message=f"Please try again!"), 500
+         
+
         price_num = '190'
         service_type = 'one-time'
 
@@ -542,7 +587,7 @@ def verify_payment():
         service_type = 'one-time'
 
     else:
-        return not_found(404)
+        return jsonify(status='error', message=f"Please try again!"), 500
     
     # has_promo_code = True
     
@@ -565,7 +610,7 @@ def verify_payment():
         session = stripe.checkout.Session.create(
             payment_method_types=['card'],
             line_items=[{
-                'price': 'price_1PDNMWP649Efo4kCfQL0w9RM',
+                'price': price_id,
                 'quantity': 1,
             }],
             mode='payment',
@@ -574,7 +619,7 @@ def verify_payment():
             success_url=url_for('success_payment', _external=True),
             cancel_url=url_for('cancel_payment', _external=True),
             automatic_tax={'enabled': True},
-            discounts= [{'coupon': 'UNnQzyHW'}] if allowed_to_redeem else [],
+            discounts= [{'coupon': 'UNnQzyHW'}] if allowed_to_redeem and promotion_valid else [],
             customer_email = email,
            custom_fields = [
     {
@@ -599,15 +644,17 @@ def verify_payment():
                 'plan_name': plan_type,
                 'account_size': account_size,
                 'plan_type': 'paid',
-                'trading_platform': account_platform
+                'trading_platform': account_platform,
+                'got_add_on0': got_add_on_0
             },
             phone_number_collection={'enabled': True}
         )
         
     except Exception as e:
-        return (f"An error occurred: {e}")
+        return jsonify(status='error', message=f"Please try again!"), 500
     
-    return redirect(session.url, code=303)
+    
+    return   jsonify(status='success', redirect_url=session.url), 303
 
 @app.route('/successful-payment')
 def success_payment():
@@ -1164,6 +1211,7 @@ def webhook():
             allowed_to_redeem = trader_account_info['allowed_to_redeem']
             coupon_code = trader_account_info['coupon_code']
             account_platform = trader_account_info['trading_platform']
+            add_ons = trader_account_info['add_on']
 
             # phase_value = payment_intent.get("custom_fields", [{}])[0].get("dropdown", {}).get("value", "")
             # mt4mt5_investor_id = payment_intent.get("custom_fields", [{}])[0].get("text", {}).get("value", "")

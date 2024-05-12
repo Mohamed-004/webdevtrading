@@ -905,6 +905,7 @@ padding: 0em 1em;
     gap: 10px;
     /* position: relative; */
     flex: 2; /* Larger flex-grow to take more space */
+    max-width: 100%;
 }
 
 .card-horizontal .input {
@@ -958,7 +959,7 @@ padding: 0em 1em;
     margin-right: 10px;
 }
 
-.card-horizontal .card-container-svg {
+.card-horizontal .card-container-svg, .card-container-svg-general {
     position: relative;
 }
 
@@ -970,6 +971,8 @@ padding: 0em 1em;
  box-shadow: none;
  color: #0c35948a;
 }
+
+
 
 .card-horizontal h2.form-h2 {
     text-align: left;
@@ -1253,18 +1256,46 @@ padding: 0em 1em;
     top: 16px;
 }
 
-.card-horizontal form .styled-select {
+.card-horizontal form .styled-select, .styled-select-general  {
     padding: 0.8em 0 0.8em 35px !important;
     border-radius: 10px !important;
     background-color: #f1f8ff !important;
     border: 1px solid #a7d4f6d9 !important;
     color: #0c3594d1 !important;
-    width: 100% !important;
+   max-width: 100%;
     box-shadow: 0 4px 8px rgba(128, 128, 128, 0.116) !important;
     margin-bottom: 0 !important;
     border-left: 0.5rem solid rgb(248, 214, 38) !important;
     border-left-color: #007bffab !important;
 }
+
+.plan-container {
+    display: none;
+}
+.plan-container.active {
+    display: block;
+}
+
+/* .styled-select-general {
+ 
+}
+  */
+.card-horizontal .disabled-add-on {
+    opacity: 0.6;
+    pointer-events: none;
+    cursor: not-allowed;
+}
+
+.card-horizontal .alert-error
+ { color: #721c24; background-color: #f8d7da; border-color: #f5c6cb; 
+    margin-top: 1em;
+    width: max-content;
+    margin: 1em auto 0;
+}
+
+.card-horizontal .disabled-add-on input, .card-horizontal .disabled-add-on label {
+    cursor: not-allowed;
+} 
 
 
 @media (max-width:1250px) {
