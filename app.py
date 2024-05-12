@@ -218,9 +218,6 @@ def callback():
                     'email': user['email'],
                     'coupon_code': coupon_code,
                     'redeemed_coupon': False,
-                    'trade_shield_bronze_allowed': True,
-                    'trade_shield_silver_allowed': True,
-                    'trade_shield_gold_allowed': True
                     # Add other necessary user information as needed
                 })
             
@@ -262,7 +259,9 @@ def callback():
                         'trade_shield_gold_profit': 0,
                         'paypal_email': allowed_affiliates_doc_info.get('paypal_email', ''),
                         'country': allowed_affiliates_doc_info.get('country', ''),
-                        'phone_number': allowed_affiliates_doc_info.get('phone_number', '')
+                        'phone_number': allowed_affiliates_doc_info.get('phone_number', ''),
+                        'users_who_added_coupon_via_dashboard': 0,
+                        'is_valid': True
                     })
                     return 'new affiliate account created'
                 else:
@@ -451,6 +450,7 @@ def create_coupon():
     if 'user' not in session:
         return redirect(url_for("login"))
 
+    allowed_to_add= True
     allowed_to_redeem = ''
     coupon_code = ''
     user_info = session.get("user")
@@ -465,8 +465,13 @@ def create_coupon():
 
         if user_data.exists:
             user_data_dict = user_data.to_dict()
-            allowed_to_redeem = not user_data_dict['redeemed_coupon']
+
             coupon_code  =  user_data_dict.get('coupon_code', 'none')
+            allowed_to_redeem = not user_data_dict['redeemed_coupon']
+
+
+            if coupon_code != 'none':
+                allowed_to_add = True
 
         
     except Exception  as err:
@@ -474,22 +479,52 @@ def create_coupon():
         raise err
     
     if request.method == 'POST':
-        updated_coupon_code = request.form.get('coupon_code')
-        coupon_data = db.collection('affiliates').document(updated_coupon_code).get()
-        # print(updated_coupon_code)
-        if updated_coupon_code == 'hello':
-            db.collection('users').document(user_email).update({
-        'coupon_code': updated_coupon_code
 
-    })
-            flash("Coupon code applied successfully!", "success")
-            return redirect(url_for('create_coupon'))
-        elif not coupon_data.exists:
+        updated_coupon_code = request.form.get('coupon_code')
+        updated_coupon_code = updated_coupon_code.upper()
+
+        # coupon_data = db.collection('affiliates').document(updated_coupon_code).get()
+        coupon_data_ref = db.collection("affiliates").where("coupon_code", "==", updated_coupon_code).get()
+        current_user_email = request.form.get('user_email')
+        if not coupon_data_ref:
             flash("Invalid coupon code", "error")
+
+        else:
+   
+            
+            affiliate_data = coupon_data_ref[0].to_dict()
+            # update affiliate tracking
+
+            amount_of_traders_who_added_coupon = affiliate_data['users_who_added_coupon_via_dashboard']
+            amount_of_traders_who_added_coupon_new = amount_of_traders_who_added_coupon + 1
+            coupon_code_is_valid = affiliate_data['is_valid']
+            affiliate_email = 'proppatrol24@gmail.com'
+
+            if not coupon_code_is_valid:
+                flash("Invalid coupon code", "error")
+                return render_template("create_coupon.html", coupon_code=coupon_code, allowed_to_redeem=allowed_to_redeem, allowed_to_add=allowed_to_add, dashboard_nav=True )
+            
+            else:
+                db.collection('affiliates').document(affiliate_email).update({
+        'users_who_added_coupon_via_dashboard': amount_of_traders_who_added_coupon_new
+    })
+                db.collection('users').document(current_user_email).update({
+        'coupon_code': updated_coupon_code
+    })
+                flash("Coupon code applied successfully!", "success")
+                return redirect(url_for('create_coupon'))
+            
+
+            
+            
+
+        
+        
+      
             
 
 
-    return render_template("create_coupon.html", coupon_code=coupon_code, allowed_to_redeem=allowed_to_redeem, dashboard_nav=True )
+    return render_template("create_coupon.html", user_email=user_email, coupon_code=coupon_code, allowed_to_redeem=allowed_to_redeem, allowed_to_add=allowed_to_add, dashboard_nav=True )
 
 
 
@@ -940,10 +975,8 @@ def dashboard():
 ).hexdigest()
             
             user_id = user_data['uid']
-            
-            
-            
 
+            # check here that if user has coupon_code, then verify if coupon_code is valid if its not then make it 'none
             if int(user_data.get('accounts_info_count')) >= 0:
                     accounts_collection = user_data_info.collection('accounts_info').get()
                     trader_info_collection = user_data_info.collection('trader_info')
@@ -1101,7 +1134,7 @@ def webhook():
 
 
 
-    if event['type'] == 'charge.updated':
+    if event['type'] == 'charge.succeeded':
         payment_intent = event['data']['object']  # The payment intent object
         customer_email = payment_intent.get('billing_details', {}).get('email')
         customer_name = payment_intent.get('billing_details', {}).get('name')

@@ -98,7 +98,10 @@ Add Coupon
 <main class="content-main" >
 <h2 class="form-h2">Apply Discount Code </h2>
 <form id="form-validation" class="coupon-form" action="{{ url_for('create_coupon') }}" method="post">
+    {%if allowed_to_add %}
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+    <input type="hidden" name="user_email" value="{{ user_email }}"/>
+    {% endif %}
     {% if allowed_to_redeem and coupon_code == 'none' %}
     <label for="coupon_code" >Apply Discount Code <i style="font-size: 0.9em;
         font-style: italic;
@@ -158,5 +161,20 @@ Add Coupon
 
 
 </main>
+
+{% endblock %}
+
+
+{% block script %}
+<script>
+    // Get the text input field
+    var couponInput = document.getElementById("coupon_code");
+    
+    // Add event listener for input event
+    couponInput.addEventListener("input", function(event) {
+        // Convert the entered text to uppercase
+        this.value = this.value.toUpperCase();
+    });
+    </script>
 
 {% endblock %}
