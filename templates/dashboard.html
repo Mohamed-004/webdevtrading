@@ -210,7 +210,7 @@ Dashboard
 <div class="metrics-bar" id="full-coverage-bar">
     <div class="metrics-bars">
         
-        <p class="name sepr">Prop Firm Coverage (Denied Payouts)<span class="prop-name">50k Max </span></p>
+        <p class="name sepr"> <span> Free Account Coverage <span style="color: #0c3594ad;">(Denied Payouts)</span> </span></span><span class="prop-name">50k Max </span></p>
         <ul style="padding-left: 0;">
 
             <li class="coverage-p"><svg fill="#0c3594d1" width="25px" height="25px" viewBox="-3 0 19 19" xmlns="http://www.w3.org/2000/svg" class="cf-icon-svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M12.365 10.832a.473.473 0 0 1-.012.106q.012.179.012.37c0 3.239-5.865 5.063-5.865 5.063S.635 14.547.635 11.307q0-.19.012-.37a.473.473 0 0 1-.012-.105V3.643a.476.476 0 0 1 .475-.475h10.78a.476.476 0 0 1 .475.475zm-3.617-.387a1.653 1.653 0 0 0-.409-1.087 2.23 2.23 0 0 0-.617-.491l-.002-.001a2.599 2.599 0 0 0-.641-.232h-.002a2.797 2.797 0 0 0-.59-.062 2.196 2.196 0 0 1-.364-.028 1.405 1.405 0 0 1-.384-.123h-.001a.918.918 0 0 1-.294-.236v-.002a.596.596 0 0 1-.141-.358.604.604 0 0 1 .336-.509 1.67 1.67 0 0 1 .858-.23 1.722 1.722 0 0 1 .304.05l.036.008a1.926 1.926 0 0 1 .365.127 1.024 1.024 0 0 1 .3.206.554.554 0 1 0 .782-.785 2.145 2.145 0 0 0-.627-.431 2.961 2.961 0 0 0-.585-.2l-.036-.008h-.002v-.626a.554.554 0 0 0-1.109 0v.609a2.646 2.646 0 0 0-.878.343 1.712 1.712 0 0 0-.853 1.446 1.688 1.688 0 0 0 .39 1.058 2.01 2.01 0 0 0 .659.529 2.481 2.481 0 0 0 .697.225 3.281 3.281 0 0 0 .548.044 1.686 1.686 0 0 1 .355.036 1.47 1.47 0 0 1 .362.13 1.128 1.128 0 0 1 .3.24.552.552 0 0 1 .135.358c0 .124-.036.289-.31.466a1.69 1.69 0 0 1-.875.243 2.678 2.678 0 0 1-.38-.046 1.845 1.845 0 0 1-.354-.113.762.762 0 0 1-.284-.218.554.554 0 1 0-.838.726 1.852 1.852 0 0 0 .71.521 2.827 2.827 0 0 0 .577.176l.04.007v.625a.554.554 0 1 0 1.108 0v-.63a2.667 2.667 0 0 0 .9-.36 1.628 1.628 0 0 0 .814-1.397z"></path></g></svg>Total Insured Accounts: ${{account_size}}</li>
@@ -243,153 +243,147 @@ Dashboard
 
                    
     {% for account in insured_accounts %}
-        {% if account['account_url_fix'] %}
-
-        <div class="metrics-bar" >
+    {% if account['account_url_fix'] %}
+        <div class="metrics-bar">
             <div class="num-rank">{{ (account['account_url_fix']|int + 1) }}</div>
             <div class="metrics-bars">
-                <p class="name sepr">{{account['name']}}<span class="prop-name">${{ account['current_size'] }} </span></p>
+                <p class="name sepr">{{ account['name'] }}<span class="prop-name">${{ account['current_size'] }} </span></p>
                 <div class="dropdown header-text-under account-dropdown" id="account-dropdown">
                     <button class="btn btn-primary dropdown-toggle" id="account-firm-btn" type="button" data-toggle="dropdown">Account Info
-                        <span class="caret"></span></button>
-                <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
-                    <li role="presentation">
-                        <a role="menuitem"  tabindex="-1" href="{{account['invoice_url']}}">Invoice</a>
-                    </a>
-                    </li>
-                    <li role="presentation" class="divider"></li>
-                    <li role="presentation">  <a  role="menuitem" tabindex="-1" href="{{url_for('access_ticket_handler', account_count=account['account_url_fix'])}}">File a Case</a></li>
-                    <li role="presentation" class="divider"></li>
-                    <li role="presentation">     <a  role="menuitem" tabindex="-1"a href="{{url_for('access_ticket_handler', account_count=account['account_url_fix'])}}">Recieved a <br> Payout</a></li>
-                    <li role="presentation" class="divider"></li>
-                    <li role="presentation">     <a   role="menuitem" tabindex="-1" href="{{url_for('access_ticket_handler', account_count=account['account_url_fix'])}}">Passed Current <br> Phase</a></li>
-                    <li role="presentation" class="divider"></li>
-                    <li role="presentation">     <a   role="menuitem" tabindex="-1" href="{{url_for('access_ticket_handler', account_count=account['account_url_fix'])}}">Contact Us</a></li>
-
-                    <!-- <li class="coverage-p"><a href="">Billing</a></li>
-                    <li class="coverage-p"><a href="">File a Case</a></li>
-                    <li class="coverage-p"><a href="">Recieved a Payout</a></li>
-                    <li class="coverage-p"><a href="">Passed Current Phase</a></li> -->
-                </ul>
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+                        <li role="presentation">
+                            <a role="menuitem" tabindex="-1" href="{{ account['invoice_url'] }}">Invoice</a>
+                        </li>
+                        <li role="presentation" class="divider"></li>
+                        <li role="presentation">
+                            <a role="menuitem" tabindex="-1" href="{{ url_for('access_ticket_handler', account_count=account['account_url_fix']) }}">File a Case</a>
+                        </li>
+                        <li role="presentation" class="divider"></li>
+                        <li role="presentation">
+                            <a role="menuitem" tabindex="-1" href="{{ url_for('access_ticket_handler', account_count=account['account_url_fix']) }}">Received a <br> Payout</a>
+                        </li>
+                        <li role="presentation" class="divider"></li>
+                        <li role="presentation">
+                            <a role="menuitem" tabindex="-1" href="{{ url_for('access_ticket_handler', account_count=account['account_url_fix']) }}">Passed Current <br> Phase</a>
+                        </li>
+                        <li role="presentation" class="divider"></li>
+                        <li role="presentation">
+                            <a role="menuitem" tabindex="-1" href="{{ url_for('access_ticket_handler', account_count=account['account_url_fix']) }}">Contact Us</a>
+                        </li>
+                    </ul>
                 </div>
 
                 {% if account['show_percent'] %}
-                        <div class="metric">
-                            <p class="name met-label"><span class="percent-num">{{account['current_percentage']}}% </span> Total Prop Firm Coverage</p>
-                            <div class="progress-container">
-
-                                
-                
+                    <div class="metric">
+                        <p class="name met-label"><span class="percent-num">{{ account['current_percentage'] }}% </span> Total Prop Firm Coverage</p>
+                        <div class="progress-container">
                             <div class="progress-bar bar-1" id="myBar1" style="width: {{ account['current_percentage'] }}%;"></div>
-                            </div>
                         </div>
-                        {% endif %}     
+                    </div>
+                {% endif %}
 
-                            
-                        <div class="report-details" style="gap:20px" >
+                <div class="report-details" style="gap:20px">
+                    <span class="tag" {% if not account['show_percent'] %} style="margin-top: 1.4em;" {% endif %}>{{ account['phase_status'] }}</span>
+                    {% if account['failed_account'] %}
+                        <span class="tag" {% if not account['show_percent'] %} style="margin-top: 1.4em; background-color: #fd7e14b0 !important; color:#f5f5f5 !important;"
+                              {% else %} style="background-color: #fd7e14b0 !important; color:#f5f5f5 !important;" {% endif %}>Inactive</span>
+                    {% else %}
+                        <span class="tag" {% if not account['show_percent'] %} style="margin-top: 1.4em; background-color: #28a7458a !important; color:#f5f5f5 !important;"
+                              {% else %} style="background-color: #28a7458a !important; color:#f5f5f5 !important;" {% endif %}>Active</span>
+                    {% endif %}
+                </div>
 
-                            <span class="tag"  {% if not account['show_percent'] %} style="margin-top: 1.4em;" {% endif %}>{{account['phase_status']}}</span>
-                            {% if  account['failed_account'] %}
-                           
-                            <span class="tag"  {% if not account['show_percent'] %} style="margin-top: 1.4em; background-color: #fd7e14b0 !important;; color:#f5f5f5 !important;"
-                            {% else %} style="background-color: #fd7e14b0 !important; color:#f5f5f5 !important;"   {% endif %} > Inactive</span>
-
-                            {% else %}
-                    <span class="tag"  {% if not account['show_percent'] %} style="margin-top: 1.4em; background-color: #28a7458a !important; color:#f5f5f5 !important;"
-                    {% else %} style=" background-color: #28a7458a !important; color:#f5f5f5 !important;"   {% endif %} >Active</span>
-                           
-                            {% endif%}
-
-                        </div>
-
-                        
-                        {% if account['product_name'] %}
-                        <div style="margin-top: 1em;">
-
-                        
-                            {% if account['product_name'] == 'Trade-Shield Bronze' %}
+                {% if account['product_name'] %}
+                    <div style="margin-top: 1em;">
+                        {% if account['product_name'] == 'Trade-Shield Bronze' %}
                             <p class="coverage-p" style="flex-flow: row wrap; display: inline-flex; position: relative;">
                                 {% include "product-templates/bronze-svg.html" %}
                                 <span style="margin-right: 0.5em;">
-                                  <span style="color: #0c3594d1;font-weight: bold;">Trade-</span><span style="color: #0c3594d1; font-weight: bold;">Shield</span>
+                                    <span style="color: #0c3594d1; font-weight: bold;">Trade-</span><span style="color: #0c3594d1; font-weight: bold;">Shield</span>
                                 </span>
                                 <span style="margin-right: 0.5em; color: #DB8F6A;">Bronze</span>
-                              </p>
-                           
-                          
-                              {%  elif account['product_name'] == 'Trade-Shield Silver' %}
-                              <p class="coverage-p" style="flex-flow: row wrap; display: inline-flex; position: relative;">
+                            </p>
+                        {% elif account['product_name'] == 'Trade-Shield Silver' %}
+                            <p class="coverage-p" style="flex-flow: row wrap; display: inline-flex; position: relative;">
                                 {% include "product-templates/silver-svg.html" %}
                                 <span style="margin-right: 0.5em;">
-                                  <span style="color: #0c3594d1;font-weight: bold;">Trade-</span><span style="color: #0c3594d1; font-weight: bold;">Shield</span>
+                                    <span style="color: #0c3594d1; font-weight: bold;">Trade-</span><span style="color: #0c3594d1; font-weight: bold;">Shield</span>
                                 </span>
                                 <span style="margin-right: 0.5em; color: #104487;">Silver</span>
-                              </p>
-
-
-                              {%  elif account['product_name'] == 'Trade-Shield Gold' %}
-                              <p class="coverage-p" style="flex-flow: row wrap; display: inline-flex; position: relative;">
+                            </p>
+                        {% elif account['product_name'] == 'Trade-Shield Gold' %}
+                            <p class="coverage-p" style="flex-flow: row wrap; display: inline-flex; position: relative;">
                                 {% include "product-templates/gold-svg.html" %}
                                 <span style="margin-right: 0.5em;">
-                                  <span style="color: #0c3594d1;font-weight: bold;">Trade-</span><span style="color: #0c3594d1; font-weight: bold;">Shield</span>
+                                    <span style="color: #0c3594d1; font-weight: bold;">Trade-</span><span style="color: #0c3594d1; font-weight: bold;">Shield</span>
                                 </span>
                                 <span style="margin-right: 0.5em; color: #E7A138;">Gold</span>
-                              </p>
-
-                              
-
-                              {%  elif account['product_name'] == 'Denied Payout Coverage' %}
-
-                              <p class="coverage-p" style="flex-flow: row wrap; display: inline-flex; position: relative;">
+                            </p>
+                        {% elif account['product_name'] == 'Denied Payout Coverage' %}
+                            <p class="coverage-p" style="flex-flow: row wrap; display: inline-flex; position: relative;">
                                 {% include "product-templates/silver-svg.html" %}
                                 <span style="margin-right: 0.5em;">
-                                  <span style="color: #0c3594d1;font-weight: bold;">Free Denied Payout Coverage</span><span style="color: #0c3594d1; font-weight: bold;">
+                                    <span style="color: #0c3594d1; font-weight: bold;">Free Denied Payout Coverage</span>
                                 </span>
-                      
-                              </p>
-
-                              {% endif %}
-                    </div>
-                    {% endif %}
-                           
-               
-                       
-                        {% if account['account_status'] == 'pending' %}
-                        <div class="hazard-div">
-
-                            <a class="remaining hazard" href="{{url_for('submit_mt_account', account=account['account_url_fix'])}}"><div class="hazard-icon-div "><svg fill="#00000082" width="25px" height="25px" viewBox="0 0 64 64" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <rect id="Icons" x="-640" y="-64" width="1280" height="800" style="fill:none;"></rect> <g id="Icons1" serif:id="Icons"> <g id="Strike"> </g> <g id="H1"> </g> <g id="H2"> </g> <g id="H3"> </g> <g id="list-ul"> </g> <g id="hamburger-1"> </g> <g id="hamburger-2"> </g> <g id="list-ol"> </g> <g id="list-task"> </g> <g id="trash"> </g> <g id="vertical-menu"> </g> <g id="horizontal-menu"> </g> <g id="sidebar-2"> </g> <g id="Pen"> </g> <g id="Pen1" serif:id="Pen"> </g> <g id="clock"> </g> <g id="external-link"> </g> <g id="hr"> </g> <g id="info"> </g> <g id="warning"> <path d="M32.427,7.987c2.183,0.124 4,1.165 5.096,3.281l17.936,36.208c1.739,3.66 -0.954,8.585 -5.373,8.656l-36.119,0c-4.022,-0.064 -7.322,-4.631 -5.352,-8.696l18.271,-36.207c0.342,-0.65 0.498,-0.838 0.793,-1.179c1.186,-1.375 2.483,-2.111 4.748,-2.063Zm-0.295,3.997c-0.687,0.034 -1.316,0.419 -1.659,1.017c-6.312,11.979 -12.397,24.081 -18.301,36.267c-0.546,1.225 0.391,2.797 1.762,2.863c12.06,0.195 24.125,0.195 36.185,0c1.325,-0.064 2.321,-1.584 1.769,-2.85c-5.793,-12.184 -11.765,-24.286 -17.966,-36.267c-0.366,-0.651 -0.903,-1.042 -1.79,-1.03Z" style="fill-rule:nonzero;"></path> <path d="M33.631,40.581l-3.348,0l-0.368,-16.449l4.1,0l-0.384,16.449Zm-3.828,5.03c0,-0.609 0.197,-1.113 0.592,-1.514c0.396,-0.4 0.935,-0.601 1.618,-0.601c0.684,0 1.223,0.201 1.618,0.601c0.395,0.401 0.593,0.905 0.593,1.514c0,0.587 -0.193,1.078 -0.577,1.473c-0.385,0.395 -0.929,0.593 -1.634,0.593c-0.705,0 -1.249,-0.198 -1.634,-0.593c-0.384,-0.395 -0.576,-0.886 -0.576,-1.473Z" style="fill-rule:nonzero;"></path> </g> <g id="plus-circle"> </g> <g id="minus-circle"> </g> <g id="vue"> </g> <g id="cog"> </g> <g id="logo"> </g> <g id="radio-check"> </g> <g id="eye-slash"> </g> <g id="eye"> </g> <g id="toggle-off"> </g> <g id="shredder"> </g> <g id="spinner--loading--dots-" serif:id="spinner [loading, dots]"> </g> <g id="react"> </g> <g id="check-selected"> </g> <g id="turn-off"> </g> <g id="code-block"> </g> <g id="user"> </g> <g id="coffee-bean"> </g> <g id="coffee-beans"> <g id="coffee-bean1" serif:id="coffee-bean"> </g> </g> <g id="coffee-bean-filled"> </g> <g id="coffee-beans-filled"> <g id="coffee-bean2" serif:id="coffee-bean"> </g> </g> <g id="clipboard"> </g> <g id="clipboard-paste"> </g> <g id="clipboard-copy"> </g> <g id="Layer1"> </g> </g> </g></svg></div> Status Pending <u> Requires User Validation</u> </a>
-                        </div>
-                        {% elif account['account_status'] == 'invalid' %}
-
-                        <div class="hazard-div" id="invalid-user" >
-                            <a style="cursor: pointer;" class="remaining hazard open-intercom-help" id="form-hazard-invalid" >
-                                <div class="hazard-icon-div">
-                                    <!-- SVG icon -->
-                                    <svg fill="#00000082" width="25px" height="25px" viewBox="0 0 64 64" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <rect id="Icons" x="-640" y="-64" width="1280" height="800" style="fill:none;"></rect> <g id="Icons1" serif:id="Icons"> <g id="Strike"> </g> <g id="H1"> </g> <g id="H2"> </g> <g id="H3"> </g> <g id="list-ul"> </g> <g id="hamburger-1"> </g> <g id="hamburger-2"> </g> <g id="list-ol"> </g> <g id="list-task"> </g> <g id="trash"> </g> <g id="vertical-menu"> </g> <g id="horizontal-menu"> </g> <g id="sidebar-2"> </g> <g id="Pen"> </g> <g id="Pen1" serif:id="Pen"> </g> <g id="clock"> </g> <g id="external-link"> </g> <g id="hr"> </g> <g id="info"> </g> <g id="warning"> <path d="M32.427,7.987c2.183,0.124 4,1.165 5.096,3.281l17.936,36.208c1.739,3.66 -0.954,8.585 -5.373,8.656l-36.119,0c-4.022,-0.064 -7.322,-4.631 -5.352,-8.696l18.271,-36.207c0.342,-0.65 0.498,-0.838 0.793,-1.179c1.186,-1.375 2.483,-2.111 4.748,-2.063Zm-0.295,3.997c-0.687,0.034 -1.316,0.419 -1.659,1.017c-6.312,11.979 -12.397,24.081 -18.301,36.267c-0.546,1.225 0.391,2.797 1.762,2.863c12.06,0.195 24.125,0.195 36.185,0c1.325,-0.064 2.321,-1.584 1.769,-2.85c-5.793,-12.184 -11.765,-24.286 -17.966,-36.267c-0.366,-0.651 -0.903,-1.042 -1.79,-1.03Z" style="fill-rule:nonzero;"></path> <path d="M33.631,40.581l-3.348,0l-0.368,-16.449l4.1,0l-0.384,16.449Zm-3.828,5.03c0,-0.609 0.197,-1.113 0.592,-1.514c0.396,-0.4 0.935,-0.601 1.618,-0.601c0.684,0 1.223,0.201 1.618,0.601c0.395,0.401 0.593,0.905 0.593,1.514c0,0.587 -0.193,1.078 -0.577,1.473c-0.385,0.395 -0.929,0.593 -1.634,0.593c-0.705,0 -1.249,-0.198 -1.634,-0.593c-0.384,-0.395 -0.576,-0.886 -0.576,-1.473Z" style="fill-rule:nonzero;"></path> </g> <g id="plus-circle"> </g> <g id="minus-circle"> </g> <g id="vue"> </g> <g id="cog"> </g> <g id="logo"> </g> <g id="radio-check"> </g> <g id="eye-slash"> </g> <g id="eye"> </g> <g id="toggle-off"> </g> <g id="shredder"> </g> <g id="spinner--loading--dots-" serif:id="spinner [loading, dots]"> </g> <g id="react"> </g> <g id="check-selected"> </g> <g id="turn-off"> </g> <g id="code-block"> </g> <g id="user"> </g> <g id="coffee-bean"> </g> <g id="coffee-beans"> <g id="coffee-bean1" serif:id="coffee-bean"> </g> </g> <g id="coffee-bean-filled"> </g> <g id="coffee-beans-filled"> <g id="coffee-bean2" serif:id="coffee-bean"> </g> </g> <g id="clipboard"> </g> <g id="clipboard-paste"> </g> <g id="clipboard-copy"> </g> <g id="Layer1"> </g> </g> </g></svg>
-                                </div>
-                                Account Invalid Please open a <br> Ticket or Claim Here</a>
-
-
-                        {% else %}
-                        <div class="hazard-div">
-
-                            <a class="remaining hazard not-error"  id="remaining-success" href="{{url_for('access_account_dashboard', account_count=account['account_url_fix'])}}"><div class="hazard-icon-div "><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" stroke="#233DFF"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" stroke="#CCCCCC" stroke-width="0.048"></g><g id="SVGRepo_iconCarrier"> <path d="M15.197 3.35462C16.8703 1.67483 19.4476 1.53865 20.9536 3.05046C22.4596 4.56228 22.3239 7.14956 20.6506 8.82935L18.2268 11.2626M10.0464 14C8.54044 12.4882 8.67609 9.90087 10.3494 8.22108L12.5 6.06212" stroke="#233DFF" stroke-width="2.4" stroke-linecap="round"></path> <path d="M13.9536 10C15.4596 11.5118 15.3239 14.0991 13.6506 15.7789L11.2268 18.2121L8.80299 20.6454C7.12969 22.3252 4.55237 22.4613 3.0464 20.9495C1.54043 19.4377 1.67609 16.8504 3.34939 15.1706L5.77323 12.7373" stroke="#233DFF" stroke-width="2.4" stroke-linecap="round"></path> </g></svg></div> Account Info </a>
-                        </div>
-
+                            </p>
                         {% endif %}
-               </div>
+                    </div>
+                {% endif %}
+
+                {% if account['account_status'] == 'pending' %}
+                    <div class="hazard-div">
+                        <a class="remaining hazard" href="{{ url_for('submit_mt_account', account=account['account_url_fix']) }}">
+                            <div class="hazard-icon-div">
+                                <svg fill="#00000082" width="25px" height="25px" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                                    <g id="SVGRepo_iconCarrier">
+                                        <path d="M32.427,7.987c2.183,0.124 4,1.165 5.096,3.281l17.936,36.208c1.739,3.66 -0.954,8.585 -5.373,8.656l-36.119,0c-4.022,-0.064 -7.322,-4.631 -5.352,-8.696l18.271,-36.207c0.342,-0.65 0.498,-0.838 0.793,-1.179c1.186,-1.375 2.483,-2.111 4.748,-2.063Zm-0.295,3.997c-0.687,0.034 -1.316,0.419 -1.659,1.017c-6.312,11.979 -12.397,24.081 -18.301,36.267c-0.546,1.225 0.391,2.797 1.762,2.863c12.06,0.195 24.125,0.195 36.185,0c1.325,-0.064 2.321,-1.584 1.769,-2.85c-5.793,-12.184 -11.765,-24.286 -17.966,-36.267c-0.366,-0.651 -0.903,-1.042 -1.79,-1.03Z"></path>
+                                        <path d="M33.631,40.581l-3.348,0l-0.368,-16.449l4.1,0l-0.384,16.449Zm-3.828,5.03c0,-0.609 0.197,-1.113 0.592,-1.514c0.396,-0.4 0.935,-0.601 1.618,-0.601c0.684,0 1.223,0.201 1.618,0.601c0.395,0.401 0.593,0.905 0.593,1.514c0,0.587 -0.193,1.078 -0.577,1.473c-0.385,0.395 -0.929,0.593 -1.634,0.593c-0.705,0 -1.249,-0.198 -1.634,-0.593c-0.384,-0.395 -0.576,-0.886 -0.576,-1.473Z"></path>
+                                    </g>
+                                </svg>
+                            </div>
+                            Status Pending <u> Requires User Validation</u>
+                        </a>
+                    </div>
+                {% elif account['account_status'] == 'invalid' %}
+                    <div class="hazard-div" id="invalid-user">
+                        <a style="cursor: pointer;" class="remaining hazard open-intercom-help" id="form-hazard-invalid">
+                            <div class="hazard-icon-div">
+                                <svg fill="#00000082" width="25px" height="25px" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                                    <g id="SVGRepo_iconCarrier">
+                                        <path d="M32.427,7.987c2.183,0.124 4,1.165 5.096,3.281l17.936,36.208c1.739,3.66 -0.954,8.585 -5.373,8.656l-36.119,0c-4.022,-0.064 -7.322,-4.631 -5.352,-8.696l18.271,-36.207c0.342,-0.65 0.498,-0.838 0.793,-1.179c1.186,-1.375 2.483,-2.111 4.748,-2.063Zm-0.295,3.997c-0.687,0.034 -1.316,0.419 -1.659,1.017c-6.312,11.979 -12.397,24.081 -18.301,36.267c-0.546,1.225 0.391,2.797 1.762,2.863c12.06,0.195 24.125,0.195 36.185,0c1.325,-0.064 2.321,-1.584 1.769,-2.85c-5.793,-12.184 -11.765,-24.286 -17.966,-36.267c-0.366,-0.651 -0.903,-1.042 -1.79,-1.03Z"></path>
+                                        <path d="M33.631,40.581l-3.348,0l-0.368,-16.449l4.1,0l-0.384,16.449Zm-3.828,5.03c0,-0.609 0.197,-1.113 0.592,-1.514c0.396,-0.4 0.935,-0.601 1.618,-0.601c0.684,0 1.223,0.201 1.618,0.601c0.395,0.401 0.593,0.905 0.593,1.514c0,0.587 -0.193,1.078 -0.577,1.473c-0.385,0.395 -0.929,0.593 -1.634,0.593c-0.705,0 -1.249,-0.198 -1.634,-0.593c-0.384,-0.395 -0.576,-0.886 -0.576,-1.473Z"></path>
+                                    </g>
+                                </svg>
+                            </div>
+                            Account Invalid Please open a <br> Ticket or Claim Here
+                        </a>
+                    </div>
+                {% else %}
+                    <div class="hazard-div">
+                        <a class="remaining hazard not-error" id="remaining-success" href="{{ url_for('access_account_dashboard', account_count=account['account_url_fix']) }}">
+                            <div class="hazard-icon-div">
+                                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" stroke="#233DFF">
+                                    <g id="SVGRepo_iconCarrier">
+                                        <path d="M15.197 3.35462C16.8703 1.67483 19.4476 1.53865 20.9536 3.05046C22.4596 4.56228 22.3239 7.14956 20.6506 8.82935L18.2268 11.2626M10.0464 14C8.54044 12.4882 8.67609 9.90087 10.3494 8.22108L12.5 6.06212" stroke="#233DFF" stroke-width="2.4" stroke-linecap="round"></path>
+                                        <path d="M13.9536 10C15.4596 11.5118 15.3239 14.0991 13.6506 15.7789L11.2268 18.2121L8.80299 20.6454C7.12969 22.3252 4.55237 22.4613 3.0464 20.9495C1.54043 19.4377 1.67609 16.8504 3.34939 15.1706L5.77323 12.7373" stroke="#233DFF" stroke-width="2.4" stroke-linecap="round"></path>
+                                    </g>
+                                </svg>
+                            </div>
+                            Account Info
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
         </div>
-
-
- 
-        {% endif %}
-        {% endfor %}
+    {% endif %}
+{% endfor %}
 </div>
+
 {% endif %}
 
-{% if remaining_size == 0  %}
 
-{% else%}
 
 <!-- roadmap horizintal card -->
 
@@ -478,7 +472,6 @@ margin: 0 0 0.5em;font-size: 1.8em;">Select Exclusive PropSurance Plans!</label>
 
 
 
-{% endif %}
 
 
 

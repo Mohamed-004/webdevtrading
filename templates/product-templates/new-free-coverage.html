@@ -1,0 +1,288 @@
+{% extends "layout.html" %}
+{% block title %}
+<title>PropSurance - Validate Account | Profile</title>
+{% endblock %}
+
+{% block css %}    
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/cases.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dash.css') }}">
+
+<style>
+  
+
+form input[type='text'], form input[type='password'] {
+    padding-left: 30px;
+    border-left: 0.5rem solid rgb(248, 214, 38) !important;
+    border-left-color: #007bffab !important;
+    border-radius: 10px;
+    padding: 0.8em 0 0.8em 35px !important;
+    margin-bottom: 0;
+}
+
+form input[type='submit']:not(.card-horizintal form input[type='submit']) {
+    margin-top: 0 !important;
+}
+
+form  input[type='text']::placeholder {
+            color: #0c3594a6 ; /* Light grey placeholder text */
+            
+        }
+
+.form-icon svg {
+    position: absolute;
+    top: 10px;
+    left: 8px;
+    opacity: 1 !important;
+}
+
+form input[type='submit'] {
+    margin: 0 auto 0 !important;
+}
+
+form input[type='text'][readonly] {
+    border-radius: 10px;
+}
+
+.checkbox-custom label {
+    color: #0c35948a;
+}
+
+
+.checkbox-custom {
+    margin: 0.3em 0;
+    /* margin: 10px 0; */
+}
+ 
+
+
+</style>
+
+{% endblock %}
+
+
+{% block dashlink_current_pg %}
+Add Coupon
+                  {% endblock %}
+
+{% block dashlinks %}
+<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ url_for('home') }}">Home</a></li>
+
+<li role="presentation" class="divider"></li>
+<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ url_for('dashboard') }}"> PropSurance <br> Dashboard</a></li>
+<li role="presentation" class="divider"></li>
+<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ url_for('logout') }}">Logout</a></li>
+<li role="presentation" class="divider"></li>
+<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ url_for('dashboard_faq') }}">PropSurance-FAQ</a></li>
+<li role="presentation" class="divider"></li>
+
+<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ url_for('view_firm_reports') }}">Reported Firms </a></li>  
+<li role="presentation" class="divider"></li>
+
+<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ url_for('propsurance_service') }}">Terms of Service </a></li>   
+<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ url_for('propsurance_terms') }}">Privacy Policy </a></li>   
+<li role="presentation" class="divider"></li> 
+
+<li role="presentation"><a role="menuitem" tabindex="-1" href="https://twitter.com/PropPatrol" target="_blank"> Twitter</a></li> 
+<li role="presentation"><a role="menuitem" tabindex="-1" href="https://mailto:support@proppatrol.net" target="_blank"> Contact Us</a></li> 
+{% endblock %}
+
+
+
+{% block content %}
+
+<main class="content-main" >
+    <h2 class="form-h2">Denied Payout Coverage <span style="opacity: 0.7; font-size: smaller;"> (Live Account)</span> </h2>
+    <form id="form-validation" class="coupon-form"   {% if remaining_size > 0 %} action="{{ url_for('submit_mt_account_free') }}"  method="post" {%  endif %}>
+        {% if remaining_size > 0 %}
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+        {% endif %}
+        <input type="hidden" name="user_email" value="{{ user_email }}"/>
+
+        <label for="user_name" >Name</label>
+    
+        <div class="form-icon-cont">
+    
+               <div class="form-icon"><svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M12 5C10.3431 5 9 6.34315 9 8C9 9.65685 10.3431 11 12 11C13.6569 11 15 9.65685 15 8C15 6.34315 13.6569 5 12 5ZM7 8C7 5.23858 9.23858 3 12 3C14.7614 3 17 5.23858 17 8C17 10.7614 14.7614 13 12 13C9.23858 13 7 10.7614 7 8ZM7.45609 16.7264C6.40184 17.1946 6 17.7858 6 18.5C6 18.7236 6.03976 18.8502 6.09728 18.942C6.15483 19.0338 6.29214 19.1893 6.66219 19.3567C7.45312 19.7145 9.01609 20 12 20C14.9839 20 16.5469 19.7145 17.3378 19.3567C17.7079 19.1893 17.8452 19.0338 17.9027 18.942C17.9602 18.8502 18 18.7236 18 18.5C18 17.7858 17.5982 17.1946 16.5439 16.7264C15.4614 16.2458 13.8722 16 12 16C10.1278 16 8.53857 16.2458 7.45609 16.7264ZM6.64442 14.8986C8.09544 14.2542 10.0062 14 12 14C13.9938 14 15.9046 14.2542 17.3556 14.8986C18.8348 15.5554 20 16.7142 20 18.5C20 18.9667 19.9148 19.4978 19.5973 20.0043C19.2798 20.5106 18.7921 20.8939 18.1622 21.1789C16.9531 21.7259 15.0161 22 12 22C8.98391 22 7.04688 21.7259 5.83781 21.1789C5.20786 20.8939 4.72017 20.5106 4.40272 20.0043C4.08524 19.4978 4 18.9667 4 18.5C4 16.7142 5.16516 15.5554 6.64442 14.8986Z" fill="#0c3594d1"></path> </g></svg></div>
+        </div>
+       
+        {% if not user_name_valid %}
+        <input type="text" id="user_name" name="user_name" value=""  style="background-color: #f1f8ff;"  required><br>
+        {%  else %}
+        <input type="text" id="user_name" name="user_name" value="{{user_name}}" readonly  required><br>
+        {% endif %}
+   
+     
+
+        <label for="account-stage" >Current Account Stage</label>
+
+        <div class="form-icon-cont">
+        
+            <div class="form-icon"> <svg width="25px" height="25px" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M15 7L18 10M10 12L7 15L6 19L10 18L13 15M12 10L17 5L20 8L15 13M19 19L5 5" stroke="#0c3594d1" stroke-width="1.2"></path> </g></svg></div>
+        </div>
+        <input type="text" id="account_stage" name="account-stage" value="Live"   readonly required><br>
+
+        <label class="label-text mg-top" for="firm">Firm Choice *</label>
+
+        <div class="card-container-svg" style="position: relative;">
+
+       
+            <svg width="25px" class="svg-select-1" height="25px" id="dropdown-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M12.7071 14.7071C12.3166 15.0976 11.6834 15.0976 11.2929 14.7071L6.29289 9.70711C5.90237 9.31658 5.90237 8.68342 6.29289 8.29289C6.68342 7.90237 7.31658 7.90237 7.70711 8.29289L12 12.5858L16.2929 8.29289C16.6834 7.90237 17.3166 7.90237 17.7071 8.29289C18.0976 8.68342 18.0976 9.31658 17.7071 9.70711L12.7071 14.7071Z" fill="#0c3594d1"></path> </g></svg> 
+    
+            <select name="firm" required id="propFirmSelect" class="styled-select">
+                <!-- Placeholder option -->
+                <option value="" selected  disabled>Select Firm</option>
+                <option value="city_traders_imperium"  >City Traders Imperium</option>
+                <!-- Actual options -->
+                
+                <option value="" disabled>Coming Soon</option>
+                <option value="" disabled>Coming Soon</option>
+                
+            </select>
+        </div> <br>
+
+
+        <label class="label-text mg-top" for="firm">Account Size *</label>
+        <div class="card-container-svg" style="position: relative;">
+
+       
+            <svg width="25px" class="svg-select-1" height="25px" id="dropdown-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M12.7071 14.7071C12.3166 15.0976 11.6834 15.0976 11.2929 14.7071L6.29289 9.70711C5.90237 9.31658 5.90237 8.68342 6.29289 8.29289C6.68342 7.90237 7.31658 7.90237 7.70711 8.29289L12 12.5858L16.2929 8.29289C16.6834 7.90237 17.3166 7.90237 17.7071 8.29289C18.0976 8.68342 18.0976 9.31658 17.7071 9.70711L12.7071 14.7071Z" fill="#0c3594d1"></path> </g></svg> 
+    
+            <select name="account_size" required class="styled-select">
+                <!-- Placeholder option -->
+                <option value="" disabled selected>Select Account Size</option>
+                <!-- Actual options based on remaining size -->
+                {% if remaining_size >= 5000 %}
+                <option value="5000">5k</option>
+                {% endif %}
+                {% if remaining_size >= 10000 %}
+                <option value="10000">10k</option>
+                {% endif %}
+                {% if remaining_size >= 25000 %}
+                <option value="25000">25k</option>
+                {% endif %}
+                {% if remaining_size >= 50000 %}
+                <option value="50000">50k</option>
+                {% endif %}
+               
+            </select>
+        </div>
+    
+       
+
+        <label for="server" style="margin-top: 1em;">Server *</label>
+        <div class="form-icon-cont">
+            <div class="form-icon"><svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M13 21H6C4.11438 21 3.17157 21 2.58579 20.4142C2 19.8284 2 18.8856 2 17C2 15.1144 2 14.1716 2.58579 13.5858C3.17157 13 4.11438 13 6 13H18C19.8856 13 20.8284 13 21.4142 13.5858C22 14.1716 22 15.1144 22 17C22 18.8856 22 19.8284 21.4142 20.4142C20.8284 21 19.8856 21 18 21H17" stroke="#0c3594d1" stroke-width="1.5" stroke-linecap="round"></path> <path d="M11 2H18C19.8856 2 20.8284 2 21.4142 2.58579C22 3.17157 22 4.11438 22 6C22 7.88562 22 8.82843 21.4142 9.41421C20.8284 10 19.8856 10 18 10H6C4.11438 10 3.17157 10 2.58579 9.41421C2 8.82843 2 7.88562 2 6C2 4.11438 2 3.17157 2.58579 2.58579C3.17157 2 4.11438 2 6 2H7" stroke="#0c3594d1" stroke-width="1.5" stroke-linecap="round"></path> <path d="M13.5 6L18 6" stroke="#0c3594d1" stroke-width="1.5" stroke-linecap="round"></path> <path d="M6 7L6 5" stroke="#0c3594d1" stroke-width="1.5" stroke-linecap="round"></path> <path d="M9 7L9 5" stroke="#0c3594d1" stroke-width="1.5" stroke-linecap="round"></path> <path d="M13.5 17H18" stroke="#0c3594d1" stroke-width="1.5" stroke-linecap="round"></path> <path d="M6 18L6 16" stroke="#0c3594d1" stroke-width="1.5" stroke-linecap="round"></path> <path d="M9 18L9 16" stroke="#0c3594d1" stroke-width="1.5" stroke-linecap="round"></path> </g></svg></div>
+        </div>
+        <input type="text" id="server" name="server" required value="" placeholder="FTMO-Server4"   style="background-color: #f1f8ff;"><br>
+    
+        <label for="mt_account">Read Only/Investor ID *</label>
+    <div class="form-icon-cont">
+    <div class="form-icon"> <svg width="25px" height="25px" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--emojione-monotone" preserveAspectRatio="xMidYMid meet" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M39 19.434h-5.384v25.133H39c2.969 0 5.386-2.322 5.386-5.174V24.609c0-2.853-2.417-5.175-5.386-5.175" fill="#0c3594d1"></path><path d="M52 2H12C6.477 2 2 6.477 2 12v40c0 5.523 4.477 10 10 10h40c5.523 0 10-4.477 10-10V12c0-5.523-4.477-10-10-10M23 49h-4V15h4v34m26-9.607a9.251 9.251 0 0 1-.787 3.738a9.592 9.592 0 0 1-2.143 3.055a10.032 10.032 0 0 1-3.178 2.059A10.302 10.302 0 0 1 39 49H29V15h10c1.348 0 2.657.254 3.893.754c1.19.484 2.26 1.176 3.178 2.059s1.638 1.912 2.143 3.053A9.294 9.294 0 0 1 49 24.609v14.784" fill="#0c3594d1"></path></g></svg></div> </div>
+    <input type="text" placeholder="#976753" style="background-color: #f1f8ff;" id="mt_account" name="mt_account" value=""  required><br>
+
+    
+    <label for="password" >Investor Password *</label>
+    
+    <div class="form-icon-cont">
+    
+        <div class="form-icon"><svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M3.17157 5.17157C2 6.34315 2 8.22876 2 12C2 15.7712 2 17.6569 3.17157 18.8284C4.34315 20 6.22876 20 10 20H14C17.7712 20 19.6569 20 20.8284 18.8284C22 17.6569 22 15.7712 22 12C22 8.22876 22 6.34315 20.8284 5.17157C19.6569 4 17.7712 4 14 4H10C6.22876 4 4.34315 4 3.17157 5.17157ZM12.7502 10C12.7502 9.58579 12.4144 9.25 12.0002 9.25C11.586 9.25 11.2502 9.58579 11.2502 10V10.7012L10.6428 10.3505C10.2841 10.1434 9.8254 10.2663 9.61829 10.625C9.41119 10.9837 9.53409 11.4424 9.89281 11.6495L10.4997 11.9999L9.89258 12.3505C9.53386 12.5576 9.41095 13.0163 9.61806 13.375C9.82517 13.7337 10.2839 13.8566 10.6426 13.6495L11.2502 13.2987V14C11.2502 14.4142 11.586 14.75 12.0002 14.75C12.4144 14.75 12.7502 14.4142 12.7502 14V13.2993L13.3569 13.6495C13.7156 13.8566 14.1743 13.7337 14.3814 13.375C14.5885 13.0163 14.4656 12.5576 14.1069 12.3505L13.4997 11.9999L14.1067 11.6495C14.4654 11.4424 14.5883 10.9837 14.3812 10.625C14.1741 10.2663 13.7154 10.1434 13.3567 10.3505L12.7502 10.7006V10ZM6.73266 9.25C7.14687 9.25 7.48266 9.58579 7.48266 10V10.7006L8.0891 10.3505C8.44782 10.1434 8.90651 10.2663 9.11362 10.625C9.32073 10.9837 9.19782 11.4424 8.8391 11.6495L8.23217 11.9999L8.83934 12.3505C9.19806 12.5576 9.32096 13.0163 9.11386 13.375C8.90675 13.7337 8.44806 13.8566 8.08934 13.6495L7.48266 13.2993V14C7.48266 14.4142 7.14687 14.75 6.73266 14.75C6.31844 14.75 5.98266 14.4142 5.98266 14V13.2987L5.375 13.6495C5.01628 13.8566 4.55759 13.7337 4.35048 13.375C4.14337 13.0163 4.26628 12.5576 4.625 12.3505L5.23217 11.9999L4.62523 11.6495C4.26652 11.4424 4.14361 10.9837 4.35072 10.625C4.55782 10.2663 5.01652 10.1434 5.37523 10.3505L5.98266 10.7012V10C5.98266 9.58579 6.31844 9.25 6.73266 9.25ZM18.0181 10C18.0181 9.58579 17.6823 9.25 17.2681 9.25C16.8539 9.25 16.5181 9.58579 16.5181 10V10.7012L15.9106 10.3505C15.5519 10.1434 15.0932 10.2663 14.8861 10.625C14.679 10.9837 14.8019 11.4424 15.1606 11.6495L15.7676 11.9999L15.1604 12.3505C14.8017 12.5576 14.6788 13.0163 14.8859 13.375C15.093 13.7337 15.5517 13.8566 15.9104 13.6495L16.5181 13.2987V14C16.5181 14.4142 16.8539 14.75 17.2681 14.75C17.6823 14.75 18.0181 14.4142 18.0181 14V13.2993L18.6247 13.6495C18.9835 13.8566 19.4422 13.7337 19.6493 13.375C19.8564 13.0163 19.7335 12.5576 19.3747 12.3505L18.7676 11.9999L19.3745 11.6495C19.7332 11.4424 19.8561 10.9837 19.649 10.625C19.4419 10.2663 18.9832 10.1434 18.6245 10.3505L18.0181 10.7006V10Z" fill="#0c3594d1"></path> </g></svg></div>
+    </div>
+    <input type="text" style="background-color: #f1f8ff;" id="password" placeholder="9#%LJHGK" name="password" value=""   required><br>
+    
+
+
+
+
+        <label for="server">Trading Platform *</label>
+
+        <div class="card-container-svg">
+            <!-- Radio button for MT4 -->
+            <input type="radio" id="mt4" name="trading_platform" value="MT4" required>
+            <label for="mt4" style="margin-right: 2em;">MT4</label>
+        
+            <!-- Radio button for MT5 -->
+            <input type="radio" id="mt5" name="trading_platform" value="MT5" required>
+            <label for="mt5">MT5</label>
+        </div>
+
+        <div class="checkbox-custom checkbox-custom-1">
+       
+            <input required class="custom-checkbox" type="checkbox">
+              <label class="checkbox-label">I have Read & Agree to the <a href="{{url_for('propsurance_service')}}" target="_blank">Terms of Service </a> & <a href="{{url_for('dashboard_faq')}}" target="_blank">FAQ *</a> 
+        </label>
+
+    </div>
+
+    <div class="checkbox-custom checkbox-custom-1">
+       
+        <input required class="custom-checkbox" type="checkbox">
+          <label class="checkbox-label">My Account is currently Valid</a> 
+    </label>
+
+</div>
+
+    <div class="checkbox-custom">
+       
+        <input required class="custom-checkbox" type="checkbox">
+          <label class="checkbox-label class="open-intercom-help""> I will submit the Account Configuration ticket <span class="open-intercom-help" style="color:#233DFF; opacity: 1;cursor: pointer;"> here</span> *</label> 
+    </label>
+    </div>
+
+
+       
+
+        {% if remaining_size > 0 %}
+        <button type="submit"   class="payment-button" style="margin: 2em auto; width: 230px;"><svg  class="svg-pay" version="1.1" id="Icons" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32" xml:space="preserve" width="28px" height="28px" fill="#ffffff" stroke="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <style type="text/css"> .st0{fill:none;stroke:#ffffff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} </style> <circle class="st0" cx="16" cy="16" r="13"></circle> <polyline class="st0" points="14,11.8 18.2,16 14,20.2 "></polyline> </g></svg> Add Account</button>
+
+        <label style="font-size: small; text-align: center; margin: 1em 0;"><span style="opacity: 0.75  ;">It is important that you open a </span> (Account Configuration - Denied Payout Coverage) <span style="opacity: 0.75    ;"> ticket </span> <span class="open-intercom-help" style="color:#233DFF; opacity: 1;cursor: pointer;"> here</span> <span style="opacity: 0.75    ;">  if you have not done so after adding your account! </label>
+
+        {% else %}
+        <button disabled  class="payment-button" style="margin: 2em auto; opacity: 0.6; width: 230px; cursor: not-allowed;"><svg  class="svg-pay" version="1.1" id="Icons" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32" xml:space="preserve" width="28px" height="28px" fill="#ffffff" stroke="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <style type="text/css"> .st0{fill:none;stroke:#ffffff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} </style> <circle class="st0" cx="16" cy="16" r="13"></circle> <polyline class="st0" points="14,11.8 18.2,16 14,20.2 "></polyline> </g></svg>  Add Account</button>
+
+        <label style="font-size: small; text-align: center; margin: 1em 0;"><span style="opacity: 0.75  ;">You have reached the maximum allowed account coverage!  </label>
+        {% endif %}
+      
+
+       
+
+    </form>
+
+
+    </main>
+
+
+
+
+    <script>
+        window.intercomSettings = {
+          api_base: "https://api-iam.intercom.io",
+          app_id: "g955zput",
+          email: "{{user_email}}",
+          user_id: "{{ user_id}}",
+          user_hash: '{{hash_code}}'
+    
+        };
+      </script>
+      
+      <script>
+      // We pre-filled your app ID in the widget URL: 'https://widget.intercom.io/widget/g955zput'
+      (function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic('reattach_activator');ic('update',w.intercomSettings);}else{var d=document;var i=function(){i.c(arguments);};i.q=[];i.c=function(args){i.q.push(args);};w.Intercom=i;var l=function(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://widget.intercom.io/widget/g955zput';var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);};if(document.readyState==='complete'){l();}else if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})();
+      </script>
+
+{% endblock %}
+
+    {% block script %}
+
+    
+
+<script>
+     var openIntercomHelpButtons = document.querySelectorAll('.open-intercom-help');
+  openIntercomHelpButtons.forEach(function(button) {
+    button.addEventListener('click', function() {
+      Intercom('showNewMessage');
+    });
+  });
+</script>
+
+    {% endblock %}

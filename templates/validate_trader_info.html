@@ -57,7 +57,7 @@ Account Info
     </div>
     <input type="text" id="account_stage" name="account-stage" value="{{ accounts.customer_name }}" readonly required><br>
 
-    <label for="account-stage" >Account Stage</label>
+<label for="account-stage" >Account Stage</label>
 
 <div class="form-icon-cont">
 
@@ -139,7 +139,15 @@ Account Info
         </a>
     </div>
 
+{% if not accounts.current_free_coverage %}
+
     <p class="change-id">To change Trading ID or Password please <br> open a ticket  <a href="{{url_for('access_ticket_handler', account_count=prop_count)}}"> <strong> here</strong></a></p>
+
+    {% else %}
+
+    <label style="font-size: small; text-align: center; margin: 1em 0;"><span style="opacity: 0.75  ;">It is important that you open a </span> (Account Configuration - Denied Payout Coverage) <span style="opacity: 0.75    ;"> ticket </span> <span class="open-intercom-help" style="color:#233DFF; opacity: 1;cursor: pointer;"> here</span> <span style="opacity: 0.75    ;">  if you have not done so after adding your account! </label>
+
+{% endif %}
 
     {% elif accounts.status == 'invalid'  %}
 
@@ -150,7 +158,7 @@ Account Info
     </div>
     <input type="text" id="server" name="server" value="{{accounts.server}}" required readonly><br>
 
-    <label for="mt_account">Read Only/Investor ID</label>
+<label for="mt_account">Read Only/Investor ID</label>
 <div class="form-icon-cont">
 <div class="form-icon"> <svg width="25px" height="25px" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M15 7L18 10M10 12L7 15L6 19L10 18L13 15M12 10L17 5L20 8L15 13M19 19L5 5" stroke="#0c3594d1" stroke-width="1.2"></path> </g></svg></div> </div>
 <input type="text" id="mt_account" name="mt_account" value="{{ accounts.investor_id }}" readonly required><br>
@@ -206,12 +214,34 @@ Account Info
 
 
 
+<script>
+    window.intercomSettings = {
+      api_base: "https://api-iam.intercom.io",
+      app_id: "g955zput",
+      email: "{{user_email}}",
+      user_id: "{{ user_id}}",
+      user_hash: '{{hash_code}}'
 
+    };
+  </script>
+  
+  <script>
+  // We pre-filled your app ID in the widget URL: 'https://widget.intercom.io/widget/g955zput'
+  (function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic('reattach_activator');ic('update',w.intercomSettings);}else{var d=document;var i=function(){i.c(arguments);};i.q=[];i.c=function(args){i.q.push(args);};w.Intercom=i;var l=function(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://widget.intercom.io/widget/g955zput';var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);};if(document.readyState==='complete'){l();}else if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})();
+  </script>
 {% endblock %}
 
 {% block script %}
 
+    
 
+<script>
+     var openIntercomHelpButtons = document.querySelectorAll('.open-intercom-help');
+  openIntercomHelpButtons.forEach(function(button) {
+    button.addEventListener('click', function() {
+      Intercom('showNewMessage');
+    });
+  });
+</script>
 
-
-{% endblock %}
+    {% endblock %}

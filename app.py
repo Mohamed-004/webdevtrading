@@ -476,7 +476,7 @@ def create_coupon():
         
     except Exception  as err:
         # user has no account
-        raise err
+        pass
     
     if request.method == 'POST':
 
@@ -498,7 +498,7 @@ def create_coupon():
             amount_of_traders_who_added_coupon = affiliate_data['users_who_added_coupon_via_dashboard']
             amount_of_traders_who_added_coupon_new = amount_of_traders_who_added_coupon + 1
             coupon_code_is_valid = affiliate_data['is_valid']
-            affiliate_email = 'proppatrol24@gmail.com'
+            affiliate_email = affiliate_data['email']
 
             if not coupon_code_is_valid:
                 flash("Invalid coupon code", "error")
@@ -508,7 +508,7 @@ def create_coupon():
                 db.collection('affiliates').document(affiliate_email).update({
         'users_who_added_coupon_via_dashboard': amount_of_traders_who_added_coupon_new
     })
-                db.collection('users').document(current_user_email).update({
+                db.collection('users').document(user_email).update({
         'coupon_code': updated_coupon_code
     })
                 flash("Coupon code applied successfully!", "success")
@@ -777,7 +777,96 @@ def access_account_dashboard(account_count):
 
     return render_template("user_dashboard.html", account_info=account, prop_count=account_count, has_first_name=True, first_name=first_name, dashboard_nav=True)
 
+@app.route('/dashboard/new-coverage-free', methods=['GET', 'POST'])
+@app.route('/dashboard/new-coverage-free/', methods=['GET', 'POST'])
+def submit_mt_account_free():
+    if 'user' not in session:
+        return redirect(url_for("login"))
+    
+    
+    user_info = session.get("user")
+    user_email = user_info['email']
+    user_name = ''
+    user_name_valid = False
+    account_percentage = 0
+    account_size = 0
+    remaining_size = 50000
+    hash_code = 0
+    user_id = 0
 
+    try:
+        user_data = db.collection('users').document(user_email).get()
+        user_data_info = db.collection('users').document(user_email) 
+        
+        if user_data.exists:
+            user_data_dict = user_data.to_dict()
+            user_has_name = user_data_dict.get('user_name')
+
+            
+
+            hash_code = hmac.new(
+  b'O7zzlQjAFoiHvWq2Hh6ORxbRR2O7CUH3H7pl6qh1', # an Identity Verification secret key (web)
+  bytes(user_data_dict['uid'], encoding='utf-8'), # a UUID to identify your user
+  digestmod=hashlib.sha256 # hash function
+).hexdigest()
+            
+            user_id = user_data_dict['uid']
+            
+            
+
+            if user_has_name:
+                user_name_valid = True
+                user_name = user_has_name
+            
+            if int(user_data_dict.get('accounts_info_count')) >= 0:
+                    accounts_collection = user_data_info.collection('accounts_info').get()
+                    trader_info_collection = user_data_info.collection('trader_info') 
+                    # # print(accounts_collection)
+                    if accounts_collection:
+                        # # print( 'here 270')
+                        for account in accounts_collection:
+                            # # print('here line 270')
+                            product_name = ''
+                            show_percent = ''
+                            
+                            account_info_data =  account.to_dict()
+                            current_index = account_info_data['propsurance_count']
+                            
+                            trader_info_data = trader_info_collection.document(f"trader_account_{current_index}").get()
+                            trader_info_data_parsed = trader_info_data.to_dict()
+                            plan_type = account_info_data.get('plan_type', '')
+                            if  plan_type == 'free':
+                                
+                                account_size += trader_info_data_parsed.get('account_size')
+                                
+                            
+                           
+                            
+
+                    
+                    account_percentage = int((account_size / 50000) * 100)
+                    remaining_size = 50000 - account_size        
+
+            
+                    
+        
+    except Exception  as err:
+        raise err
+    
+    if request.method == 'POST':
+        accounts_count = free_coverage_update_trader_info(request.form['user_email'], request.form['user_name'], request.form)
+        free_coverage_update_accounts_info(request.form['user_email'], request.form['user_name'], request.form)
+        send_email('support@proppatrol.net',  'live-account-connection', {"user_email":request.form['user_email'] } )
+
+        return redirect(url_for('submit_mt_account',account=accounts_count))
+
+
+    
+    return render_template('product-templates/new-free-coverage.html', user_email=user_email, user_name_valid=user_name_valid, user_name=user_name, dashboard_nav=True ,remaining_size= remaining_size, hash_code=hash_code, user_id=user_id)
+    
+            
+        
+            
 
 @app.route('/dashboard/validate/<int:account>', methods=['GET', 'POST'])
 def submit_mt_account(account):
@@ -788,9 +877,9 @@ def submit_mt_account(account):
     user_info = session.get("user")
     user_email = user_info['email']
     user_data = db.collection('users').document(user_email).get()
-
     accounts = {}
-    
+    hash_code = ''
+    user_id = ''
 
     try:
         user_email = user_info['email']
@@ -798,6 +887,9 @@ def submit_mt_account(account):
         user_data = db.collection('users').document(user_email).get()
         user_data_info = db.collection('users').document(user_email)
         accounts_collection = ''
+
+        
+
         if user_data.exists:
             user_data_dict = user_data.to_dict()
             accounts_collection = db.collection('users').document(user_email).collection('accounts_info')
@@ -806,6 +898,17 @@ def submit_mt_account(account):
             accounts_documents = accounts_collection.document(f'account_info_{str(account)}').get()
             # for account_doc in accounts_documents:
             account_info = accounts_documents.to_dict()
+
+            hash_code = hmac.new(
+  b'O7zzlQjAFoiHvWq2Hh6ORxbRR2O7CUH3H7pl6qh1', # an Identity Verification secret key (web)
+  bytes(user_data_dict['uid'], encoding='utf-8'), # a UUID to identify your user
+  digestmod=hashlib.sha256 # hash function
+).hexdigest()
+            
+            user_id = user_data_dict['uid']
+
+           
+            current_free_coverage = False
             
             account_id = account_info['propsurance_count']
 
@@ -827,6 +930,10 @@ def submit_mt_account(account):
                 account_stage = 'Phase 2'
             else:
                 account_stage = 'Live'
+
+            if account_info['plan_type'] == 'free':
+                current_free_coverage = True
+                
             
             
 
@@ -841,7 +948,8 @@ def submit_mt_account(account):
                 'server_type': account_info.get('trading_account_type', ''),
                 'account_stage': account_stage,
                 'customer_name': customer_name ,
-                'date': trader_info_data_parsed.get('insured_date', '')
+                'date': trader_info_data_parsed.get('insured_date', ''),
+                'current_free_coverage': current_free_coverage
             }
 
             # print(accounts)
@@ -906,7 +1014,7 @@ def submit_mt_account(account):
         # Redirect back to the same page to potentially show updated data or messages
         return redirect(url_for('submit_mt_account', account=account))
 
-    return render_template("validate_trader_info.html", accounts=accounts, prop_count=account, dashboard_nav=True)
+    return render_template("validate_trader_info.html", accounts=accounts, prop_count=account, dashboard_nav=True, hash_code=hash_code, user_id=user_id)
 
 
 
@@ -966,6 +1074,36 @@ def dashboard():
 
             allowed_to_redeem = not user_data['redeemed_coupon']
             coupon_code  =  user_data.get('coupon_code', 'none')
+
+            updated_coupon_code = coupon_code.upper()
+
+            # coupon_data = db.collection('affiliates').document(updated_coupon_code).get()
+            
+            
+            if allowed_to_redeem:
+                coupon_data_ref = db.collection("affiliates").where("coupon_code", "==", updated_coupon_code).get()
+                current_user_email =user_email
+
+                if not coupon_data_ref:
+                    pass
+
+                else:
+        
+                    
+                    affiliate_data = coupon_data_ref[0].to_dict()
+                    # update affiliate tracking
+
+                    
+                    coupon_code_is_valid = affiliate_data['is_valid']
+                    affiliate_email = affiliate_data['email']
+                    
+
+                    if not coupon_code_is_valid:
+                        db.collection('users').document(current_user_email).update({
+                'coupon_code': 'none'
+            })
+                    
+                    
             
 
             hash_code = hmac.new(
@@ -997,8 +1135,8 @@ def dashboard():
                             trader_info_data = trader_info_collection.document(f"trader_account_{current_index}").get()
                             trader_info_data_parsed = trader_info_data.to_dict()
                             # # print('line 275', account_info_data)
-                            plan_type = account_info_data.get('plan_type', '')
-                            if  plan_type == 'payout_coverage':
+                            plan_type = trader_info_data_parsed.get('product_name', '')
+                            if  plan_type == 'Denied Payout Coverage':
                                 account_size += trader_info_data_parsed.get('account_size')
                             trade_status = ''
                             insured_date = account_info_data.get('insured_date')
@@ -1021,7 +1159,7 @@ def dashboard():
                             elif trader_info_data_parsed.get('product_name', '') == 'trade-shield-gold':
                                 product_name = 'Trade-Shield Gold'
                                 show_percent = False
-                            elif trader_info_data_parsed.get('product_name', '') == 'free-payout-coverage':
+                            elif trader_info_data_parsed.get('product_name', '') == 'Denied Payout Coverage':
                                 product_name = 'Denied Payout Coverage'
                                 show_percent = True
 
@@ -1044,7 +1182,7 @@ def dashboard():
                             'account_url_fix' : str(current_index),
                             'account_status':  account_info_data.get('status'),
                             'phase_status' : trade_status,
-                            'current_percentage': int((trader_info_data_parsed['account_size'] / 200000) * 100),
+                            'current_percentage': int((trader_info_data_parsed['account_size'] / 50000) * 100),
                             'current_size': trader_info_data_parsed['account_size'],
                             'refund_date': new_refund_date_string,
                             'failed_account' : failed_account,
@@ -1057,7 +1195,7 @@ def dashboard():
                             insured_accounts.append(prop_firm_info)
 
                     
-                    account_percentage = int((account_size / 200000) * 100)
+                    account_percentage = int((account_size / 50000) * 100)
                     remaining_size = 50000 - account_size        
 
             else: 
@@ -1177,7 +1315,7 @@ def webhook():
                 # 'account_size': account_size,
                 # 'prop_firm_name': prop_firm_name,
                 'status': 'pending',
-                # 'server': '',
+                'server': '',
                 'trading_account_type': '',
                 'insured_date': formatted_date_string,
                 'customer-purchase-id': purchase_id,
@@ -1387,6 +1525,123 @@ def report_preview_resolved():
 @app.route('/view-reports')
 def view_firm_reports():
     return render_template('reports-stats.html')
+
+
+def free_coverage_update_accounts_info(customer_email, customer_name, form_data):
+        user_ref = db.collection('users').document(customer_email)
+        users_query = user_ref.get()
+        if users_query.exists:
+            user_info = users_query.to_dict()
+            uid = user_info.get('uid', 0)
+            sub_type = ''
+            
+
+            # # print('Metadata', payment_intent['metadata'])
+
+            # if 'ftmo50' in payment_intent["lines"]["data"][0]["price"]["nickname"]:
+            #     account_size = 50000
+            #     prop_firm_name = 'FTMO'
+            #     sub_type = 'one-time'
+
+            current_date = datetime.now()
+            formatted_date_string = current_date.strftime('%Y-%m-%d')
+
+            # Get the next account index
+            accounts_collection = user_ref.collection('accounts_info')
+            # Count the documents to generate the next unique document ID
+            accounts_docs = accounts_collection.stream()  # Get all documents to count them
+            account_count = sum(1 for _ in accounts_docs)  # Count documents and prepare the next index
+            account_doc_id = f"account_info_{account_count}"
+            first_name = customer_name.split()[0]
+
+            
+
+            account_info = {
+                'propsurance_count': account_count,
+                'invoice_url': 'none',
+                # 'account_size': account_size,
+                # 'prop_firm_name': prop_firm_name,
+                'status': 'needs_validation',
+                'server': form_data['server'],
+                'trading_account_type': form_data['trading_platform'],
+                'insured_date': formatted_date_string,
+                'customer-purchase-id': 'none',
+                # 'sub_type' : sub_type,
+                # 'current_rate': '40%',
+                'plan_type': 'free',
+                'customer_name': customer_name,
+                'first_name' : first_name
+            }
+
+            # Add to sub-collection
+            
+            accounts_ref = accounts_collection.document(account_doc_id).set(account_info)
+
+            # Update user's basic information if necessary
+            user_ref.update({
+                'user_name': customer_name,
+                'customer_email': customer_email,
+                'accounts_info_count' : account_count,
+                'first_name' : first_name
+            })
+
+def free_coverage_update_trader_info(customer_email, customer_name, form_data):
+        user_ref = db.collection('users').document(customer_email)
+        users_query = user_ref.get()
+
+        if users_query.exists:
+            user_info = users_query.to_dict()
+            uid = user_info.get('uid', 0)
+            account_size = ''
+            prop_firm_name = ''
+
+            # Retrieve the current number of accounts to create a unique identifier for the new account
+            accounts_collection = user_ref.collection('trader_info')
+            accounts_docs = accounts_collection.stream()  # Get all documents to count them
+            accounts_count = sum(1 for _ in accounts_docs)  # Count documents
+            
+
+            # Extract custom field values
+            trader_account_info = form_data
+
+
+            account_size = int(trader_account_info['account_size'])
+            prop_firm_name =  trader_account_info['firm']
+            # sub_type = trader_account_info['service']
+            product_name = 'Denied Payout Coverage'
+            current_phase = 'live'
+            account_platform = trader_account_info['trading_platform']
+            add_ons = 'none'
+
+            
+            mt4mt5_investor_id =  trader_account_info['mt_account']
+            mt4mt5_investor_password = trader_account_info['password']
+
+            
+            
+
+            trader_account_info = {
+                'propsurance_count': accounts_count,  # Dynamic count based on the number of documents
+                'account_status': current_phase,
+                'account_size': account_size,
+                'product_name': product_name,
+                # 'sub-type': sub_type,
+                'prop_firm_name': prop_firm_name,
+                'investor_id': mt4mt5_investor_id,
+                'trading_platform': account_platform,
+                'investor_password': mt4mt5_investor_password,
+                'insured_date': datetime.now().strftime('%Y-%m-%d'),
+                'customer-purchase-id': 'none' ,
+                'price_cost': 0,
+                'plan_type': 'free',
+                'failed_account': False,
+                'current_payouts': 0
+            }
+
+            accounts_collection.document(f"trader_account_{accounts_count}").set(trader_account_info)
+
+            return accounts_count
+    
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
