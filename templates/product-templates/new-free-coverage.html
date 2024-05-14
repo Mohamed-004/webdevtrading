@@ -99,7 +99,12 @@ Add Coupon
         {% endif %}
         <input type="hidden" name="user_email" value="{{ user_email }}"/>
 
-        <label for="user_name" >Name</label>
+
+        {% if not user_name_valid  %}
+        <label for="user_name" >Your Name *</label>
+        {%  else %}
+        <label for="user_name" >Your Name </label>
+        {% endif %}
     
         <div class="form-icon-cont">
     
@@ -107,7 +112,7 @@ Add Coupon
         </div>
        
         {% if not user_name_valid %}
-        <input type="text" id="user_name" name="user_name" value=""  style="background-color: #f1f8ff;"  required><br>
+        <input type="text" id="user_name" name="user_name" value="" placeholder="John Blake"  style="background-color: #f1f8ff;"  required><br>
         {%  else %}
         <input type="text" id="user_name" name="user_name" value="{{user_name}}" readonly  required><br>
         {% endif %}
@@ -132,7 +137,7 @@ Add Coupon
             <select name="firm" required id="propFirmSelect" class="styled-select">
                 <!-- Placeholder option -->
                 <option value="" selected  disabled>Select Firm</option>
-                <option value="city_traders_imperium"  >City Traders Imperium</option>
+                <option value="City Traders Imperium"  >City Traders Imperium</option>
                 <!-- Actual options -->
                 
                 <option value="" disabled>Coming Soon</option>
@@ -235,7 +240,7 @@ Add Coupon
         {% if remaining_size > 0 %}
         <button type="submit"   class="payment-button" style="margin: 2em auto; width: 230px;"><svg  class="svg-pay" version="1.1" id="Icons" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32" xml:space="preserve" width="28px" height="28px" fill="#ffffff" stroke="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <style type="text/css"> .st0{fill:none;stroke:#ffffff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} </style> <circle class="st0" cx="16" cy="16" r="13"></circle> <polyline class="st0" points="14,11.8 18.2,16 14,20.2 "></polyline> </g></svg> Add Account</button>
 
-        <label style="font-size: small; text-align: center; margin: 1em 0;"><span style="opacity: 0.75  ;">It is important that you open a </span> (Account Configuration - Denied Payout Coverage) <span style="opacity: 0.75    ;"> ticket </span> <span class="open-intercom-help" style="color:#233DFF; opacity: 1;cursor: pointer;"> here</span> <span style="opacity: 0.75    ;">  if you have not done so after adding your account! </label>
+        <label style="font-size: small; text-align: center; margin: 1em 0;"><span style="opacity: 0.75  ;">It is important that you open a </span> (Denied Payout Coverage - Live Account Configuration) <span style="opacity: 0.75    ;"> ticket </span> <span class="open-intercom-help" style="color:#233DFF; opacity: 1;cursor: pointer;"> here</span> <span style="opacity: 0.75    ;">  if you have not done so after adding your account! </label>
 
         {% else %}
         <button disabled  class="payment-button" style="margin: 2em auto; opacity: 0.6; width: 230px; cursor: not-allowed;"><svg  class="svg-pay" version="1.1" id="Icons" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32" xml:space="preserve" width="28px" height="28px" fill="#ffffff" stroke="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <style type="text/css"> .st0{fill:none;stroke:#ffffff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} </style> <circle class="st0" cx="16" cy="16" r="13"></circle> <polyline class="st0" points="14,11.8 18.2,16 14,20.2 "></polyline> </g></svg>  Add Account</button>

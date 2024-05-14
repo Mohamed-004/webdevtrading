@@ -224,7 +224,7 @@ def callback():
             return redirect(url_for('dashboard'))
         
         else:
-            print('checking if affilaite exists')
+            
             # check if affiliate exists
             allowed_affiliates_ref = db.collection('allowed_affiliates').document(user['email'])
             allowed_affiliates_doc =  allowed_affiliates_ref.get()
@@ -263,7 +263,7 @@ def callback():
                         'users_who_added_coupon_via_dashboard': 0,
                         'is_valid': True
                     })
-                    return 'new affiliate account created'
+                    return 'new affiliate account created and redirect to his dashboard'
                 else:
                     return 'affiliate now exists and will be redirecting to his dashboard'
 
@@ -549,8 +549,12 @@ def verify_payment():
     price_id = ''
     account_size = request.form.get('account_size', '')
     account_platform = request.form.get('account_type', '')
-    promotion_valid = True
+    promotion_valid = False
     got_add_on_0 = False
+
+
+    if not coupon_code  == 'none':
+        promotion_valid = True
     
     if drawdown_coverage_add_on_silver == 'on' and current_phase == 'phase2':
         return jsonify(status='error', message=f"Please try again!"), 500
@@ -570,11 +574,11 @@ def verify_payment():
         if current_phase == 'phase1':
             # test id
             price_id = 'price_1PFPnVP649Efo4kC3NkEvBfr'
-            price_num = '80'
+            price_num = '79'
         elif current_phase == 'phase2':
             # test price id
             price_id = 'price_1PDNMWP649Efo4kCfQL0w9RM'
-            price_num = '90'
+            price_num = '89'
         else:
             return jsonify(status='error', message=f"Please try again!"), 500
         
@@ -592,23 +596,23 @@ def verify_payment():
         if current_phase == 'phase1' and drawdown_coverage_add_on_silver == 'on':
             # for phase 1 but with add on for test
             price_id = 'price_1PFQpnP649Efo4kCVWXF1FIR'
-            price_num = '270'    
+            price_num = '269'    
             got_add_on_0 = True
 
         elif current_phase == 'phase1' and not drawdown_coverage_add_on_silver:
             # for phase 1 with no add on 
             price_id = 'price_1PFQpnP649Efo4kCQLWfb0WM'
-            price_num = '180'
+            price_num = '179'
         
         elif current_phase == 'phase2':
             # for phase 1 and 
             price_id = 'price_1PFQpnP649Efo4kCOJK3kK7y'
-            price_num = '210'
+            price_num = '209'
         else:
             return jsonify(status='error', message=f"Please try again!"), 500
          
 
-        price_num = '190'
+        price_num = '179'
         service_type = 'one-time'
 
     elif plan_type == 'trade-shield-gold':
@@ -617,14 +621,34 @@ def verify_payment():
         elif firm_name == 'alpha_capital':
             price_firm = 'Alpha Capital Group'
         else:
-            return not_found(404)
-        price_num = '470'
+            return jsonify(status='error', message=f"Please try again!"), 500
+        
+        if current_phase == 'phase1' and drawdown_coverage_add_on_gold == 'on':
+            # for phase 1 but with add on for test
+            price_id = 'price_1PGDrOP649Efo4kCNYHSej2F'
+            price_num = '509'    
+            got_add_on_0 = True
+
+        elif current_phase == 'phase1' and not drawdown_coverage_add_on_gold:
+            # for phase 1 with no add on 
+            price_id = 'price_1PGDnyP649Efo4kCV3wLr3wp'
+            price_num = '399'
+
+        elif current_phase == 'phase2':
+            # for phase 1 and 
+            price_id = 'price_1PGDsSP649Efo4kCUbSRCxxd'
+            price_num = '459'
+        
+        else:
+            return jsonify(status='error', message=f"Please try again!"), 500
+        
+
+        price_num = '399'
         service_type = 'one-time'
 
     else:
         return jsonify(status='error', message=f"Please try again!"), 500
     
-    # has_promo_code = True
     
 
     try:
@@ -656,19 +680,7 @@ def verify_payment():
             automatic_tax={'enabled': True},
             discounts= [{'coupon': 'UNnQzyHW'}] if allowed_to_redeem and promotion_valid else [],
             customer_email = email,
-           custom_fields = [
-    {
-        'key': 'current_account_stage',
-        'label': {'type': 'custom', 'custom': 'Current Account Stage'},
-        'type': 'dropdown',
-        'dropdown': {
-            'options': [
-                {'label': 'My Account is in Phase 1 & Valid', 'value': 'Phase1'},  # Simplified, alphanumeric only
-                {'label': 'Account must be in Phase 1 and Valid!', 'value': 'AccountPhase1Valid'}  # Simplified, alphanumeric only
-            ]
-        }
-    }
-], 
+           
              metadata={
                 'customer_email': email,  # Custom data
                 'coupon_code' : coupon_code,
@@ -693,10 +705,12 @@ def verify_payment():
 
 @app.route('/successful-payment')
 def success_payment():
+    # return payment work and return to dashboard
     return 'payment worked'
 
 @app.route('/canceled-payment')
 def cancel_payment():
+    # payment was canceled return to dashboard
     return 'cancel payment'
 
     
@@ -818,26 +832,26 @@ def submit_mt_account_free():
                 user_name_valid = True
                 user_name = user_has_name
             
-            if int(user_data_dict.get('accounts_info_count')) >= 0:
-                    accounts_collection = user_data_info.collection('accounts_info').get()
-                    trader_info_collection = user_data_info.collection('trader_info') 
-                    # # print(accounts_collection)
-                    if accounts_collection:
-                        # # print( 'here 270')
-                        for account in accounts_collection:
-                            # # print('here line 270')
-                            product_name = ''
-                            show_percent = ''
+            
+                accounts_collection = user_data_info.collection('accounts_info').get()
+                trader_info_collection = user_data_info.collection('trader_info') 
+                # # print(accounts_collection)
+                if accounts_collection:
+                    # # print( 'here 270')
+                    for account in accounts_collection:
+                        # # print('here line 270')
+                        product_name = ''
+                        show_percent = ''
+                        
+                        account_info_data =  account.to_dict()
+                        current_index = account_info_data['propsurance_count']
+                        
+                        trader_info_data = trader_info_collection.document(f"trader_account_{current_index}").get()
+                        trader_info_data_parsed = trader_info_data.to_dict()
+                        plan_type = account_info_data.get('plan_type', '')
+                        if  plan_type == 'free':
                             
-                            account_info_data =  account.to_dict()
-                            current_index = account_info_data['propsurance_count']
-                            
-                            trader_info_data = trader_info_collection.document(f"trader_account_{current_index}").get()
-                            trader_info_data_parsed = trader_info_data.to_dict()
-                            plan_type = account_info_data.get('plan_type', '')
-                            if  plan_type == 'free':
-                                
-                                account_size += trader_info_data_parsed.get('account_size')
+                            account_size += trader_info_data_parsed.get('account_size')
                                 
                             
                            
@@ -1327,8 +1341,8 @@ def webhook():
             }
 
             # Add to sub-collection
-            print('charge done')
-            print(account_info)
+            # print('charge done')
+            # print(account_info)
             accounts_ref = accounts_collection.document(account_doc_id).set(account_info)
 
             # Update user's basic information if necessary
@@ -1390,9 +1404,37 @@ def webhook():
             mt4mt5_investor_id = ''
             mt4mt5_investor_password = ''
 
+
+
             if coupon_code != 'none' and allowed_to_redeem:
                 # user used affiliate code, find the code and update both user info, and affiliate say that user purchased with affiliate aswell, and the affiliate email, and then see the product name, and make it false, so there can be a limit to it's purchases
+                coupon_data_ref = db.collection("affiliates").where("coupon_code", "==", coupon_code).get()
+
+                if not coupon_data_ref:
+                    # coupon code is invalid
+                    pass
+                else:
+                    # coupon code is valid add affilaite data, and update user redeemed info
+                    affiliate_data = coupon_data_ref[0].to_dict()
+                    affiliate_email = affiliate_data['email']
+                    if product_name == 'trade-shield-bronze':
+                        pass
+
+                    elif product_name == 'trade-shield-silver':
+                        # check how many current referrals affiliate has then process and update affiliate info and mention trader email, and purchase number or count for trader to check for refund
+                        pass
+
+                    elif product_name == 'trade-shield-gold':
+                        pass
+            
+            else:
+                # user did not use affiliate code so
                 pass
+                
+
+
+
+                
 
             sub_data = {
                 'customer_name': first_name,
@@ -1642,6 +1684,21 @@ def free_coverage_update_trader_info(customer_email, customer_name, form_data):
 
             return accounts_count
     
+def calculate_commission(referrals, product):
+    if product == 'trade-shield-bronze':
+        if referrals < 20:
+            return 8
+        elif referrals <= 40:
+            return 10
+        elif referrals > 65:
+            return 12
+    elif product == 'trade-shield-silver':
+        # Add specific logic for silver product if needed
+        pass
+    elif product == 'trade-shield-gold':
+        # Add specific logic for gold product if needed
+        pass
+    return 0
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
