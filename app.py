@@ -959,7 +959,7 @@ def submit_mt_account(account):
                 'status': account_info.get('status', ''),
                 'account_size': str(trader_info_data_parsed.get('account_size', '')),
                 'server': account_info.get('server', ''),
-                'server_type': account_info.get('trading_account_type', ''),
+                'server_type': trader_info_data_parsed.get('trading_platform', ''),
                 'account_stage': account_stage,
                 'customer_name': customer_name ,
                 'date': trader_info_data_parsed.get('insured_date', ''),
@@ -1155,6 +1155,8 @@ def dashboard():
                             trade_status = ''
                             insured_date = account_info_data.get('insured_date')
                             failed_account = trader_info_data_parsed.get('failed_account', '')
+
+                            got_add_on0 = trader_info_data_parsed.get('got_add_on0', False)
                            
 
                             # add 1 week for the refund date
@@ -1178,7 +1180,7 @@ def dashboard():
                                 show_percent = True
 
                             
-
+                            
 
 
                             if trader_info_data_parsed.get('account_status') == 'phase2':
@@ -1201,8 +1203,10 @@ def dashboard():
                             'refund_date': new_refund_date_string,
                             'failed_account' : failed_account,
                             'product_name': product_name,
-                            'show_percent': show_percent
+                            'show_percent': show_percent,
+                            'got_add_on0': got_add_on0
                             }
+                            
 
                             # print(account_info_data)
 
@@ -1385,8 +1389,6 @@ def webhook():
 
             # Extract custom field values
             trader_account_info = payment_intent['metadata']
-
-
             account_size = int(trader_account_info['account_size'])
             prop_firm_name =  trader_account_info['firm_name']
             # sub_type = trader_account_info['service']
@@ -1396,7 +1398,7 @@ def webhook():
             allowed_to_redeem = trader_account_info['allowed_to_redeem']
             coupon_code = trader_account_info['coupon_code']
             account_platform = trader_account_info['trading_platform']
-            add_ons = trader_account_info['add_on']
+            got_add_on0 = trader_account_info['got_add_on0']
 
             # phase_value = payment_intent.get("custom_fields", [{}])[0].get("dropdown", {}).get("value", "")
             # mt4mt5_investor_id = payment_intent.get("custom_fields", [{}])[0].get("text", {}).get("value", "")
@@ -1406,32 +1408,40 @@ def webhook():
 
 
 
-            if coupon_code != 'none' and allowed_to_redeem:
-                # user used affiliate code, find the code and update both user info, and affiliate say that user purchased with affiliate aswell, and the affiliate email, and then see the product name, and make it false, so there can be a limit to it's purchases
-                coupon_data_ref = db.collection("affiliates").where("coupon_code", "==", coupon_code).get()
+            # if coupon_code != 'none' and allowed_to_redeem:
+            #     # user used affiliate code, find the code and update both user info, and affiliate say that user purchased with affiliate aswell, and the affiliate email, and then see the product name, and make it false, so there can be a limit to it's purchases
+            #     coupon_data_ref = db.collection("affiliates").where("coupon_code", "==", coupon_code).get()
 
-                if not coupon_data_ref:
-                    # coupon code is invalid
-                    pass
-                else:
-                    # coupon code is valid add affilaite data, and update user redeemed info
-                    affiliate_data = coupon_data_ref[0].to_dict()
-                    affiliate_email = affiliate_data['email']
-                    if product_name == 'trade-shield-bronze':
-                        pass
+            #     if not coupon_data_ref:
+            #         # coupon code is invalid
+            #         pass
+            #     else:
+            #         # coupon code is valid add affilaite data, and update user redeemed info
+            #         affiliate_data = coupon_data_ref[0].to_dict()
+            #         affiliate_email = affiliate_data['email']
+            #         if product_name == 'trade-shield-bronze':
+            #             pass
 
-                    elif product_name == 'trade-shield-silver':
-                        # check how many current referrals affiliate has then process and update affiliate info and mention trader email, and purchase number or count for trader to check for refund
-                        pass
+            #         elif product_name == 'trade-shield-silver':
+            #             # check how many current referrals affiliate has then process and update affiliate info and mention trader email, and purchase number or count for trader to check for refund
+            #             pass
 
-                    elif product_name == 'trade-shield-gold':
-                        pass
+            #         elif product_name == 'trade-shield-gold':
+            #             pass
             
-            else:
-                # user did not use affiliate code so
-                pass
+            # else:
+            #     # user did not use affiliate code so
+            #     pass
+
+            email_product_name = ''
                 
 
+            if product_name == 'trade-shield-bronze':
+                email_product_name = 'Trade Shield Bronze'
+            elif product_name == 'trade-shield-silver':
+                email_product_name = 'Trade Shield Silver'
+            elif product_name == 'trade-shield-gold':
+                email_product_name = 'Trade Shield Gold'
 
 
                 
@@ -1443,7 +1453,8 @@ def webhook():
                 'signup_url': url_for('submit_mt_account', account=accounts_count, _external=True),
                 'dashboard_url' : url_for('dashboard', _external=True),
                 'faq_url' : url_for('dashboard_faq', _external=True),
-                'url_privacy': url_for('propsurance_terms', _external=True)
+                'url_privacy': url_for('propsurance_terms', _external=True),
+                'email_product_name': email_product_name
             }
 
             send_email(customer_email , template_id, sub_data )
@@ -1463,7 +1474,8 @@ def webhook():
                 'price_cost': purchase_cost,
                 'customer_phone': customer_phone,
                 'failed_account': False,
-                'current_payouts': 0
+                'current_payouts': 0,
+                'got_add_on0': got_add_on0
             }
 
         

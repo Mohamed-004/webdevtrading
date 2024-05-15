@@ -65,9 +65,10 @@ div#dashboard-container {
     position: absolute;
     bottom: 0em;
     width: 180px;
+    font-size: small;
 }
 
-.header-text-under.dropdown  ul.dropdown-menu {top: 100%;max-width: 180px;min-width: 180px;margin-top: 0.4em;cursor: pointer;}
+.header-text-under.dropdown  ul.dropdown-menu {top: 100%;max-width: 180px;min-width: 180px;margin-top: 0.4em;cursor: pointer;font-size: small;}
 
 #menu3 {
     background: #0c3594d1 !important;
@@ -175,6 +176,7 @@ button#account-firm-btn {
     background: #ffc107;
     color: #00000082;
     border: none;
+    font-size: small;
     display: flex;
     flex-flow: row nowrap;
     align-items: center;
@@ -1314,6 +1316,64 @@ padding: 0em 1em;
 
 
 }
+
+@media (max-width:600px) {
+    .metrics-bar .coverage-p, #firm-account-info p.name.met-label{
+    font-size: small;
+}
+
+.metrics-bar .remaining.hazard {
+    font-size: xx-small;
+   
+}
+
+.report-details .tag {
+    font-size: small !important;
+}
+
+#firm-account-info .name.sepr {
+    font-size: 1em;
+}
+
+.card-horizontal h2.form-h2 {
+    font-size: 1em;
+}
+
+.metrics-bar button#account-firm-btn {
+    width: 140px;
+    background: #0c3594d1 !important;
+    border-color: transparent !important;
+    font-size: smaller;
+}
+
+#account-dropdown.header-text-under.dropdown ul.dropdown-menu {
+    max-width: 140px;
+    min-width: 140px;
+    font-size: smaller;
+}
+
+/* .stage-pass, label.label-text.mg-top {
+    font-size: 1.8em;
+   
+} */
+
+.stage-pass {
+    font-size: 1.8em;
+   
+}
+
+.card-horizontal .card-more-info {
+    font-size: smaller;
+}
+
+.card-horizontal ul {
+    padding-left: 1em;
+    font-size: small;
+}
+
+}
+
+
 
 
 

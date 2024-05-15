@@ -43,9 +43,7 @@ div.rate-id {
     padding-left: 0;
 }
 
-.coverage-p { 
-width: 80%;
-}
+.coverage-p {width: 100%;}
 
 #rate-header {
 
@@ -193,12 +191,12 @@ form input[type='text'][readonly] {
     height: 30px !important;
 }
 
-#dashboard-container .remaining.hazard {
-margin: 0;
-position: absolute;
-bottom: 1.8em;
-}
+#dashboard-container .remaining.hazard {margin: 0;position: absolute;bottom: 1.8em;max-width: 100%;}
 
+
+    #dashboard-container .remaining.hazard {
+        font-size: 1em;
+    }
 
 
 @media (max-width:1500px) {
@@ -233,5 +231,12 @@ display: unset;
       
     }
 
+}
+
+@media (max-width:650px) {
+    #dashboard-container .big-first.remaining.hazard {
+        font-size: xx-small;
+        /* width: 250px; */
+    }
 }
 

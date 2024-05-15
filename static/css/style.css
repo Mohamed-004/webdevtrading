@@ -1101,7 +1101,9 @@ nav.navbar {
 
 .dropdown-menu {
     
-    top: 60%;
+top: 60%;
+    
+font-size: small;
 }
 
 .cog-confirmation__message.cog-content.cog-html.cog-input {
