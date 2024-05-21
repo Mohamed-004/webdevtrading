@@ -692,7 +692,8 @@ def verify_payment():
                 'account_size': account_size,
                 'plan_type': 'paid',
                 'trading_platform': account_platform,
-                'got_add_on0': got_add_on_0
+                'got_add_on0': got_add_on_0,
+                'promotion_valid': promotion_valid
             },
             phone_number_collection={'enabled': True}
         )
@@ -725,6 +726,8 @@ def access_account_dashboard(account_count):
     user_data = db.collection('users').document(user_email).get()
     first_name = ''
     account = {}
+    product_name = ''
+    plan_is_not_free = True
 
     try:
         user_email = user_info['email']
@@ -765,8 +768,39 @@ def access_account_dashboard(account_count):
                 account_stage = 'Phase 2'    
             else:
                 account_stage = 'Live'
+
+            plan_type = trader_info_data_parsed.get('product_name', '')
+            
+            trade_status = ''
+            insured_date = account_info_data.get('insured_date')
+            failed_account = trader_info_data_parsed.get('failed_account', '')
+
+            got_add_on0 = trader_info_data_parsed.get('got_add_on0', False)
+            
+
+            # add 1 week for the refund date
+            temp_date = datetime.strptime(insured_date, "%Y-%m-%d")
+
+            new_date = temp_date + timedelta(days=7)
+
+            new_refund_date_string = new_date.strftime("%Y-%m-%d")
+
+            if trader_info_data_parsed.get('product_name', '') == 'trade-shield-bronze':
+                product_name = 'Trade-Shield Bronze'
+                
+            elif trader_info_data_parsed.get('product_name', '') == 'trade-shield-silver':
+                product_name = 'Trade-Shield Silver'
+                
+            elif trader_info_data_parsed.get('product_name', '') == 'trade-shield-gold':
+                product_name = 'Trade-Shield Gold'
+            elif trader_info_data_parsed.get('product_name', '') == 'Denied Payout Coverage':
+                product_name = 'Denied Payout Coverage'
+                plan_is_not_free = False
+
             
             account_access_url = url_for('submit_mt_account', account=current_index)
+
+
 
             account = {
                 'id': str(current_index),
@@ -777,10 +811,15 @@ def access_account_dashboard(account_count):
                 'account_size': str(trader_info_data_parsed.get('account_size', '')),
                 'server': account_info.get('server', ''),
                 'server_type': account_info.get('trading_account_type', ''),
+                'invoice_url' : account_info_data.get('invoice_url', ''),
                 'account_stage': account_stage,
+                 'failed_account' : failed_account,
                 'account_access_url': account_access_url,
-                
-                'current_rate': account_info.get('current_rate', '40%')
+                'product_name': product_name,
+                'current_rate': account_info.get('current_rate', '40%'), 
+                'insured_date': trader_info_data_parsed.get('insured_date', ''),
+                'plan_is_not_free': plan_is_not_free,
+                 'got_add_on0': got_add_on0
             }
 
             # print(accounts)
@@ -1204,7 +1243,8 @@ def dashboard():
                             'failed_account' : failed_account,
                             'product_name': product_name,
                             'show_percent': show_percent,
-                            'got_add_on0': got_add_on0
+                            'got_add_on0': got_add_on0,
+                            'insured_date': trader_info_data_parsed.get('insured_date', '')
                             }
                             
 

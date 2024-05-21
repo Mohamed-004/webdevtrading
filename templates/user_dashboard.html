@@ -20,8 +20,7 @@ Account Hub
 {% block dashlinks %}
 
 <li role="presentation"><a role="menuitem" tabindex="-1" href="{{ url_for('home') }}">Home</a></li>
-<li role="presentation" class="divider"></li>
-<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ url_for('home') }}">Home</a></li>
+
 <li role="presentation" class="divider"></li>
 <li role="presentation"><a role="menuitem" tabindex="-1" href="{{ url_for('dashboard') }}"> PropSurance <br> Dashboard</a></li>
 <li role="presentation" class="divider"></li>
@@ -117,16 +116,19 @@ Account Hub
                                    Passed Current <br> Phase
                                 </a>
                             </li>
+                            <li role="presentation" class="divider"></li>
                             <li role="presentation">
                                 <a role="menuitem" tabindex="-1" href="{{url_for('access_ticket_handler', account_count=account_info['id'])}}">
                                    Received Payout
                                 </a>
                             </li>
+                            <li role="presentation" class="divider"></li>
                             <li role="presentation">
                                 <a role="menuitem" tabindex="-1" href="{{url_for('access_ticket_handler', account_count=account_info['id'])}}">
                                    Payout Denied
                                 </a>
                             </li>
+                            <li role="presentation" class="divider"></li>
                             <li role="presentation">
                                 <a role="menuitem" tabindex="-1" href="{{url_for('access_ticket_handler', account_count=account_info['id'])}}">
                                   Invalid Credentials
@@ -147,90 +149,117 @@ Account Hub
             <div>
             <p>Billing</p>
             <p class="header-text-board">
-                Past Invoices
+               Plan's Receipt
             </p>
         </div>
             <img src="{{ url_for('static', filename='images/invoices.png') }}" alt="Info Icon">
         </div>
       
+      {% if  account_info['plan_is_not_free'] %}
+        <div class="hazard-div">
+            <a class="remaining hazard not-error"  id="remaining-success" href="{{account_info['invoice_url'] }}"><div class="hazard-icon-div "><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" stroke="#233DFF"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" stroke="#CCCCCC" stroke-width="0.048"></g><g id="SVGRepo_iconCarrier"> <path d="M15.197 3.35462C16.8703 1.67483 19.4476 1.53865 20.9536 3.05046C22.4596 4.56228 22.3239 7.14956 20.6506 8.82935L18.2268 11.2626M10.0464 14C8.54044 12.4882 8.67609 9.90087 10.3494 8.22108L12.5 6.06212" stroke="#233DFF" stroke-width="2.4" stroke-linecap="round"></path> <path d="M13.9536 10C15.4596 11.5118 15.3239 14.0991 13.6506 15.7789L11.2268 18.2121L8.80299 20.6454C7.12969 22.3252 4.55237 22.4613 3.0464 20.9495C1.54043 19.4377 1.67609 16.8504 3.34939 15.1706L5.77323 12.7373" stroke="#233DFF" stroke-width="2.4" stroke-linecap="round"></path> </g></svg></div> Billing Info </a>
+        </div>
+        {% else %}
 
         <div class="hazard-div">
-            <a class="remaining hazard not-error"  id="remaining-success" href="https://billing.stripe.com/p/login/test_bIYdTw74q2Im0Za9AA"><div class="hazard-icon-div "><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" stroke="#233DFF"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" stroke="#CCCCCC" stroke-width="0.048"></g><g id="SVGRepo_iconCarrier"> <path d="M15.197 3.35462C16.8703 1.67483 19.4476 1.53865 20.9536 3.05046C22.4596 4.56228 22.3239 7.14956 20.6506 8.82935L18.2268 11.2626M10.0464 14C8.54044 12.4882 8.67609 9.90087 10.3494 8.22108L12.5 6.06212" stroke="#233DFF" stroke-width="2.4" stroke-linecap="round"></path> <path d="M13.9536 10C15.4596 11.5118 15.3239 14.0991 13.6506 15.7789L11.2268 18.2121L8.80299 20.6454C7.12969 22.3252 4.55237 22.4613 3.0464 20.9495C1.54043 19.4377 1.67609 16.8504 3.34939 15.1706L5.77323 12.7373" stroke="#233DFF" stroke-width="2.4" stroke-linecap="round"></path> </g></svg></div> Billing Info </a>
-        </div>
-    </div>
+            <a class="remaining hazard not-error"  id="remaining-success"><div class="hazard-icon-div ">  <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M11.25 7.84748C10.3141 8.10339 9.75 8.82154 9.75 9.5C9.75 10.1785 10.3141 10.8966 11.25 11.1525V7.84748Z" fill="#233DFF"></path> <path d="M12.75 12.8475V16.1525C13.6859 15.8966 14.25 15.1785 14.25 14.5C14.25 13.8215 13.6859 13.1034 12.75 12.8475Z" fill="#233DFF"></path> <path fill-rule="evenodd" clip-rule="evenodd" d="M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12ZM12 5.25C12.4142 5.25 12.75 5.58579 12.75 6V6.31673C14.3804 6.60867 15.75 7.83361 15.75 9.5C15.75 9.91421 15.4142 10.25 15 10.25C14.5858 10.25 14.25 9.91421 14.25 9.5C14.25 8.82154 13.6859 8.10339 12.75 7.84748V11.3167C14.3804 11.6087 15.75 12.8336 15.75 14.5C15.75 16.1664 14.3804 17.3913 12.75 17.6833V18C12.75 18.4142 12.4142 18.75 12 18.75C11.5858 18.75 11.25 18.4142 11.25 18V17.6833C9.61957 17.3913 8.25 16.1664 8.25 14.5C8.25 14.0858 8.58579 13.75 9 13.75C9.41421 13.75 9.75 14.0858 9.75 14.5C9.75 15.1785 10.3141 15.8966 11.25 16.1525V12.6833C9.61957 12.3913 8.25 11.1664 8.25 9.5C8.25 7.83361 9.61957 6.60867 11.25 6.31673V6C11.25 5.58579 11.5858 5.25 12 5.25Z" fill="#233DFF"></path> </g></svg></div> Free Plan</a>
+
+     {% endif %}
 
     </div>
 
-    <div class="metrics-bar" >
+    </div>
+
+    <div class="metrics-bar"  style="width: 100%;">
         <!-- <div class="num-rank">{{ (account_info['id']|int + 1) }}</div> -->
 
         <p id="rate-header">Prop Firm Info</p>
-                <p class="header-text-board">
+                <p class="header-text-board" style="font-size: 1.6em;">
                     {{account_info['name']}}  ${{account_info['account_size']}}
                 </p>
        
-         
-                    <div class="report-details">
-
-                        <span class="tag">{{account_info['account_stage']}}</span>
-                       
-                    </div>
                    
-                    
-           </div>
+    <div class="report-details" style="gap:20px">
+    
+        <span class="tag">{{ account_info['account_stage'] }}</span>
+
+    
+
+        {% if account_info['failed_account'] %}
+            <span class="tag"  style="background-color: #fd7e14b0 !important; color:#f5f5f5 !important;">Inactive</span>
+        {% else %}
+            <span class="tag"  style="background-color: #28a7458a !important; color:#f5f5f5 !important;" >Active</span>
+        {% endif %}
+
     </div>
 
+    <hr>
+
+    {% if account_info['product_name'] %}
+    <div style="margin-top: 1em;">
+        {% if account_info['product_name'] == 'Trade-Shield Bronze' %}
+            <p class="coverage-p" style="flex-flow: row wrap; display: inline-flex; position: relative;">
+                {% include "product-templates/bronze-svg.html" %}
+                <span style="margin-right: 0.5em;">
+                    <span style="color: #0c3594d1; font-weight: bold;">Trade-</span><span style="color: #0c3594d1; font-weight: bold;">Shield</span>
+                </span>
+                <span style="margin-right: 0.5em; color: #DB8F6A;">Bronze</span>
+            </p>
+        {% elif account_info['product_name'] == 'Trade-Shield Silver' %}
+            <p class="coverage-p" style="flex-flow: row wrap; display: inline-flex; position: relative;">
+                {% include "product-templates/silver-svg.html" %}
+                <span style="margin-right: 0.5em;">
+                    <span style="color: #0c3594d1; font-weight: bold;">Trade-</span><span style="color: #0c3594d1; font-weight: bold;">Shield</span>
+                </span>
+                <span style="margin-right: 0.5em; color: #104487;">Silver</span>
+            </p>
+        {% elif account_info['product_name'] == 'Trade-Shield Gold' %}
+            <p class="coverage-p" style="flex-flow: row wrap; display: inline-flex; position: relative;">
+                {% include "product-templates/gold-svg.html" %}
+                <span style="margin-right: 0.5em;">
+                    <span style="color: #0c3594d1; font-weight: bold;">Trade-</span><span style="color: #0c3594d1; font-weight: bold;">Shield</span>
+                </span>
+                <span style="margin-right: 0.5em; color: #E7A138;">Gold</span>
+            </p>
+        {% elif account_info['product_name'] == 'Denied Payout Coverage' %}
+            <p class="coverage-p" style="flex-flow: row wrap; display: inline-flex; position: relative;">
+                {% include "product-templates/silver-svg.html" %}
+                <span style="margin-right: 0.5em;">
+                    <span style="color: #0c3594d1; font-weight: bold;">Free Denied Payout Coverage</span>
+                </span>
+            </p>
+        {% endif %}
+    </div>
+{% endif %}
+
+{% if account_info['got_add_on0'] %}
+<p class="coverage-p"  style="position: relative; margin-bottom: 0.3em;" ><svg width="20px" style="position: absolute; top:0" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M17 4H7C4 4 2 5.5 2 9V12.56C2 12.93 2.38 13.16 2.71 13.01C3.69 12.56 4.82 12.39 6.01 12.6C8.64 13.07 10.57 15.51 10.5 18.18C10.49 18.6 10.43 19.01 10.32 19.41C10.24 19.72 10.49 20.01 10.81 20.01H17C20 20.01 22 18.51 22 15.01V9C22 5.5 20 4 17 4ZM12 14.5C10.62 14.5 9.5 13.38 9.5 12C9.5 10.62 10.62 9.5 12 9.5C13.38 9.5 14.5 10.62 14.5 12C14.5 13.38 13.38 14.5 12 14.5ZM19.25 14C19.25 14.41 18.91 14.75 18.5 14.75C18.09 14.75 17.75 14.41 17.75 14V10C17.75 9.59 18.09 9.25 18.5 9.25C18.91 9.25 19.25 9.59 19.25 10V14Z" fill="#3B5AA8"></path> <path d="M5 14C2.79 14 1 15.79 1 18C1 18.75 1.21 19.46 1.58 20.06C2.27 21.22 3.54 22 5 22C6.46 22 7.73 21.22 8.42 20.06C8.79 19.46 9 18.75 9 18C9 15.79 7.21 14 5 14ZM6.49 18.73H5.75V19.51C5.75 19.92 5.41 20.26 5 20.26C4.59 20.26 4.25 19.92 4.25 19.51V18.73H3.51C3.1 18.73 2.76 18.39 2.76 17.98C2.76 17.57 3.1 17.23 3.51 17.23H4.25V16.52C4.25 16.11 4.59 15.77 5 15.77C5.41 15.77 5.75 16.11 5.75 16.52V17.23H6.49C6.9 17.23 7.24 17.57 7.24 17.98C7.24 18.39 6.91 18.73 6.49 18.73Z" fill="#3B5AA8"></path> </g></svg> <span style="padding-left: 2em;"> <span style="font-weight: bold;"> Add-On</span>: Daily & Max Drawdown coverage Included for Live Account</span>
+{% endif %}
+
+<p class="coverage-p"><svg style="margin-right: 0.8em;" width="18px" height="18px" viewBox="-0.5 0 15 15" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill="#3B5AA8" fill-rule="evenodd" d="M61,154.006845 C61,153.45078 61.4499488,153 62.0068455,153 L73.9931545,153 C74.5492199,153 75,153.449949 75,154.006845 L75,165.993155 C75,166.54922 74.5500512,167 73.9931545,167 L62.0068455,167 C61.4507801,167 61,166.550051 61,165.993155 L61,154.006845 Z M62,157 L74,157 L74,166 L62,166 L62,157 Z M64,152.5 C64,152.223858 64.214035,152 64.5046844,152 L65.4953156,152 C65.7740451,152 66,152.231934 66,152.5 L66,153 L64,153 L64,152.5 Z M70,152.5 C70,152.223858 70.214035,152 70.5046844,152 L71.4953156,152 C71.7740451,152 72,152.231934 72,152.5 L72,153 L70,153 L70,152.5 Z" transform="translate(-61 -152)"></path> </g></svg> <span style="font-weight: bold;"> Start Date</span>: {{account_info['insured_date']}}</p>
+                    
+    </div>
+
+    
 
     <h2 class="stage-pass">Coverage Info</h2>
-        <div  id="rate-id" class="board-cont coverage-class">
-            <div class="rate-flex">
 
-                <div id="cover-img-div">
-                    <div>
-                        <img src="{{ url_for('static', filename='images/coverage.png') }}" alt="Info Icon">
-                    </div>
-                </div>
-                <div id="cover-text-div">
-                <p id="rate-header">PropSurance</p>
-                <p class="header-text-board">
-                    Current Coverage Rate
-                </p>
+    {% if account_info["product_name"] == 'Denied Payout Coverage' %}
+    {% include "coverage-types/payout-coverage-free.html" %}
+{% elif account_info["product_name"] == 'Trade-Shield Bronze' %}
+    {% include "coverage-types/trade-shield-bronze-info.html" %}
+{% elif account_info["product_name"] == 'Trade-Shield Silver' %}
+    {% include "coverage-types/trade-shield-silver-info.html" %}
+{% elif account_info["product_name"] == 'Trade-Shield Gold' %}
+    {% include "coverage-types/trade-shield-gold-info.html" %}
+{% endif %}
 
-               
-            
-           
-
-            <ul class="coverage-ul">
-
-                <p class="coverage-p">
-                    Upon signing up, your payout coverage is initially set at 40%.  With each successful payout from a firm, your insurance rate increases by 20%. After three payouts, your insurance coverage reaches 100%
-                </p>
-
-                <!-- <li class="coverage-p"><svg fill="#0c3594d1" width="25px" height="25px" viewBox="-3 0 19 19" xmlns="http://www.w3.org/2000/svg" class="cf-icon-svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M12.365 10.832a.473.473 0 0 1-.012.106q.012.179.012.37c0 3.239-5.865 5.063-5.865 5.063S.635 14.547.635 11.307q0-.19.012-.37a.473.473 0 0 1-.012-.105V3.643a.476.476 0 0 1 .475-.475h10.78a.476.476 0 0 1 .475.475zm-3.617-.387a1.653 1.653 0 0 0-.409-1.087 2.23 2.23 0 0 0-.617-.491l-.002-.001a2.599 2.599 0 0 0-.641-.232h-.002a2.797 2.797 0 0 0-.59-.062 2.196 2.196 0 0 1-.364-.028 1.405 1.405 0 0 1-.384-.123h-.001a.918.918 0 0 1-.294-.236v-.002a.596.596 0 0 1-.141-.358.604.604 0 0 1 .336-.509 1.67 1.67 0 0 1 .858-.23 1.722 1.722 0 0 1 .304.05l.036.008a1.926 1.926 0 0 1 .365.127 1.024 1.024 0 0 1 .3.206.554.554 0 1 0 .782-.785 2.145 2.145 0 0 0-.627-.431 2.961 2.961 0 0 0-.585-.2l-.036-.008h-.002v-.626a.554.554 0 0 0-1.109 0v.609a2.646 2.646 0 0 0-.878.343 1.712 1.712 0 0 0-.853 1.446 1.688 1.688 0 0 0 .39 1.058 2.01 2.01 0 0 0 .659.529 2.481 2.481 0 0 0 .697.225 3.281 3.281 0 0 0 .548.044 1.686 1.686 0 0 1 .355.036 1.47 1.47 0 0 1 .362.13 1.128 1.128 0 0 1 .3.24.552.552 0 0 1 .135.358c0 .124-.036.289-.31.466a1.69 1.69 0 0 1-.875.243 2.678 2.678 0 0 1-.38-.046 1.845 1.845 0 0 1-.354-.113.762.762 0 0 1-.284-.218.554.554 0 1 0-.838.726 1.852 1.852 0 0 0 .71.521 2.827 2.827 0 0 0 .577.176l.04.007v.625a.554.554 0 1 0 1.108 0v-.63a2.667 2.667 0 0 0 .9-.36 1.628 1.628 0 0 0 .814-1.397z"></path></g></svg> -->
-                    
-                </li>
-            </ul>
-
-            <div class="status-coverage-div">
-
-            <div class="hazard-div">
-                <a class="remaining hazard not-error no-bottom"  id="remaining-success" ><div class="hazard-icon-div "><svg viewBox="0 -0.5 25 25" width="25px" height="25px" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M5.50002 18.211V9.737C5.49724 9.30439 5.84541 8.9513 6.27802 8.948H9.38902C9.82162 8.9513 10.1698 9.30439 10.167 9.737V5.789C10.1642 5.35678 10.5118 5.00385 10.944 5H14.056C14.4886 5.0033 14.8368 5.35639 14.834 5.789V8.158C14.8312 7.72539 15.1794 7.3723 15.612 7.369H18.723C19.1552 7.37285 19.5028 7.72578 19.5 8.158V18.211C19.5028 18.6436 19.1546 18.9967 18.722 19H6.27802C5.84541 18.9967 5.49724 18.6436 5.50002 18.211V18.211Z" stroke="#0c3594a6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M9.41699 19C9.41699 19.4142 9.75278 19.75 10.167 19.75C10.5812 19.75 10.917 19.4142 10.917 19H9.41699ZM10.917 9.73696C10.917 9.32275 10.5812 8.98696 10.167 8.98696C9.75278 8.98696 9.41699 9.32275 9.41699 9.73696H10.917ZM14.083 19C14.083 19.4142 14.4188 19.75 14.833 19.75C15.2472 19.75 15.583 19.4142 15.583 19H14.083ZM15.583 8.15796C15.583 7.74375 15.2472 7.40796 14.833 7.40796C14.4188 7.40796 14.083 7.74375 14.083 8.15796H15.583ZM10.917 19V9.73696H9.41699V19H10.917ZM15.583 19V8.15796H14.083V19H15.583Z" fill="#0c3594a6"></path> </g></svg></div> {{account_info['current_rate']}} </a>
-            </div>
-
-            <div class="hazard-div">
-                <a class="remaining hazard not-error no-bottom last-hazard"  id="remaining-success" href="{{url_for('access_ticket_handler', account_count=account_info['id'])}}"" ><div class="hazard-icon-div "><svg fill="#0c3594d1" width="25px" height="25px" viewBox="-3 0 19 19" xmlns="http://www.w3.org/2000/svg" class="cf-icon-svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M12.365 10.832a.473.473 0 0 1-.012.106q.012.179.012.37c0 3.239-5.865 5.063-5.865 5.063S.635 14.547.635 11.307q0-.19.012-.37a.473.473 0 0 1-.012-.105V3.643a.476.476 0 0 1 .475-.475h10.78a.476.476 0 0 1 .475.475zm-3.617-.387a1.653 1.653 0 0 0-.409-1.087 2.23 2.23 0 0 0-.617-.491l-.002-.001a2.599 2.599 0 0 0-.641-.232h-.002a2.797 2.797 0 0 0-.59-.062 2.196 2.196 0 0 1-.364-.028 1.405 1.405 0 0 1-.384-.123h-.001a.918.918 0 0 1-.294-.236v-.002a.596.596 0 0 1-.141-.358.604.604 0 0 1 .336-.509 1.67 1.67 0 0 1 .858-.23 1.722 1.722 0 0 1 .304.05l.036.008a1.926 1.926 0 0 1 .365.127 1.024 1.024 0 0 1 .3.206.554.554 0 1 0 .782-.785 2.145 2.145 0 0 0-.627-.431 2.961 2.961 0 0 0-.585-.2l-.036-.008h-.002v-.626a.554.554 0 0 0-1.109 0v.609a2.646 2.646 0 0 0-.878.343 1.712 1.712 0 0 0-.853 1.446 1.688 1.688 0 0 0 .39 1.058 2.01 2.01 0 0 0 .659.529 2.481 2.481 0 0 0 .697.225 3.281 3.281 0 0 0 .548.044 1.686 1.686 0 0 1 .355.036 1.47 1.47 0 0 1 .362.13 1.128 1.128 0 0 1 .3.24.552.552 0 0 1 .135.358c0 .124-.036.289-.31.466a1.69 1.69 0 0 1-.875.243 2.678 2.678 0 0 1-.38-.046 1.845 1.845 0 0 1-.354-.113.762.762 0 0 1-.284-.218.554.554 0 1 0-.838.726 1.852 1.852 0 0 0 .71.521 2.827 2.827 0 0 0 .577.176l.04.007v.625a.554.554 0 1 0 1.108 0v-.63a2.667 2.667 0 0 0 .9-.36 1.628 1.628 0 0 0 .814-1.397z"></path></g></svg></div> You may also be entitled to a rejected payout even if you violated one of the firm's policies. Learn more. </a>
-            </div>
-            </div>
-            </div>
-            </div>
-            </div>
+        
     
-       
-        </div>
 
 
 
-
+        {% if  account_info['plan_is_not_free'] %}
 
     <div class="stage-notification">
     {% if account_info['account_stage'] == 'Phase 1' %}
@@ -252,7 +281,7 @@ Account Hub
 
     <div class="hazard-div">
 
-        <span class="remaining hazard centered-hazard"  ><div class="hazard-icon-div "><svg fill="#00000082" width="25px" height="25px" viewBox="0 0 64 64" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <rect id="Icons" x="-640" y="-64" width="1280" height="800" style="fill:none;"></rect> <g id="Icons1" serif:id="Icons"> <g id="Strike"> </g> <g id="H1"> </g> <g id="H2"> </g> <g id="H3"> </g> <g id="list-ul"> </g> <g id="hamburger-1"> </g> <g id="hamburger-2"> </g> <g id="list-ol"> </g> <g id="list-task"> </g> <g id="trash"> </g> <g id="vertical-menu"> </g> <g id="horizontal-menu"> </g> <g id="sidebar-2"> </g> <g id="Pen"> </g> <g id="Pen1" serif:id="Pen"> </g> <g id="clock"> </g> <g id="external-link"> </g> <g id="hr"> </g> <g id="info"> </g> <g id="warning"> <path d="M32.427,7.987c2.183,0.124 4,1.165 5.096,3.281l17.936,36.208c1.739,3.66 -0.954,8.585 -5.373,8.656l-36.119,0c-4.022,-0.064 -7.322,-4.631 -5.352,-8.696l18.271,-36.207c0.342,-0.65 0.498,-0.838 0.793,-1.179c1.186,-1.375 2.483,-2.111 4.748,-2.063Zm-0.295,3.997c-0.687,0.034 -1.316,0.419 -1.659,1.017c-6.312,11.979 -12.397,24.081 -18.301,36.267c-0.546,1.225 0.391,2.797 1.762,2.863c12.06,0.195 24.125,0.195 36.185,0c1.325,-0.064 2.321,-1.584 1.769,-2.85c-5.793,-12.184 -11.765,-24.286 -17.966,-36.267c-0.366,-0.651 -0.903,-1.042 -1.79,-1.03Z" style="fill-rule:nonzero;"></path> <path d="M33.631,40.581l-3.348,0l-0.368,-16.449l4.1,0l-0.384,16.449Zm-3.828,5.03c0,-0.609 0.197,-1.113 0.592,-1.514c0.396,-0.4 0.935,-0.601 1.618,-0.601c0.684,0 1.223,0.201 1.618,0.601c0.395,0.401 0.593,0.905 0.593,1.514c0,0.587 -0.193,1.078 -0.577,1.473c-0.385,0.395 -0.929,0.593 -1.634,0.593c-0.705,0 -1.249,-0.198 -1.634,-0.593c-0.384,-0.395 -0.576,-0.886 -0.576,-1.473Z" style="fill-rule:nonzero;"></path> </g> <g id="plus-circle"> </g> <g id="minus-circle"> </g> <g id="vue"> </g> <g id="cog"> </g> <g id="logo"> </g> <g id="radio-check"> </g> <g id="eye-slash"> </g> <g id="eye"> </g> <g id="toggle-off"> </g> <g id="shredder"> </g> <g id="spinner--loading--dots-" serif:id="spinner [loading, dots]"> </g> <g id="react"> </g> <g id="check-selected"> </g> <g id="turn-off"> </g> <g id="code-block"> </g> <g id="user"> </g> <g id="coffee-bean"> </g> <g id="coffee-beans"> <g id="coffee-bean1" serif:id="coffee-bean"> </g> </g> <g id="coffee-bean-filled"> </g> <g id="coffee-beans-filled"> <g id="coffee-bean2" serif:id="coffee-bean"> </g> </g> <g id="clipboard"> </g> <g id="clipboard-paste"> </g> <g id="clipboard-copy"> </g> <g id="Layer1"> </g> </g> </g></svg></div> We require you to update us or open a claim or ticket within two weeks  to avoid voiding your PropSurance status.   </span>
+        <span class="remaining hazard centered-hazard"  ><div class="hazard-icon-div "><svg fill="#00000082" width="25px" height="25px" viewBox="0 0 64 64" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <rect id="Icons" x="-640" y="-64" width="1280" height="800" style="fill:none;"></rect> <g id="Icons1" serif:id="Icons"> <g id="Strike"> </g> <g id="H1"> </g> <g id="H2"> </g> <g id="H3"> </g> <g id="list-ul"> </g> <g id="hamburger-1"> </g> <g id="hamburger-2"> </g> <g id="list-ol"> </g> <g id="list-task"> </g> <g id="trash"> </g> <g id="vertical-menu"> </g> <g id="horizontal-menu"> </g> <g id="sidebar-2"> </g> <g id="Pen"> </g> <g id="Pen1" serif:id="Pen"> </g> <g id="clock"> </g> <g id="external-link"> </g> <g id="hr"> </g> <g id="info"> </g> <g id="warning"> <path d="M32.427,7.987c2.183,0.124 4,1.165 5.096,3.281l17.936,36.208c1.739,3.66 -0.954,8.585 -5.373,8.656l-36.119,0c-4.022,-0.064 -7.322,-4.631 -5.352,-8.696l18.271,-36.207c0.342,-0.65 0.498,-0.838 0.793,-1.179c1.186,-1.375 2.483,-2.111 4.748,-2.063Zm-0.295,3.997c-0.687,0.034 -1.316,0.419 -1.659,1.017c-6.312,11.979 -12.397,24.081 -18.301,36.267c-0.546,1.225 0.391,2.797 1.762,2.863c12.06,0.195 24.125,0.195 36.185,0c1.325,-0.064 2.321,-1.584 1.769,-2.85c-5.793,-12.184 -11.765,-24.286 -17.966,-36.267c-0.366,-0.651 -0.903,-1.042 -1.79,-1.03Z" style="fill-rule:nonzero;"></path> <path d="M33.631,40.581l-3.348,0l-0.368,-16.449l4.1,0l-0.384,16.449Zm-3.828,5.03c0,-0.609 0.197,-1.113 0.592,-1.514c0.396,-0.4 0.935,-0.601 1.618,-0.601c0.684,0 1.223,0.201 1.618,0.601c0.395,0.401 0.593,0.905 0.593,1.514c0,0.587 -0.193,1.078 -0.577,1.473c-0.385,0.395 -0.929,0.593 -1.634,0.593c-0.705,0 -1.249,-0.198 -1.634,-0.593c-0.384,-0.395 -0.576,-0.886 -0.576,-1.473Z" style="fill-rule:nonzero;"></path> </g> <g id="plus-circle"> </g> <g id="minus-circle"> </g> <g id="vue"> </g> <g id="cog"> </g> <g id="logo"> </g> <g id="radio-check"> </g> <g id="eye-slash"> </g> <g id="eye"> </g> <g id="toggle-off"> </g> <g id="shredder"> </g> <g id="spinner--loading--dots-" serif:id="spinner [loading, dots]"> </g> <g id="react"> </g> <g id="check-selected"> </g> <g id="turn-off"> </g> <g id="code-block"> </g> <g id="user"> </g> <g id="coffee-bean"> </g> <g id="coffee-beans"> <g id="coffee-bean1" serif:id="coffee-bean"> </g> </g> <g id="coffee-bean-filled"> </g> <g id="coffee-beans-filled"> <g id="coffee-bean2" serif:id="coffee-bean"> </g> </g> <g id="clipboard"> </g> <g id="clipboard-paste"> </g> <g id="clipboard-copy"> </g> <g id="Layer1"> </g> </g> </g></svg></div> We require you to update us by opening a claim or ticket  to avoid voiding your PropSurance status.   </span>
     </div>
 
     <div class="ticket-handler">
@@ -262,7 +291,9 @@ Account Hub
 
 
     </div>
+    {% else %}
 
+    {% endif %}
 
 
 </main>

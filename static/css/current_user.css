@@ -199,6 +199,15 @@ form input[type='text'][readonly] {
     }
 
 
+    #payout-container {
+        display: block  !important;
+    
+    }
+
+    .plan-container {
+        display: block !important;
+    }
+
 @media (max-width:1500px) {
     .coverage-class   .rate-flex  {
       

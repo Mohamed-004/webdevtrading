@@ -924,6 +924,7 @@ footer p {
 
 .bottom-footer a:hover {
     /* text-decoration: underline; */ /* Optional hover effect */
+    color: white;
 }
 
 div#myNavbar {
