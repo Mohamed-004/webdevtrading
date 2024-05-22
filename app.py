@@ -551,6 +551,7 @@ def verify_payment():
     account_platform = request.form.get('account_type', '')
     promotion_valid = False
     got_add_on_0 = False
+    allowed_to_redeem = False
 
 
     if not coupon_code  == 'none':
@@ -1138,7 +1139,10 @@ def dashboard():
                 current_user_email =user_email
 
                 if not coupon_data_ref:
-                    pass
+                    # affiliate doesnt exist
+                    db.collection('users').document(current_user_email).update({
+                'coupon_code': 'none'
+            })
 
                 else:
         
