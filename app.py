@@ -1351,12 +1351,7 @@ def webhook():
             sub_type = ''
             
 
-            # # print('Metadata', payment_intent['metadata'])
-
-            # if 'ftmo50' in payment_intent["lines"]["data"][0]["price"]["nickname"]:
-            #     account_size = 50000
-            #     prop_firm_name = 'FTMO'
-            #     sub_type = 'one-time'
+            
 
             current_date = datetime.now()
             formatted_date_string = current_date.strftime('%Y-%m-%d')
@@ -1743,17 +1738,45 @@ def free_coverage_update_trader_info(customer_email, customer_name, form_data):
 def calculate_commission(referrals, product):
     if product == 'trade-shield-bronze':
         if referrals < 20:
+            # 10%
             return 8
-        elif referrals <= 40:
+        elif referrals <= 50:
+            # 11.5 %
+            return 9
+        elif referrals <= 75:
+            # 12.5 %
             return 10
-        elif referrals > 65:
-            return 12
+        else:  # Referrals are more than 75
+            # 15%
+            return 12  # You can adjust this value as needed
     elif product == 'trade-shield-silver':
         # Add specific logic for silver product if needed
-        pass
+        if referrals < 20:
+            # 10%
+            return 18
+        elif referrals <= 50:
+            # 11.5 %
+            return 20
+        elif referrals <= 75:
+            # 12.5 %
+            return 22
+        else:  # Referrals are more than 75
+            # 15%
+            return 27  # You can adjust this value as needed
     elif product == 'trade-shield-gold':
         # Add specific logic for gold product if needed
-        pass
+        if referrals < 20:
+            # 10%
+            return 40
+        elif referrals <= 50:
+            # 11.5 %
+            return 46
+        elif referrals <= 75:
+            # 12.5 %
+            return 50
+        else:  # Referrals are more than 75
+            # 15%
+            return 60  # You can adjust this value as needed
     return 0
 
 if __name__ == '__main__':
