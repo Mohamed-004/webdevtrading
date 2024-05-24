@@ -263,9 +263,9 @@ def callback():
                         'users_who_added_coupon_via_dashboard': 0,
                         'is_valid': True
                     })
-                    return 'new affiliate account created and redirect to his dashboard'
+                    return redirect(url_for("affiliate_login"))
                 else:
-                    return 'affiliate now exists and will be redirecting to his dashboard'
+                    return redirect(url_for("affiliate_login"))
 
 
 
@@ -286,7 +286,20 @@ def callback():
             return render_template('noaccess.html', error='You do not have access to PropSurance, please contact us at support@proppatrol.net'), 403
 
 
+@app.route("/affiliate-center")
+def affiliate_login():
+    if 'user' not in session:
+        return redirect(url_for("login"))
+    else:
+        user = session['user']
+        is_affiliate = user.get('is_affiliate', False)
 
+        if is_affiliate == 'True':
+            # this is the affilaite dashboard so stay here
+            return render_template('affiliate-dashboard/affiliate-dashboard.html', dashboard_nav=True)
+
+        else:
+            return redirect(url_for("dashboard"))
 
 
 @app.route("/login")
@@ -341,9 +354,18 @@ def logout():
 def dashboard_faq():
     if 'user' not in session:
         return redirect(url_for("login"))
-
     else:
+        user = session['user']
+        is_affiliate = user.get('is_affiliate', False)
+
+        if is_affiliate == 'True':
+            # redirect to affiliate page
+            return redirect(url_for("affiliate_login"))
+        
         return render_template("faq-dashboard.html",dashboard_nav=True)
+
+    
+        
     
 
 
@@ -352,24 +374,49 @@ def dashboard_faq():
 def propsurance_service():
     if 'user' not in session:
         return redirect(url_for("login"))
-
     else:
+        user = session['user']
+        is_affiliate = user.get('is_affiliate', False)
+
+        if is_affiliate == 'True':
+            # redirect to affiliate page
+            return redirect(url_for("affiliate_login"))
+        
         return render_template("terms-propsurance.html",dashboard_nav=True)
+
+   
+        
 
 @app.route('/dashboard/privacy-policy/', methods=['GET'])
 @app.route('/dashboard/privacy-policy', methods=['GET'])
 def propsurance_terms():
     if 'user' not in session:
         return redirect(url_for("login"))
-
     else:
+        user = session['user']
+        is_affiliate = user.get('is_affiliate', False)
+
+        if is_affiliate == 'True':
+            # redirect to affiliate page
+            return redirect(url_for("affiliate_login"))
+        
         return render_template("privacy-propsurance.html",dashboard_nav=True)
+
+    
+        
  
 
 @app.route('/dashboard/raise-ticket/<int:account_count>', methods=['GET'])
 def access_ticket_handler(account_count):
     if 'user' not in session:
         return redirect(url_for("login"))
+    else:
+        user = session['user']
+        is_affiliate = user.get('is_affiliate', False)
+
+        if is_affiliate == 'True':
+            # redirect to affiliate page
+            return redirect(url_for("affiliate_login"))
     
     user_info = session.get("user")
     user_email = user_info['email']
@@ -449,6 +496,13 @@ def access_ticket_handler(account_count):
 def create_coupon():
     if 'user' not in session:
         return redirect(url_for("login"))
+    else:
+        user = session['user']
+        is_affiliate = user.get('is_affiliate', False)
+
+        if is_affiliate == 'True':
+            # redirect to affiliate page
+            return redirect(url_for("affiliate_login"))
 
     allowed_to_add= True
     allowed_to_redeem = ''
@@ -721,6 +775,13 @@ def cancel_payment():
 def access_account_dashboard(account_count):
     if 'user' not in session:
         return redirect(url_for("login"))
+    else:
+        user = session['user']
+        is_affiliate = user.get('is_affiliate', False)
+
+        if is_affiliate == 'True':
+            # redirect to affiliate page
+            return redirect(url_for("affiliate_login"))
     
     user_info = session.get("user")
     user_email = user_info['email']
@@ -836,6 +897,13 @@ def access_account_dashboard(account_count):
 def submit_mt_account_free():
     if 'user' not in session:
         return redirect(url_for("login"))
+    else:
+        user = session['user']
+        is_affiliate = user.get('is_affiliate', False)
+
+        if is_affiliate == 'True':
+            # redirect to affiliate page
+            return redirect(url_for("affiliate_login"))
     
     
     user_info = session.get("user")
@@ -927,6 +995,13 @@ def submit_mt_account(account):
     # Check if user is authenticated
     if 'user' not in session:
         return redirect(url_for("login"))
+    else:
+        user = session['user']
+        is_affiliate = user.get('is_affiliate', False)
+
+        if is_affiliate == 'True':
+            # redirect to affiliate page
+            return redirect(url_for("affiliate_login"))
     
     user_info = session.get("user")
     user_email = user_info['email']
@@ -1085,7 +1160,8 @@ def dashboard():
 
         if is_affiliate == 'True':
             # redirect to affiliate page
-            return 'is affiliate'
+            return redirect(url_for("affiliate_login"))
+    
 
     user_info = False
     user_data = False
@@ -1447,31 +1523,7 @@ def webhook():
 
 
 
-            # if coupon_code != 'none' and allowed_to_redeem:
-            #     # user used affiliate code, find the code and update both user info, and affiliate say that user purchased with affiliate aswell, and the affiliate email, and then see the product name, and make it false, so there can be a limit to it's purchases
-            #     coupon_data_ref = db.collection("affiliates").where("coupon_code", "==", coupon_code).get()
-
-            #     if not coupon_data_ref:
-            #         # coupon code is invalid
-            #         pass
-            #     else:
-            #         # coupon code is valid add affilaite data, and update user redeemed info
-            #         affiliate_data = coupon_data_ref[0].to_dict()
-            #         affiliate_email = affiliate_data['email']
-            #         if product_name == 'trade-shield-bronze':
-            #             pass
-
-            #         elif product_name == 'trade-shield-silver':
-            #             # check how many current referrals affiliate has then process and update affiliate info and mention trader email, and purchase number or count for trader to check for refund
-            #             pass
-
-            #         elif product_name == 'trade-shield-gold':
-            #             pass
             
-            # else:
-            #     # user did not use affiliate code so
-            #     pass
-
             email_product_name = ''
                 
 
@@ -1481,6 +1533,8 @@ def webhook():
                 email_product_name = 'Trade Shield Silver'
             elif product_name == 'trade-shield-gold':
                 email_product_name = 'Trade Shield Gold'
+
+            affiliate_data = handle_purchase(coupon_code, customer_email, product_name,allowed_to_redeem,accounts_count,purchase_id)
 
 
                 
@@ -1498,7 +1552,9 @@ def webhook():
 
             send_email(customer_email , template_id, sub_data )
 
-            trader_account_info = {
+
+            if affiliate_data:
+                trader_account_info = {
                 'propsurance_count': accounts_count,  # Dynamic count based on the number of documents
                 'account_status': current_phase,
                 'account_size': account_size,
@@ -1514,8 +1570,29 @@ def webhook():
                 'customer_phone': customer_phone,
                 'failed_account': False,
                 'current_payouts': 0,
-                'got_add_on0': got_add_on0
+                'got_add_on0': got_add_on0,
+                'affiliate_email': affiliate_data.get('affiliate_email', ''),
+                'affiliate_referral_count': affiliate_data.get('purchase_referral_count', '')
             }
+            else:
+                trader_account_info = {
+                    'propsurance_count': accounts_count,  # Dynamic count based on the number of documents
+                    'account_status': current_phase,
+                    'account_size': account_size,
+                    'product_name': product_name,
+                    # 'sub-type': sub_type,
+                    'prop_firm_name': prop_firm_name,
+                    'investor_id': mt4mt5_investor_id,
+                    'trading_platform': account_platform,
+                    'investor_password': mt4mt5_investor_password,
+                    'insured_date': datetime.now().strftime('%Y-%m-%d'),
+                    'customer-purchase-id': purchase_id ,
+                    'price_cost': purchase_cost,
+                    'customer_phone': customer_phone,
+                    'failed_account': False,
+                    'current_payouts': 0,
+                    'got_add_on0': got_add_on0
+                }
 
         
 
@@ -1765,7 +1842,7 @@ def calculate_commission(referrals, product):
             return 27  # You can adjust this value as needed
     elif product == 'trade-shield-gold':
         # Add specific logic for gold product if needed
-        if referrals < 20:
+        if referrals <= 20:
             # 10%
             return 40
         elif referrals <= 50:
@@ -1778,6 +1855,75 @@ def calculate_commission(referrals, product):
             # 15%
             return 60  # You can adjust this value as needed
     return 0
+
+def handle_purchase(coupon_code, user_email, product_name, allowed_to_redeem, user_purchase_count, purchase_id):
+    if coupon_code != 'none' and allowed_to_redeem:
+        # User used an affiliate code, find the code and update both user info and affiliate data
+        coupon_data_ref = db.collection("affiliates").where("coupon_code", "==", coupon_code).get()
+        if not coupon_data_ref:
+            # Coupon code is invalid
+            pass
+        else:
+            # Coupon code is valid, add affiliate data and update user redeemed info
+            affiliate_data = coupon_data_ref[0].to_dict()
+            affiliate_email = affiliate_data['email']
+
+            # Update the affiliate's referral count
+            referral_count = affiliate_data.get('referral_count', 0) + 1
+
+            # Calculate the commission based on the product and referral count
+            commission = calculate_commission(referral_count, product_name)
+
+            # Get the next sequential purchase referral count
+            purchase_referral_count = affiliate_data.get('purchase_referral_count', 0) + 1
+
+            current_date = datetime.now()
+            formatted_date_string = current_date.strftime('%Y-%m-%d')
+
+            
+
+            # Get the current date
+            current__new_date = datetime.now()
+
+            # Add 2 weeks to the current date
+            new__updated_date = current__new_date + timedelta(weeks=2)
+
+            # Format the new date
+            formatted_date_string_2_weeks = new__updated_date.strftime('%Y-%m-%d')
+
+
+
+            # Create a new subcollection for the purchase information
+            purchase_ref = db.collection("affiliates").document(coupon_data_ref[0].id).collection("purchases").document(f"purchase_{purchase_referral_count}")
+            purchase_data = {
+                'user_email': user_email,
+                'product_name': product_name,
+                'date_purchased': formatted_date_string,
+                '2_weeks_after_purchase_date': formatted_date_string_2_weeks,
+                'user_purchase_count': user_purchase_count,
+                'referral_commission_amount' : commission,
+                'user_refunded': False,
+                'affiliate_paid': False,
+                'current_referral_count': purchase_referral_count,
+                'purchase_id': purchase_id
+            }
+            purchase_ref.set(purchase_data)
+
+            # Update the affiliate's data in the Firestore
+            db.collection("affiliates").document(coupon_data_ref[0].id).update({
+                'referral_count': referral_count,
+            })
+
+            # Update the user's redeemed status for the specific product
+            db.collection("users").document(user_email).update({
+                f"redeemed_coupon": True
+            })
+
+            return {'affiliate_email' : affiliate_email, 'purchase_referral_count': purchase_referral_count }
+
+    else:
+        # User did not use an affiliate code
+        return None
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)

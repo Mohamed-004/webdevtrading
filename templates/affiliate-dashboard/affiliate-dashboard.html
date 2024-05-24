@@ -1,0 +1,143 @@
+{% extends "layout.html" %}
+{% block title %}
+<title>PropSurance - Home | Affiliate Dashboard</title>
+{% endblock %}
+
+{% block css %}    
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/cases.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dash.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/affiliate-dashboard.css') }}">
+
+
+{% endblock %}
+
+
+
+{% block dashlink_current_pg %}
+Affiliate Center
+                  {% endblock %}
+
+{% block dashlinks %}
+
+<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ url_for('home') }}">Home</a></li>
+<li role="presentation" class="divider"></li>
+<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ url_for('dashboard') }}"> PropSurance <br> Dashboard</a></li>
+<li role="presentation" class="divider"></li>
+<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ url_for('logout') }}">Logout</a></li>
+<li role="presentation" class="divider"></li>
+<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ url_for('dashboard_faq') }}">PropSurance-FAQ</a></li>
+<li role="presentation" class="divider"></li>
+
+<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ url_for('view_firm_reports') }}">Reported Firms </a></li>  
+<li role="presentation" class="divider"></li>
+
+<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ url_for('propsurance_service') }}">Terms of Service </a></li>   
+<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ url_for('propsurance_terms') }}">Privacy Policy </a></li>   
+<li role="presentation" class="divider"></li> 
+
+<li role="presentation"><a role="menuitem" tabindex="-1" href="https://twitter.com/PropPatrol" target="_blank"> Twitter</a></li> 
+<li role="presentation"><a role="menuitem" tabindex="-1" href="https://mailto:support@proppatrol.net" target="_blank"> Contact Us</a></li> 
+{% endblock %}
+
+{% block content %}
+
+
+<main class="content-main">
+
+    <h2 class="stage-pass">Affiliate Dashboard</h2>
+
+    <div id="dashboard-container">
+
+        <div class="board-cont">
+            <div class="text-img">
+                <div>
+                    <h2 class="early-access">Early Access</h2>
+                <p class="first-child-p">   Profits Withdrawn </p>
+                <p class="header-text-board">
+                 Trade-Shield Plans
+                </p>
+            </div>
+            <svg width="60px" height="60px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path opacity="0.5" d="M8.99956 20H14.9996C16.8852 20 17.828 20 18.4138 19.4142C18.8853 18.9427 18.9773 18.2398 18.9952 17H5.00391C5.02184 18.2398 5.1138 18.9427 5.58535 19.4142C6.17113 20 7.11394 20 8.99956 20Z" fill="#003cff"></path> <path d="M11.25 6H9C7.11438 6 6.17157 6 5.58579 6.58579C5 7.17157 5 8.11438 5 10V16C5 16.3677 5 16.6996 5.00435 17H18.9957C19 16.6996 19 16.3677 19 16V10C19 8.11438 19 7.17157 18.4142 6.58579C17.8284 6 16.8856 6 15 6H12.75V10.9726L13.4306 10.1786C13.7001 9.86408 14.1736 9.82766 14.4881 10.0972C14.8026 10.3668 14.839 10.8403 14.5694 11.1548L12.5694 13.4881C12.427 13.6543 12.2189 13.75 12 13.75C11.7811 13.75 11.573 13.6543 11.4306 13.4881L9.43056 11.1548C9.16099 10.8403 9.19741 10.3668 9.51191 10.0972C9.8264 9.82766 10.2999 9.86408 10.5694 10.1786L11.25 10.9726V6Z" fill="#003cff"></path> <path opacity="0.5" d="M18.1111 3H5.88889C3.74112 3 2 4.79998 2 7.02036C2 8.92457 3.28058 10.5196 5 10.9352V10C5 8.11438 5 7.17157 5.58579 6.58579C6.17157 6 7.11438 6 9 6H11.25H12.75H15C16.8856 6 17.8284 6 18.4142 6.58579C19 7.17157 19 8.11438 19 10V10.9352C20.7194 10.5196 22 8.92457 22 7.02036C22 4.79998 20.2589 3 18.1111 3Z" fill="#003cff"></path> </g></svg>
+            </div>
+           
+            
+            <p class="coverage-p shield-p-overview" style="flex-flow: row wrap; display: inline-flex; position: relative;">
+                {% include "product-templates/bronze-svg.html" %}
+                <span style="margin-right: 0.5em;">
+                    <span style="color: #0c3594d1; font-weight: bold;">Trade-</span><span style="color: #0c3594d1; font-weight: bold;">Shield</span> Bronze: <span class="profit-show-coverage-p">$0</span>
+                </span>
+            </p>
+
+            <p class="coverage-p shield-p-overview" style="flex-flow: row wrap; display: inline-flex; position: relative;">
+                {% include "product-templates/silver-svg.html" %}
+                <span style="margin-right: 0.5em;">
+                    <span style="color: #0c3594d1; font-weight: bold;">Trade-</span><span style="color: #0c3594d1; font-weight: bold;">Shield</span > Silver: <span class="profit-show-coverage-p">$0</span>
+                </span>
+            </p>
+
+            <p class="coverage-p shield-p-overview" style="flex-flow: row wrap; display: inline-flex; position: relative;">
+                {% include "product-templates/gold-svg.html" %}
+                <span style="margin-right: 0.5em;">
+                    <span style="color: #0c3594d1; font-weight: bold;">Trade-</span><span style="color: #0c3594d1; font-weight: bold;">Shield</span> Gold: <span class="profit-show-coverage-p">$0</span>
+                </span>
+            </p>
+            
+        </div>
+
+        <div class="board-cont">
+            <div class="text-img">
+                <div>
+                    <h2 class="early-access">Early Access</h2>
+                <p class="first-child-p">Your  Unique Referral ID </p>
+                <p class="header-text-board">
+                 Coupon Code
+                </p>
+            </div>
+            <svg width="60px" height="60px" viewBox="0 0 24 24" id="magicoon-Filled" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <defs> <style>.cls-1{fill:#003CFF;}</style> </defs> <title>coupon</title> <g id="coupon-Filled"> <path id="coupon-Filled-2" data-name="coupon-Filled" class="cls-1" d="M21,10.5h.5V9A4.513,4.513,0,0,0,17,4.5h-.5A.5.5,0,0,0,16,5V7a1,1,0,0,1-2,0V5a.5.5,0,0,0-.5-.5H7A4.513,4.513,0,0,0,2.5,9v1.5H3a1.5,1.5,0,0,1,0,3H2.5V15A4.513,4.513,0,0,0,7,19.5h6.5A.5.5,0,0,0,14,19V17a1,1,0,0,1,2,0v2a.5.5,0,0,0,.5.5H17A4.513,4.513,0,0,0,21.5,15V13.5H21a1.5,1.5,0,0,1,0-3Zm-5,3a1,1,0,0,1-2,0v-3a1,1,0,0,1,2,0Z"></path> </g> </g></svg>
+            </div>
+
+            <h2 class="coupon-id-display" style="position: relative;padding-left: 1.9em; cursor: pointer;"> <div class="form-icon"  onclick="copyToClipboardCoupon()"><svg width="30px" style="top:7px" height="30px" viewBox="0 -0.5 25 25" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M8.94605 4.99995L13.2541 4.99995C14.173 5.00498 15.0524 5.37487 15.6986 6.02825C16.3449 6.68163 16.7051 7.56497 16.7001 8.48395V12.716C16.7051 13.6349 16.3449 14.5183 15.6986 15.1717C15.0524 15.825 14.173 16.1949 13.2541 16.2H8.94605C8.02707 16.1949 7.14773 15.825 6.50148 15.1717C5.85522 14.5183 5.495 13.6349 5.50005 12.716L5.50005 8.48495C5.49473 7.5658 5.85484 6.6822 6.50112 6.0286C7.1474 5.375 8.0269 5.00498 8.94605 4.99995Z" stroke="#0c35948a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M10.1671 19H14.9371C17.4857 18.9709 19.5284 16.8816 19.5001 14.333V9.666" stroke="#0c35948a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg></div> <span id="unique-id">PATROL1</span></h2>
+
+        </div>
+
+        <div class="board-cont">
+            <div class="text-img">
+                <div>
+                    <h2 class="early-access">Early Access</h2>
+                <p class="first-child-p">Your Account Info </p>
+                <p class="header-text-board">
+                 Account
+                </p>
+            </div>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="#003CFF" width="60px" height="60px" viewBox="0 0 24 24"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"></path></g></svg>
+            </div>
+
+            <a class="coupon-id-display" style="position: relative;padding-left: 1.9em; cursor: pointer; font-size: 1.3em;"> <div class="form-icon" ><svg width="20px" style="top: 12px; left:12px" height="20px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="#0c3594a6"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="m 4 2 c 0 -0.265625 0.105469 -0.519531 0.292969 -0.707031 c 0.390625 -0.390625 1.023437 -0.390625 1.414062 0 l 6 6 c 0.1875 0.1875 0.292969 0.441406 0.292969 0.707031 s -0.105469 0.519531 -0.292969 0.707031 l -6 6 c -0.390625 0.390625 -1.023437 0.390625 -1.414062 0 c -0.1875 -0.1875 -0.292969 -0.441406 -0.292969 -0.707031 s 0.105469 -0.519531 0.292969 -0.707031 l 5.292969 -5.292969 l -5.292969 -5.292969 c -0.1875 -0.1875 -0.292969 -0.441406 -0.292969 -0.707031 z m 0 0" fill="<span id=" unique-id"="">PATROL1"&gt;</path> </g></svg></div> <span id="unique-id">Account Info</span></a>
+
+        </div>
+
+
+    </div>
+
+
+</main>
+
+{% endblock %}
+
+
+{% block script %}
+
+<script>
+    function copyToClipboardCoupon() {
+    const text = document.getElementById("unique-id").innerText;
+    navigator.clipboard.writeText(text).then(() => {
+      
+    }).catch(err => {
+       
+    });
+}
+</script>
+
+{% endblock %}
+
