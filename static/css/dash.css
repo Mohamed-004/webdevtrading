@@ -348,7 +348,7 @@ option {
 span.remaining.hazard.not-error {
     color: #0c3594a6;
     background: #f1f8ff;
-    border-left-color: #007bffab;
+    border-left-color: rgba(12, 53, 148, 0.65);
 }
 
 .hazard-div u {
@@ -491,7 +491,7 @@ display: flex;
 #full-coverage-bar {
     border: none;
     border-bottom: 0.5rem solid rgb(248, 214, 38);
-    border-bottom-color: #007bffab;
+    border-bottom-color: #0c3594a6;
 }
 
 
