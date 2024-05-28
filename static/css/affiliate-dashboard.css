@@ -1,6 +1,6 @@
 #dashboard-container .board-cont {
     justify-content: space-between;
-    height: 270px;
+    height: 300px;
 }
 
 #dashboard-container  .board-cont svg {
@@ -168,6 +168,7 @@ tr td:last-child {
     padding: 2em;
     background: white;
     margin-top: 2.5em;
+    padding-right: 1em;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(128, 128, 128, 0.116);
     position: relative;
@@ -209,9 +210,10 @@ tr td:last-child {
 .remaining.hazard {
     background: #ffc107;
     color: #00000082;
-    padding: 1em;
+    padding: 1.5em;
     border-radius: 10px;
     display: inline-flex;
+    padding-right: 2em;
     align-items: center;
     border-left: 0.5rem solid #007bffab;
     background-color: rgb(254, 242, 179);
@@ -221,6 +223,7 @@ tr td:last-child {
     color: #0c3594a6;
     background: #f1f8ff;
     border-left-color: #007bffab;
+    /* padding-right: 1em; */
 }
 
 a.coverage-p {
@@ -238,6 +241,53 @@ hr {
     margin: 2em 0;
 }
 
+.circle-box-shadow {
+    width: 100px; /* Adjust the size as needed */
+    height: 100px; /* Adjust the size as needed */
+    border-radius: 50%; /* Makes the element a circle */
+    /* background-color: #ffffff; */ /* Background color */
+    box-shadow: 0 0 20px #0c35941c, 0 0 10px #0c359459; /* Inner shadow */
+    display: flex;
+    align-items: center;
+    border: solid 8px #0c359440;
+    justify-content: center;
+    padding: 1em;
+    margin-right: 2em;
+  }
+
+  .withdrawls-section {
+    padding: 1.8em;
+    border-radius: 10px;
+    position: relative;
+    /* height: 200px; */
+    box-shadow: 0 4px 8px rgba(128, 128, 128, 0.116);
+    display: flex;
+    flex-flow: row nowrap;
+    background-color: white;
+    justify-content: space-between;
+    margin: 2.5em 0;
+  }
+
+  .withdrawls-section .current-balance-div, .withdrawls-section .total-earned-div {
+    background: #2B72F0;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
+    color: white;
+    border-radius: 15px;
+  }
+
+  .withdrawls-section .total-earned-div {
+    background: #1D4396;
+    margin-left: 2.5em;
+  }
+
+  .withdrawls-section .balances {
+    display: flex;
+    flex-flow: row nowrap;
+  }
 
 
 /* metrics bar % style ending */
@@ -255,6 +305,27 @@ hr {
         padding: 8px 16px;
         font-size: 14px;
     }
+
+    .withdrawls-section {
+        flex-flow: column nowrap;
+        justify-content: center;
+    }
+
+    .withdrawls-section .circle-box-shadow {
+        margin: 0 auto;
+    }
+
+    .withdrawls-section .current-balance-div, .withdrawls-section .total-earned-div {
+        padding: 1.5em 0.5em;
+        margin-top: 2em;
+        font-size: x-small;
+
+    }
+
+    .withdrawls-section .balances {
+        justify-content: center;
+    }
+
 }
 @media (max-width: 480px) {
     .table-title {
