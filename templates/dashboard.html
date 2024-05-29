@@ -425,45 +425,7 @@ Dashboard
 
 <!-- roadmap horizintal card -->
 
-<div class="card-horizontal">
-    <div class="header">
-        <img src=" {{ url_for('static', filename='images/roadmap-icon.svg') }}" alt="Prop Surance Logo" class="logo">
-        <!-- <div class="title">Free Payout Coverage x CTI</div> -->
-    </div>
-
-
-    <div class="form" style="justify-content: space-between;">
-
-
-         <div>
-        <h2 class="form-h2">PropSurance User Road-Map </h2>
-
-        <p class="card-desc">Don't know where to start? Take a look at our Personalized User Roadmap!</p>
-    </div>
-
-        <div class="card-more-info" onclick="toggleText0()">
-           
-
-            <label class="label-text" id="infoLabel0" >Toggle Road-Map</label>
-
-            <svg id="svg-more0"  width="25px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M15 12L12 12M12 12L9 12M12 12L12 9M12 12L12 15" stroke="#0c3594d1" stroke-width="1.5" stroke-linecap="round"></path> <path d="M22 12C22 16.714 22 19.0711 20.5355 20.5355C19.0711 22 16.714 22 12 22C7.28595 22 4.92893 22 3.46447 20.5355C2 19.0711 2 16.714 2 12C2 7.28595 2 4.92893 3.46447 3.46447C4.92893 2 7.28595 2 12 2C16.714 2 19.0711 2 20.5355 3.46447C21.5093 4.43821 21.8356 5.80655 21.9449 8" stroke="#0c3594d1" stroke-width="1.5" stroke-linecap="round"></path> </g></svg>
-
-            <svg id="svg-less0" style="display: none;"  width="25px" height="20px" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g fill="none" fill-rule="evenodd"> <path d="m0 0h32v32h-32z"></path> <path d="m16 0c8.836556 0 16 7.163444 16 16s-7.163444 16-16 16-16-7.163444-16-16 7.163444-16 16-16zm0 2c-7.7319865 0-14 6.2680135-14 14s6.2680135 14 14 14 14-6.2680135 14-14-6.2680135-14-14-14zm5 13c.5522847 0 1 .4477153 1 1s-.4477153 1-1 1h-10c-.5522847 0-1-.4477153-1-1s.4477153-1 1-1z" fill="#0c3594d1" fill-rule="nonzero"></path> </g> </g></svg>
-        </div>
-
-        <div class="card-show-text0" style="text-align: center; display: none;">
-
-            <img id="roadmap-dashboard" style="width: 725px;" src=" {{ url_for('static', filename='images/roadmap.svg') }}" alt="Prop Surance Logo" class="logo">
-
-        </div>
-
-    </div>
-
-
-
-
-
-</div>
+{% include "product-templates/roadmap-propsurance.html" %}
 
 <!-- roadmap ending -->
 <label class="label-text mg-top" for="firm" style="color: #0c3594bd;
@@ -575,20 +537,6 @@ function toggleText0() {
     var infoLabel = document.getElementById('infoLabel0');
     var svgMore = document.getElementById('svg-more0')
     var svgLess = document.getElementById('svg-less0')
-
-    // if (infoLabel.innerText === "More Info") {
-    //     infoLabel.innerText = "Less Info";
-    //     svgMore.style.display = "none";
-    //     svgLess.style.display = 'block';
-    // }
-
-    // else {
-    //     infoLabel.innerText = "More Info";
-    //     svgMore.style.display = "block";
-    //     svgLess.style.display = 'none';
-    // }
-
-
 
     if (textDiv.style.display === "none") {
         textDiv.style.display = "block";
