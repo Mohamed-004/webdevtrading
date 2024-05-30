@@ -9,13 +9,13 @@
     <div class="current-balance-div">
         <p style="font-size: 1em;">CURRENT BALANCE</p>
         <p class="current-balance-text" style="font-size: 2em; opacity: 0.8;
-     ">$200.00</p>
+     ">${{ '%.2f' | format(affiliate_account_info.wallet_pending_withdrawls)}} </p>
     </div>
 
     <div class="total-earned-div">
         <p style="font-size: 1em;">TOTAL EARNED USD</p>
         <p class="current-balance-text" style="font-size: 2em; opacity: 0.8;
-       ">$1800.00</p>
+       ">${{ '%.2f' | format(affiliate_account_info.trade_shield_total_withdrawls)}}</p>
     </div>
 </div>
 

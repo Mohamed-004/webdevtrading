@@ -296,7 +296,145 @@ def affiliate_login():
 
         if is_affiliate == 'True':
             # this is the affilaite dashboard so stay here
-            return render_template('affiliate-dashboard/affiliate-dashboard.html', dashboard_nav=True)
+
+            trade_shield_bronze_withdrawls = 0.00
+            trade_shield_bronze_referrals = 0
+
+            trade_shield_silver_withdrawls = 0.00
+            trade_shield_silver_referrals = 0
+
+
+            trade_shield_gold_withdrawls = 0.00
+            trade_shield_gold_referrals = 0
+
+            trade_shield_total_withdrawls = 0.00
+            wallet_pending_withdrawls = 0.00
+            
+            affiliate_coupon_code = ''
+
+            referral_count = 0
+            has_referrals = False
+            referrals_info = []
+            current_referral_stage = 0
+
+
+            affiliate_email = user.get('email')
+
+            try:
+                affiliate_data = db.collection('affiliates').document(affiliate_email).get()
+                # affiliate_data_info = db.collection('users').document(affiliate_email)
+
+                if affiliate_data.exists:
+                    temp_affiliate_data = affiliate_data.to_dict()
+                    affiliate_coupon_code =  temp_affiliate_data.get('coupon_code', 'none')
+                    referral_count = temp_affiliate_data.get('referral_count', 0)
+
+                    current_referral_stage = return_referral_stage(referral_count)
+
+
+                    product_name_site = ''
+
+                    if referral_count > 0:
+                        has_referrals = True
+                        purchases_ref = db.collection('affiliates').document(affiliate_email).collection('purchases')
+                        purchases = purchases_ref.stream()
+
+                        
+
+                        for purchase in purchases:             
+                            purchase_data = purchase.to_dict()
+                            # print(purchase_data)
+                            purchase_data = purchase.to_dict()
+                            # print(purchase_data)  # Print the purchase data to verify
+
+                            # Check for the trade shield type and count up the withdrawals
+                            purchase_amount = float(purchase_data.get('referral_commission_amount', 0.00))
+
+                            if not purchase_data.get('user_refunded', True):
+                                if purchase_data.get('affiliate_paid', False):
+                                    trade_shield_total_withdrawls += purchase_amount
+                                else:
+                                    # affiliate not paid so put in balance
+                                    wallet_pending_withdrawls += purchase_amount
+
+                            product_name = purchase_data.get('product_name', '')
+                            if product_name == 'trade-shield-bronze':
+                                if not purchase_data.get('user_refunded', True):
+                                    if purchase_data.get('affiliate_paid', False):
+                                        trade_shield_bronze_withdrawls += purchase_amount
+                                
+                                product_name_site = 'Trade-Shield Bronze'
+                                trade_shield_bronze_referrals += 1
+
+
+                            elif product_name == 'trade-shield-silver':
+                                if not purchase_data.get('user_refunded', True):
+                                    if purchase_data.get('affiliate_paid', False):
+                                        trade_shield_silver_withdrawls += purchase_amount
+
+                                
+                                product_name_site = 'Trade-Shield Silver'
+                                trade_shield_silver_referrals += 1
+
+                            elif product_name == 'trade-shield-gold':
+                                if not purchase_data.get('user_refunded', True):
+                                    if purchase_data.get('affiliate_paid', False):
+                                        trade_shield_gold_withdrawls += purchase_amount
+                                
+                                product_name_site = 'Trade-Shield Gold'
+                                trade_shield_gold_referrals += 1
+
+                            purchase_id = purchase_data.get('purchase_id', '')
+                            formatted_purchase_id = '*' * (len(purchase_id) - 7) + purchase_id[-7:]
+
+                            referral_info = {
+                        '2_weeks_after_purchase_date': purchase_data.get('2_weeks_after_purchase_date', ''),
+                        'current_referral_count': purchase_data.get('current_referral_count', 0),
+                        'affiliate_paid': purchase_data.get('affiliate_paid', False),
+                        'referral_commission_amount': f"{purchase_amount:.2f}",
+                        'product_name': product_name_site,
+                        'purchase_id': formatted_purchase_id
+                    }
+                            referrals_info.append(referral_info)
+
+    
+            except Exception as err:
+                raise err
+                # pass
+
+            trade_shield_bronze_percentage = round((trade_shield_bronze_referrals / referral_count) * 100)
+            trade_shield_silver_percentage = round((trade_shield_silver_referrals / referral_count) * 100)
+            trade_shield_gold_percentage = round((trade_shield_gold_referrals / referral_count) * 100)
+
+            
+
+            affiliate_account_info = {
+                'trade_shield_bronze_withdrawls': trade_shield_bronze_withdrawls,
+                'trade_shield_bronze_percentage': trade_shield_bronze_percentage,
+                'trade_shield_bronze_referrals': trade_shield_bronze_referrals,
+
+                'trade_shield_silver_withdrawls': trade_shield_silver_withdrawls,
+                'trade_shield_silver_percentage': trade_shield_silver_percentage,
+                'trade_shield_silver_referrals': trade_shield_silver_referrals,
+
+
+                'trade_shield_gold_withdrawls': trade_shield_gold_withdrawls,
+                'trade_shield_gold_percentage': trade_shield_gold_percentage,
+                'trade_shield_gold_referrals': trade_shield_gold_referrals,
+
+                'trade_shield_total_withdrawls': trade_shield_total_withdrawls,
+                'wallet_pending_withdrawls': wallet_pending_withdrawls,
+
+                'referral_count': referral_count,
+                'current_referral_stage': current_referral_stage,
+
+                'has_referrals': has_referrals,
+
+                'affiliate_coupon_code': affiliate_coupon_code
+            }           
+
+            return render_template('affiliate-dashboard/affiliate-dashboard.html', dashboard_nav=True, affiliate_account_info=affiliate_account_info )
+        
 
         else:
             return redirect(url_for("dashboard"))
@@ -1204,7 +1342,6 @@ def dashboard():
 
             allowed_to_redeem = not user_data['redeemed_coupon']
             coupon_code  =  user_data.get('coupon_code', 'none')
-
             updated_coupon_code = coupon_code.upper()
 
             # coupon_data = db.collection('affiliates').document(updated_coupon_code).get()
@@ -1842,7 +1979,7 @@ def calculate_commission(referrals, product):
             return 27  # You can adjust this value as needed
     elif product == 'trade-shield-gold':
         # Add specific logic for gold product if needed
-        if referrals <= 20:
+        if referrals < 20:
             # 10%
             return 40
         elif referrals <= 50:
@@ -1855,6 +1992,21 @@ def calculate_commission(referrals, product):
             # 15%
             return 60  # You can adjust this value as needed
     return 0
+
+def return_referral_stage(referrals):
+    if referrals < 20:
+            # 10%
+            return 1
+    elif referrals <= 50:
+        # 11.5 %
+        return 2
+    elif referrals <= 75:
+        # 12.5 %
+        return 3
+    else:  # Referrals are more than 75
+        # 15%
+        return 4  # You can adjust this value as needed
+
 
 def handle_purchase(coupon_code, user_email, product_name, allowed_to_redeem, user_purchase_count, purchase_id):
     if coupon_code != 'none' and allowed_to_redeem:
