@@ -284,17 +284,33 @@ def callback():
         else:
             # Handle other OAuth errors
             return render_template('noaccess.html', error='You do not have access to PropSurance, please contact us at support@proppatrol.net'), 403
+        
 
-
+@app.route("/affiliate-center/<affiliate_email_admin>")
+@app.route("/affiliate-center/")
 @app.route("/affiliate-center")
-def affiliate_login():
+def affiliate_login(affiliate_email_admin=None):
     if 'user' not in session:
         return redirect(url_for("login"))
+
     else:
+        user_info_affiliate = session.get("user")
+
+        is_admin = False
+
+        if user_info_affiliate['email'] == 'vortextemplates@gmail.com':
+            is_admin = True
+
+        if is_admin and not affiliate_email_admin == None:
+            affiliate_email = affiliate_email_admin
+        else:
+            affiliate_email = user_info_affiliate['email']
+
+
         user = session['user']
         is_affiliate = user.get('is_affiliate', False)
 
-        if is_affiliate == 'True':
+        if is_affiliate == 'True' or is_admin:
             # this is the affilaite dashboard so stay here
 
             trade_shield_bronze_withdrawls = 0.00
@@ -318,7 +334,7 @@ def affiliate_login():
             current_referral_stage = 0
 
 
-            affiliate_email = user.get('email')
+            # affiliate_email = user.get('email')
 
             try:
                 affiliate_data = db.collection('affiliates').document(affiliate_email).get()
@@ -388,12 +404,13 @@ def affiliate_login():
                             formatted_purchase_id = '*' * (len(purchase_id) - 7) + purchase_id[-7:]
 
                             referral_info = {
-                        '2_weeks_after_purchase_date': purchase_data.get('2_weeks_after_purchase_date', ''),
+                        'two_weeks_after_purchase_date': purchase_data.get('2_weeks_after_purchase_date', ''),
                         'current_referral_count': purchase_data.get('current_referral_count', 0),
                         'affiliate_paid': purchase_data.get('affiliate_paid', False),
                         'referral_commission_amount': f"{purchase_amount:.2f}",
                         'product_name': product_name_site,
-                        'purchase_id': formatted_purchase_id
+                        'purchase_id': formatted_purchase_id,
+                       'user_refunded': purchase_data.get('user_refunded', True)
                     }
                             referrals_info.append(referral_info)
 
@@ -430,10 +447,14 @@ def affiliate_login():
 
                 'has_referrals': has_referrals,
 
-                'affiliate_coupon_code': affiliate_coupon_code
+                'affiliate_coupon_code': affiliate_coupon_code,
+
+                'referrals_data': referrals_info
             }           
 
+            
             return render_template('affiliate-dashboard/affiliate-dashboard.html', dashboard_nav=True, affiliate_account_info=affiliate_account_info )
+        
         
 
         else:
@@ -1019,14 +1040,15 @@ def access_account_dashboard(account_count):
                 'current_rate': account_info.get('current_rate', '40%'), 
                 'insured_date': trader_info_data_parsed.get('insured_date', ''),
                 'plan_is_not_free': plan_is_not_free,
-                 'got_add_on0': got_add_on0
+                 'got_add_on0': got_add_on0,
+                 'plan_type_check': account_info_data.get('plan_type', '')
             }
 
             # print(accounts)
                                     
     except Exception  as err:
-        raise err
-        # pass
+        pass
+        # raise err
 
     return render_template("user_dashboard.html", account_info=account, prop_count=account_count, has_first_name=True, first_name=first_name, dashboard_nav=True)
 
@@ -1288,7 +1310,8 @@ def submit_mt_account(account):
 
 @app.route("/dashboard/")
 @app.route("/dashboard")
-def dashboard():
+@app.route("/dashboard/<url_email>")
+def dashboard(url_email=None):
     # Check if user is authenticated
     if 'user' not in session:
         return redirect(url_for("login"))
@@ -1305,6 +1328,13 @@ def dashboard():
     user_data = False
     user_validated_email = 0
     user_info = session.get("user")
+    is_admin = False
+
+    if user_info['email'] == 'vortextemplates@gmail.com':
+        is_admin = True
+
+
+
     uid = 0
     # user info
     user_email = 0
@@ -1331,7 +1361,13 @@ def dashboard():
 
 
     try:
-        user_email = user_info['email']
+        if is_admin and not url_email == None:
+            user_email = url_email
+        else:
+            user_email = user_info['email']
+
+        
+        
         user_validated_email = user_info["email_verified"]
         user_data = db.collection('users').document(user_email).get()
         user_data_info = db.collection('users').document(user_email)
@@ -1450,7 +1486,7 @@ def dashboard():
                             prop_firm_info = {
                             'name': trader_info_data_parsed['prop_firm_name'],
                             'account_size' : trader_info_data_parsed['account_size'],
-                            'invoice_url' : account_info_data['invoice_url'],
+                            'invoice_url' : account_info_data.get('invoice_url', ''),
                             'account_url_fix' : str(current_index),
                             'account_status':  account_info_data.get('status'),
                             'phase_status' : trade_status,
@@ -1461,7 +1497,8 @@ def dashboard():
                             'product_name': product_name,
                             'show_percent': show_percent,
                             'got_add_on0': got_add_on0,
-                            'insured_date': trader_info_data_parsed.get('insured_date', '')
+                            'insured_date': trader_info_data_parsed.get('insured_date', ''),
+                            'plan_type_check': account_info_data.get('plan_type', '')
                             }
                             
 
@@ -1493,8 +1530,8 @@ def dashboard():
         
     except Exception as err:
         pass
-        
         # raise err 
+        
         # if not user_email or not user_data:
         # # Redirect to login page if user is not authenticated or email is not verified
         #     return redirect(url_for("login"))

@@ -270,9 +270,11 @@ Dashboard
                         <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
-                        {% if not account['product_name'] == 'Denied Payout Coverage' %}
+  
+                        {% if  account['plan_type_check'] == 'giveaway_account' %}
+                        {% elif not account['product_name'] == 'Denied Payout Coverage' %}
                         <li role="presentation">
-                            <a role="menuitem" tabindex="-1" href="{{ account['invoice_url'] }}">Invoice</a>
+                            <a role="menuitem" tabindex="-1" href="{{ account['invoice_url'] }}">Receipt</a>
                         </li>
                         <li role="presentation" class="divider"></li>
                         {% endif %}

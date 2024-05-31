@@ -11,7 +11,7 @@
             <tr>
                 <th>
                      <!-- <div style="display: flex; align-items: center;"> -->
-                    Referral Count
+                    Referral #
                   
                         <!-- <svg style="margin-left: 1em;" fill="#0c3594d1" width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -24,41 +24,37 @@
                 </div> -->
             </th>
 
+            <th>  Referral ID </th>
                 <th>  Product Type </th>
                 <th>Affiliate Earnings ($)</th>
-                <th>Payout Date</th>
-                <th>Status</th>
+                <th>Payout Request Date</th>
+                <th>Affiliate Payment Status</th>
+                <th>User Status</th>
              
             </tr>
         </thead>
         <tbody>
         
-            <tr>
-                <td>1</td>
-                <td>Trade Shield Bronze</td>
-                <td>paid</td>
-                <td>paid</td>
+            {% for referral in affiliate_account_info.referrals_data %}
+             <tr>
+                <td>{{referral.current_referral_count}}</td>
+                <td>{{ referral.purchase_id }}</td>
+                <td>{{ referral.product_name }}</td>
+                <td>${{ referral.referral_commission_amount }}</td>
+                <td>{{ referral.two_weeks_after_purchase_date }}</td>
                 <td>
-                    <span class="paid">
-                       Paid
+                    <span class="{% if referral.affiliate_paid %}paid {% else %}invalid{%endif%}">
+                  {% if referral.affiliate_paid %} Paid {% else %} Unpaid {% endif %}
                     </span>
                 </td>
-             
+                <td>
+                    <span class="{% if not referral.user_refunded %}paid {% else %}invalid{%endif%}">
+                        {% if not referral.user_refunded %}Not Refunded{% else %}User Refunded{%endif%} 
+                    </span>
+                </td>
             </tr>
 
-            <tr>
-                <td>2</td>
-                <td>Trade Shield Bronze</td>
-              
-                <td>paid</td>
-                <td>paid</td>
-                <td>
-                    <span class="paid">
-                       Paid
-                    </span>
-                </td>
-              
-            </tr>
+            {% endfor %}
      
         </tbody>
     </table>

@@ -154,12 +154,17 @@ tr td:last-child {
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
 }
-.paid {
+span.paid, span.invalid {
     color: green;
     background-color: #e0f7e9;
     padding: 5px 10px;
     border-radius: 5px;
     text-align: center;
+}
+
+span.invalid {
+    background-color: #FFA500; /* Orange background */
+    color: #FFFFFF; /* White text */
 }
 
 
