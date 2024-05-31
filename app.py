@@ -261,7 +261,8 @@ def callback():
                         'country': allowed_affiliates_doc_info.get('country', ''),
                         'phone_number': allowed_affiliates_doc_info.get('phone_number', ''),
                         'users_who_added_coupon_via_dashboard': 0,
-                        'is_valid': True
+                        'is_valid': True,
+                        'full_name': allowed_affiliates_doc_info.get('full_name', '')
                     })
                     return redirect(url_for("affiliate_login"))
                 else:
@@ -285,6 +286,49 @@ def callback():
             # Handle other OAuth errors
             return render_template('noaccess.html', error='You do not have access to PropSurance, please contact us at support@proppatrol.net'), 403
         
+
+@app.route("/affiliate-center/account-info")
+@app.route("/affiliate-center/account-info/")
+def affiliate_login_info():
+    if 'user' not in session:
+        return redirect(url_for("login"))
+    
+    else:
+
+        user = session['user']
+        is_affiliate = user.get('is_affiliate', False)
+        affiliate_email = user['email']
+        affiliate_data_site = {}
+
+        if is_affiliate == 'True':
+            # affiliate page so show form and user info
+
+            try:
+                affiliate_data = db.collection('affiliates').document(affiliate_email).get()
+                # affiliate_data_info = db.collection('users').document(affiliate_email)
+
+                if affiliate_data.exists:
+                    temp_affiliate_data = affiliate_data.to_dict()
+                    
+
+                    affiliate_data_site = {
+                    'full_name' : temp_affiliate_data.get('full_name', 'N/A'),
+                    'country' : temp_affiliate_data.get('country', 'N/A'),
+                    'paypal_email' : temp_affiliate_data.get('paypal_email', 'N/A'),
+                    'user_email' : temp_affiliate_data.get('email', 'N/A')
+                    }
+            
+            except Exception as err:
+                pass
+                # raise err
+
+            return render_template('affiliate-dashboard/affiliate-info-showcase.html', dashboard_nav=True, affiliate_data_site=affiliate_data_site)
+
+
+        else:
+            return redirect(url_for("dashboard"))
+    
+
 
 @app.route("/affiliate-center/<affiliate_email_admin>")
 @app.route("/affiliate-center/")
@@ -315,13 +359,16 @@ def affiliate_login(affiliate_email_admin=None):
 
             trade_shield_bronze_withdrawls = 0.00
             trade_shield_bronze_referrals = 0
+            trade_shield_bronze_percentage = 0
 
             trade_shield_silver_withdrawls = 0.00
             trade_shield_silver_referrals = 0
+            trade_shield_silver_percentage = 0
 
 
             trade_shield_gold_withdrawls = 0.00
             trade_shield_gold_referrals = 0
+            trade_shield_gold_percentage = 0
 
             trade_shield_total_withdrawls = 0.00
             wallet_pending_withdrawls = 0.00
@@ -333,6 +380,9 @@ def affiliate_login(affiliate_email_admin=None):
             referrals_info = []
             current_referral_stage = 0
 
+            hash_code = ''
+            user_id = ''
+
 
             # affiliate_email = user.get('email')
 
@@ -340,8 +390,20 @@ def affiliate_login(affiliate_email_admin=None):
                 affiliate_data = db.collection('affiliates').document(affiliate_email).get()
                 # affiliate_data_info = db.collection('users').document(affiliate_email)
 
+                
+
                 if affiliate_data.exists:
                     temp_affiliate_data = affiliate_data.to_dict()
+
+                    hash_code = hmac.new(
+  b'O7zzlQjAFoiHvWq2Hh6ORxbRR2O7CUH3H7pl6qh1', # an Identity Verification secret key (web)
+  bytes(temp_affiliate_data['uid'], encoding='utf-8'), # a UUID to identify your user
+  digestmod=hashlib.sha256 # hash function
+).hexdigest()
+            
+                    user_id = temp_affiliate_data['uid']
+
+
                     affiliate_coupon_code =  temp_affiliate_data.get('coupon_code', 'none')
                     referral_count = temp_affiliate_data.get('referral_count', 0)
 
@@ -414,14 +476,16 @@ def affiliate_login(affiliate_email_admin=None):
                     }
                             referrals_info.append(referral_info)
 
+                        trade_shield_bronze_percentage = round((trade_shield_bronze_referrals / referral_count) * 100)
+                        trade_shield_silver_percentage = round((trade_shield_silver_referrals / referral_count) * 100)
+                        trade_shield_gold_percentage = round((trade_shield_gold_referrals / referral_count) * 100)
+
     
             except Exception as err:
                 raise err
                 # pass
 
-            trade_shield_bronze_percentage = round((trade_shield_bronze_referrals / referral_count) * 100)
-            trade_shield_silver_percentage = round((trade_shield_silver_referrals / referral_count) * 100)
-            trade_shield_gold_percentage = round((trade_shield_gold_referrals / referral_count) * 100)
+            
 
             
 
@@ -453,7 +517,7 @@ def affiliate_login(affiliate_email_admin=None):
             }           
 
             
-            return render_template('affiliate-dashboard/affiliate-dashboard.html', dashboard_nav=True, affiliate_account_info=affiliate_account_info )
+            return render_template('affiliate-dashboard/affiliate-dashboard.html', dashboard_nav=True, affiliate_account_info=affiliate_account_info, hash_code=hash_code, user_id=user_id, affiliate_email=affiliate_email )
         
         
 
@@ -1403,7 +1467,6 @@ def dashboard(url_email=None):
                     coupon_code_is_valid = affiliate_data['is_valid']
                     affiliate_email = affiliate_data['email']
                     
-
                     if not coupon_code_is_valid:
                         db.collection('users').document(current_user_email).update({
                 'coupon_code': 'none'
