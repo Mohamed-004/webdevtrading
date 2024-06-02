@@ -119,19 +119,33 @@ Account Hub
                             <li role="presentation" class="divider"></li>
                             <li role="presentation">
                                 <a role="menuitem" tabindex="-1" href="{{url_for('access_ticket_handler', account_count=account_info['id'])}}">
+                                   Account Termination
+                                </a>
+                            </li>
+                          
+                            <li role="presentation" class="divider"></li>
+                           
+                            <li role="presentation">
+                                <a role="menuitem" tabindex="-1" href="{{url_for('access_ticket_handler', account_count=account_info['id'])}}">
+                                    Denied Payout
+                                </a>
+                            </li>
+                            <li role="presentation" class="divider"></li>
+                            <li role="presentation">
+                                <a role="menuitem" tabindex="-1" href="{{url_for('access_ticket_handler', account_count=account_info['id'])}}">
                                    Received Payout
                                 </a>
                             </li>
                             <li role="presentation" class="divider"></li>
                             <li role="presentation">
                                 <a role="menuitem" tabindex="-1" href="{{url_for('access_ticket_handler', account_count=account_info['id'])}}">
-                                   Payout Denied
+                                  Invalid Credentials
                                 </a>
                             </li>
                             <li role="presentation" class="divider"></li>
                             <li role="presentation">
                                 <a role="menuitem" tabindex="-1" href="{{url_for('access_ticket_handler', account_count=account_info['id'])}}">
-                                  Invalid Credentials
+                                  Request Refund
                                 </a>
                             </li>
                  
@@ -247,8 +261,9 @@ Account Hub
 <p class="coverage-p"  style="position: relative; margin-bottom: 0.3em;" ><svg width="20px" style="position: absolute; top:0" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M17 4H7C4 4 2 5.5 2 9V12.56C2 12.93 2.38 13.16 2.71 13.01C3.69 12.56 4.82 12.39 6.01 12.6C8.64 13.07 10.57 15.51 10.5 18.18C10.49 18.6 10.43 19.01 10.32 19.41C10.24 19.72 10.49 20.01 10.81 20.01H17C20 20.01 22 18.51 22 15.01V9C22 5.5 20 4 17 4ZM12 14.5C10.62 14.5 9.5 13.38 9.5 12C9.5 10.62 10.62 9.5 12 9.5C13.38 9.5 14.5 10.62 14.5 12C14.5 13.38 13.38 14.5 12 14.5ZM19.25 14C19.25 14.41 18.91 14.75 18.5 14.75C18.09 14.75 17.75 14.41 17.75 14V10C17.75 9.59 18.09 9.25 18.5 9.25C18.91 9.25 19.25 9.59 19.25 10V14Z" fill="#3B5AA8"></path> <path d="M5 14C2.79 14 1 15.79 1 18C1 18.75 1.21 19.46 1.58 20.06C2.27 21.22 3.54 22 5 22C6.46 22 7.73 21.22 8.42 20.06C8.79 19.46 9 18.75 9 18C9 15.79 7.21 14 5 14ZM6.49 18.73H5.75V19.51C5.75 19.92 5.41 20.26 5 20.26C4.59 20.26 4.25 19.92 4.25 19.51V18.73H3.51C3.1 18.73 2.76 18.39 2.76 17.98C2.76 17.57 3.1 17.23 3.51 17.23H4.25V16.52C4.25 16.11 4.59 15.77 5 15.77C5.41 15.77 5.75 16.11 5.75 16.52V17.23H6.49C6.9 17.23 7.24 17.57 7.24 17.98C7.24 18.39 6.91 18.73 6.49 18.73Z" fill="#3B5AA8"></path> </g></svg> <span style="padding-left: 2em;"> <span style="font-weight: bold;"> Add-On</span>: Daily & Max Drawdown coverage Included for Live Account</span>
 {% endif %}
 
-<p class="coverage-p"><svg style="margin-right: 0.8em;" width="18px" height="18px" viewBox="-0.5 0 15 15" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill="#3B5AA8" fill-rule="evenodd" d="M61,154.006845 C61,153.45078 61.4499488,153 62.0068455,153 L73.9931545,153 C74.5492199,153 75,153.449949 75,154.006845 L75,165.993155 C75,166.54922 74.5500512,167 73.9931545,167 L62.0068455,167 C61.4507801,167 61,166.550051 61,165.993155 L61,154.006845 Z M62,157 L74,157 L74,166 L62,166 L62,157 Z M64,152.5 C64,152.223858 64.214035,152 64.5046844,152 L65.4953156,152 C65.7740451,152 66,152.231934 66,152.5 L66,153 L64,153 L64,152.5 Z M70,152.5 C70,152.223858 70.214035,152 70.5046844,152 L71.4953156,152 C71.7740451,152 72,152.231934 72,152.5 L72,153 L70,153 L70,152.5 Z" transform="translate(-61 -152)"></path> </g></svg> <span style="font-weight: bold;"> Start Date</span>: {{account_info['insured_date']}}</p>
-                    
+<p class="coverage-p"><svg style="margin-right: 0.8em; position:relative; left:0.2em" width="18px" height="18px" viewBox="-0.5 0 15 15" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill="#3B5AA8" fill-rule="evenodd" d="M61,154.006845 C61,153.45078 61.4499488,153 62.0068455,153 L73.9931545,153 C74.5492199,153 75,153.449949 75,154.006845 L75,165.993155 C75,166.54922 74.5500512,167 73.9931545,167 L62.0068455,167 C61.4507801,167 61,166.550051 61,165.993155 L61,154.006845 Z M62,157 L74,157 L74,166 L62,166 L62,157 Z M64,152.5 C64,152.223858 64.214035,152 64.5046844,152 L65.4953156,152 C65.7740451,152 66,152.231934 66,152.5 L66,153 L64,153 L64,152.5 Z M70,152.5 C70,152.223858 70.214035,152 70.5046844,152 L71.4953156,152 C71.7740451,152 72,152.231934 72,152.5 L72,153 L70,153 L70,152.5 Z" transform="translate(-61 -152)"></path> </g></svg> <span style="font-weight: bold;"> Start Date</span>: {{account_info['insured_date']}}</p>
+
+<p class="coverage-p"><svg version="1.1" style="margin-right: 0.4em;" id="Uploaded to svgrepo.com" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="26px" height="26px" viewBox="0 0 32 32" xml:space="preserve" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <style type="text/css"> .duotone_twee{fill:#3B5AA8;} .duotone_een{fill:#3B5AA8;} </style> <g> <path class="duotone_twee" d="M18.5,17c-0.827,0-1.5-0.673-1.5-1.5v-3c0-0.827,0.673-1.5,1.5-1.5H27V8.5C27,8.224,26.776,8,26.5,8 h-21C5.224,8,5,8.224,5,8.5V21h22v-4H18.5z"></path> <path class="duotone_een" d="M27,22v3.5c0,0.276-0.224,0.5-0.5,0.5h-21C5.224,26,5,25.776,5,25.5V22H27z M28,12.5v3 c0,0.276-0.224,0.5-0.5,0.5h-9c-0.276,0-0.5-0.224-0.5-0.5v-3c0-0.276,0.224-0.5,0.5-0.5h9C27.776,12,28,12.224,28,12.5z M21,14 c0-0.552-0.448-1-1-1s-1,0.448-1,1c0,0.552,0.448,1,1,1S21,14.552,21,14z"></path> </g> </g></svg><span style="font-weight: bold;">  Payouts</span>:  {{account_info['current_payouts']}}</p>
     </div>
 
     
@@ -267,9 +282,6 @@ Account Hub
 
         
     
-
-
-
         {% if  account_info['plan_is_not_free'] %}
 
     <div class="stage-notification">

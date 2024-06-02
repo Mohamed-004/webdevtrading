@@ -1105,7 +1105,8 @@ def access_account_dashboard(account_count):
                 'insured_date': trader_info_data_parsed.get('insured_date', ''),
                 'plan_is_not_free': plan_is_not_free,
                  'got_add_on0': got_add_on0,
-                 'plan_type_check': account_info_data.get('plan_type', '')
+                 'plan_type_check': account_info_data.get('plan_type', ''),
+                 'current_payouts': trader_info_data_parsed.get('current_payouts', 0)
             }
 
             # print(accounts)
