@@ -647,6 +647,9 @@ def access_ticket_handler(account_count):
     first_name = ''
     account = {}
 
+    hash_code = 0
+    user_id = 0
+
     try:
         user_email = user_info['email']
         # user_validated_email = user_info["email_verified"]
@@ -658,6 +661,14 @@ def access_ticket_handler(account_count):
             user_data_dict = user_data.to_dict()
             customer_name = user_data_dict['user_name']
             accounts_collection = db.collection('users').document(user_email).collection('accounts_info')
+
+            hash_code = hmac.new(
+  b'O7zzlQjAFoiHvWq2Hh6ORxbRR2O7CUH3H7pl6qh1', # an Identity Verification secret key (web)
+  bytes(user_data_dict['uid'], encoding='utf-8'), # a UUID to identify your user
+  digestmod=hashlib.sha256 # hash function
+).hexdigest()
+            
+            user_id = user_data_dict['uid']
 
         # Fetch all documents within the accounts_info subcollection
             accounts_documents = accounts_collection.document(f'account_info_{str(account_count)}').get()
@@ -708,10 +719,10 @@ def access_ticket_handler(account_count):
                                     
     except Exception  as err:
         # user has no account
-        pass
-        # raise err
+        # pass
+        raise err
 
-    return render_template("ticket_handler.html", account_info=account, prop_count=account_count,dashboard_nav=True)
+    return render_template("ticket_handler.html", account_info=account, prop_count=account_count,dashboard_nav=True, hash_code=hash_code,user_id=user_id)
 
 #  add coupon to user if they do not have one
 @app.route('/dashboard/add-coupon', methods=['GET', 'POST'])
@@ -1084,8 +1095,6 @@ def access_account_dashboard(account_count):
 
             
             account_access_url = url_for('submit_mt_account', account=current_index)
-
-
 
             account = {
                 'id': str(current_index),
