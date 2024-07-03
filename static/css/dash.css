@@ -2,7 +2,7 @@
     display: flex;
     flex-flow: column nowrap;
     width: 30%;
-    background: white;
+    background: linear-gradient(121deg, #2200ff00, #3860bc73, #2196f357);
     padding: 1.8em;
     border-radius: 10px;
     position: relative;

@@ -886,7 +886,7 @@ def verify_payment():
             # for phase 1 but with add on for test
             price_id = 'price_1PFQpnP649Efo4kCVWXF1FIR'
             price_num = '269'    
-            got_add_on_0 = True
+            # got_add_on_0 = True
 
         elif current_phase == 'phase1' and not drawdown_coverage_add_on_silver:
             # for phase 1 with no add on 
@@ -916,7 +916,7 @@ def verify_payment():
             # for phase 1 but with add on for test
             price_id = 'price_1PGDrOP649Efo4kCNYHSej2F'
             price_num = '509'    
-            got_add_on_0 = True
+            # got_add_on_0 = True
 
         elif current_phase == 'phase1' and not drawdown_coverage_add_on_gold:
             # for phase 1 with no add on 
@@ -1422,6 +1422,7 @@ def dashboard(url_email=None):
     user_id = 0
     allowed_to_redeem = ''
     coupon_code = ''
+    add_on_1_allowed = False
 
     
 
@@ -1584,7 +1585,7 @@ def dashboard(url_email=None):
                     remaining_size = 50000 - account_size        
 
             else: 
-                return render_template("dashboard.html", session=user_info, user_email=user_email, user_validated_email=user_validated_email, dashboard_nav=True, remaining_size=50000, hash_code=hash_code, user_id=user_id, allowed_to_redeem=allowed_to_redeem, coupon_code=coupon_code)        
+                return render_template("dashboard.html", session=user_info, user_email=user_email, user_validated_email=user_validated_email, dashboard_nav=True, remaining_size=50000, hash_code=hash_code, user_id=user_id, allowed_to_redeem=allowed_to_redeem, coupon_code=coupon_code, add_on_1_allowed=add_on_1_allowed)        
                     
     
 
@@ -1614,14 +1615,14 @@ def dashboard(url_email=None):
         
 
     if account_insured:
-        return render_template("dashboard.html", session=user_info, user_email=user_email, user_name=user_name, account_insured=True, num_of_accounts = num_of_accounts, insured_accounts =insured_accounts, account_percentage=account_percentage, remaining_size=remaining_size, account_size=account_size, has_first_name=True,first_name=first_name, dashboard_nav=True, hash_code=hash_code, user_id=user_id, coupon_code=coupon_code, allowed_to_redeem=allowed_to_redeem)
+        return render_template("dashboard.html", session=user_info, user_email=user_email, user_name=user_name, account_insured=True, num_of_accounts = num_of_accounts, insured_accounts =insured_accounts, account_percentage=account_percentage, remaining_size=remaining_size, account_size=account_size, has_first_name=True,first_name=first_name, dashboard_nav=True, hash_code=hash_code, user_id=user_id, coupon_code=coupon_code, allowed_to_redeem=allowed_to_redeem,  add_on_1_allowed=add_on_1_allowed)
     # # print(user_data + " the value for user data came")
     
         
     # firebase_user_data = list(user_data.values())[0]
     
     
-    return render_template("dashboard.html", session=user_info, user_email=user_email, user_validated_email=user_validated_email, dashboard_nav=True, remaining_size=200000, user_id=user_id, hash_code=hash_code,coupon_code=coupon_code, allowed_to_redeem=allowed_to_redeem)
+    return render_template("dashboard.html", session=user_info, user_email=user_email, user_validated_email=user_validated_email, dashboard_nav=True, remaining_size=200000, user_id=user_id, hash_code=hash_code,coupon_code=coupon_code, allowed_to_redeem=allowed_to_redeem,  add_on_1_allowed=add_on_1_allowed)
 
 
 
