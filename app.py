@@ -1865,7 +1865,10 @@ def home():
 def report_payout():
     return render_template('home-main/report_payout.html', remove_hero_css=True)
 
-
+@app.route('/PropPatrol-leaderboard/')
+@app.route('/PropPatrol-leaderboard')
+def proppatrol_leaderboard():
+    return render_template('home-main/proppatrol-leaderboard.html' , remove_hero_css=True)
 
 @app.route('/featured-firms/')
 @app.route('/featured-firms')
