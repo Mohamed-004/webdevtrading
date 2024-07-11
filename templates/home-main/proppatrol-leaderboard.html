@@ -7,11 +7,47 @@
 {% block css %}    
 <meta name="robots" content="noindex, nofollow">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/proppatrol-leaderboard.css') }}">
+
+<style>
+footer {
+    display: none;
+}
+
+.highlight {
+            background-color: yellow;
+        }
+        .no-results {
+            display: none;
+            text-align: center;
+            padding: 10px;
+            color: red;
+            font-weight: bold;
+        }
+
+        html, body {
+    height: 100%;
+    
+    display: flex;
+    flex-direction: column;
+}
+
+#main-body-section {
+            flex: 1;
+          
+        }
+
+  
+
+    /* #main-body-section {
+        min-height: 800px;
+    } */
+</style>
+
 {% endblock %}
 
 {% block content %}
 
-<main class="content-main">
+<main class="content-main" id="main-body-section">
 <div class="table-container">
     <div class="table-title" style="flex-flow: row wrap;">
         <p class="name sepr" style="font-size: 0.7em;"> <span>Propsurance Firm Leaderboard</span></p>
@@ -39,71 +75,55 @@
             </a>
         </div>
     </div>
+    <input type="text" id="searchInput" onkeyup="searchFirms()" placeholder="Search for firms..">
     <table id="leaderboardTable">
         <thead>
             <tr>
                 
-                <th style="padding-left: 32px;">Firm</th>
+                <th >Firm</th>
+                {% if show_prop_score %}
                 <th>Propscore</th>
+                {% endif %}
                 <th>Safety Rating</th>
+                <th>Status Alert</th>
                 <th>Reports</th>
-                <th>Propsurance Coverage</th>
+                <th>Denied Payouts ($)</th>
             </tr>
         </thead>
         <tbody>
             <!-- Example Rows -->
+            {% for firm in firm_list %}
             <tr>
-                
-                <td>
+                <td style="height: 140.391px;">
                     <div class="img-firm">
-                    <div class="img-bg-td" style="background-color: #1c1c1c;"> <img src="https://imagedelivery.net/yWISIdsxTt-5FmgonrnOxg/2df60449-bfa6-4f07-1a71-7ae5f8103300/public"  alt="Firm D Logo" width="50" height="50"> </div> <p>FTMO</p>
-                </div>
+                        {% if firm.display_img%}
+                        <div class="img-bg-td" style="background-color: {{ firm.bg_color }};"> 
+                            <img src="https://imagedelivery.net/yWISIdsxTt-5FmgonrnOxg/{{ firm.image_id }}/public" alt="{{ firm.firm_name }} Logo" width="50" height="50">
+                        </div> 
+                        {% endif %}
+                        <p>{{ firm.firm_name }}</p>
+                    </div>
                 </td>
-                <td>90</td>
-                <td>★★★★★</td>
-                <td>0 Reports</td>
-                <td>Available</td>
+                {% if show_prop_score %}
+                <td>{{ firm.prop_score }}</td>
+                {% endif %}
+                <td>
+                    <img src="{{ url_for('static', filename='images/stars/' ~ firm.stars ~ (' star' if firm.stars in [0, 1] else ' stars') ~ '.svg') }}" alt="{{ firm.stars }} stars">
+                </td>
+                <td>
+                    <div class="{{firm.status_css}}">
+                        {{ firm.status_alert }}
+                    </div>
+                </td>
+                <td>{{ firm.reports }} Reports</td>
+                <td>{{ firm.denied_payouts }}</td>
             </tr>
-            <tr>
-                
-                <td>Firm B</td>
-                <td>78</td>
-                <td>★★★★☆</td>
-                <td>2 Reports</td>
-                <td>Available</td>
+            {% endfor %}
+            <tr id="noResultsRow" class="no-results">
+                <td colspan="{% if show_prop_score %}6{% else %}5{% endif %}">No firms found</td>
             </tr>
-            <tr>
-                
-                <td>Firm C</td>
-                <td>65</td>
-                <td>★★★☆☆</td>
-                <td>5 Reports</td>
-                <td>Available</td>
-            </tr>
-            <tr>
-               
-                <td>Firm D</td>
-                <td>50</td>
-                <td>★★☆☆☆</td>
-                <td>8 Reports</td>
-                <td>Available</td>
-            </tr>
-            <tr>
-               
-                <td>Firm E</td>
-                <td>30</td>
-                <td>★☆☆☆☆</td>
-                <td>12 Reports</td>
-                <td>Available</td>
-            </tr>
-            <tr>
-                
-                <td>Firm F</td>
-                <td>20</td>
-                <td>☆☆☆☆☆</td>
-                <td>15 Reports</td>
-                <td>Blacklisted</td>
-            </tr>
+           
+           
             <!-- Add more rows as necessary -->
         </tbody>
     </table>
@@ -111,4 +131,79 @@
 
 </main>
 
+{% endblock %}
+
+{% block script %}
+<script>
+
+
+function reverseTableOrder() {
+    const table = document.getElementById("leaderboardTable").tBodies[0];
+    const rows = Array.from(table.rows);
+    rows.reverse();
+    rows.forEach(row => table.appendChild(row));
+}
+
+
+
+function updateRowColors() {
+    const table = document.getElementById("leaderboardTable").tBodies[0];
+    const rows = Array.from(table.rows);
+    rows.forEach((row, index) => {
+        if (index % 2 === 0) {
+            row.classList.remove('odd-row');
+        } else {
+            row.classList.add('odd-row');
+        }
+    });
+}
+
+function debounce(func, delay) {
+        let debounceTimer;
+        return function() {
+            const context = this;
+            const args = arguments;
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(() => func.apply(context, args), delay);
+        }
+    }
+
+    function searchFirms() {
+        // Declare variables
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("searchInput");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("leaderboardTable");
+        tr = table.getElementsByTagName("tr");
+
+        // Loop through all table rows, and hide those who don't match the search query
+        var visibleRowCount = 0;
+        for (i = 1; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[0];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                    visibleRowCount++;
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+        
+        // Reapply the alternating row colors
+        var visibleRows = Array.from(table.getElementsByTagName("tr")).filter(row => row.style.display !== "none");
+        visibleRows.forEach((row, index) => {
+            if (index % 2 === 0) {
+                row.style.backgroundColor = "#F1F5FF";
+               
+            } else {
+                row.style.backgroundColor = "#ffffff";
+            }
+        });
+    }
+
+    document.getElementById('searchInput').addEventListener('keyup', debounce(searchFirms, 300));
+
+</script>
 {% endblock %}

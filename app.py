@@ -1868,7 +1868,84 @@ def report_payout():
 @app.route('/PropPatrol-leaderboard/')
 @app.route('/PropPatrol-leaderboard')
 def proppatrol_leaderboard():
-    return render_template('home-main/proppatrol-leaderboard.html' , remove_hero_css=True)
+    
+    collection_ref = db.collection('proppatrol_leaderboard').document('main_leaderboard').collection('firm_list')
+
+    # Retrieve the documents
+    docs = collection_ref.stream()
+    firm_list = []
+
+    main_leaderboard_ref = db.collection('proppatrol_leaderboard').document('main_leaderboard')
+
+    # Retrieve the main leaderboard document
+    main_leaderboard_doc = main_leaderboard_ref.get()
+    main_leaderboard_data = main_leaderboard_doc.to_dict()
+
+    show_prop_score = main_leaderboard_data.get('show_prop_score', False)
+
+    # Iterate through the documents
+    for doc in docs:
+        firm = doc.to_dict()
+        firm_name = firm.get('name', '')
+        prop_score = firm.get('propscore', '')
+        image_id = firm.get('image_id', '')
+        reports = firm.get('reports', '')
+        bg_color = firm.get('bg_color', '')
+        denied_payouts = firm.get('denied_payouts', '')
+        date_from_data = firm.get('last_update', '')
+        formatted_date = date_from_data.strftime('%d %B')
+        display_img = firm.get('display_img', True)
+        
+        stars = 0
+        status_alert = ''
+        status_css = ''
+
+        if prop_score >= 85:
+            stars = 5
+            status_alert = "Excellent"
+            status_css = 'no-warnings'
+        elif prop_score >= 70:
+            stars = 4
+            status_alert = "Good"
+            status_css = 'fine'
+        elif prop_score >= 55:
+            stars = 3
+            status_alert = "Moderate Risk"
+            status_css = 'take-caution'
+        elif prop_score >= 40:
+            stars = 2
+            status_alert = "Elevated Risk"
+            status_css = "unrecommended"
+        elif prop_score >= 25:
+            stars = 1
+            status_alert = "High Risk"
+            status_css = 'careful'
+        else:
+            stars = 0
+            status_alert = "Critical Risk"
+            status_css = 'blacklisted'
+        
+        firm_data = {
+            'firm_name': firm_name,
+            'prop_score': prop_score,
+            'image_id': image_id,
+            'reports': reports,
+            'bg_color': bg_color,
+            'denied_payouts': denied_payouts,
+            'last_update': formatted_date,
+            'stars': stars,
+            'status_alert': status_alert,
+            'status_css': status_css,
+            'display_img': display_img
+        }
+
+        firm_list.append(firm_data)
+
+        # print(f'{doc.id} => {doc.to_dict()}')
+    
+    sorted_firm_list = sorted(firm_list, key=lambda x: x['prop_score'], reverse=True)
+
+    return render_template('home-main/proppatrol-leaderboard.html' , remove_hero_css=True, firm_list=sorted_firm_list, show_prop_score=show_prop_score)
 
 @app.route('/featured-firms/')
 @app.route('/featured-firms')
@@ -1925,7 +2002,7 @@ def mff_90a():
 @app.route('/reports-unresolved-closed/')
 @app.route('/reports-unresolved-closed')
 def report_preview_unresolved():
-    return render_template('reports-unresolved-closed.html', remove_hero_css=True)
+    return render_template('reports/reports-unresolved-closed.html', remove_hero_css=True)
 
 @app.route('/reports-unresolved-open/')
 @app.route('/reports-unresolved-open')

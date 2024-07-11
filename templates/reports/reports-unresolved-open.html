@@ -5,11 +5,24 @@
   Prop Patrol | List of Reported Firms with Open and Unresolved Reports</title>
 {% endblock %}
 
-{% block css %}    <link rel="stylesheet" href="{{ url_for('static', filename='css/cases.css') }}"> {% endblock %}
+{% block css %}    <link rel="stylesheet" href="{{ url_for('static', filename='css/cases.css') }}">
+ <style>
+  footer {
+    display: none;
+  }
+
+  .bottom-footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+  }
+ </style>
+
+{% endblock %}
 
 {% block seo%}
 <meta name="description" content="Explore the ongoing and unresolved cases on Prop Patrol. Get the latest updates on open investigations involving firms with unresolved financial discrepancies, focusing on transparency and accountability in financial trading.">
-
+{% endblock %}
 {% block content %}
 
 
@@ -58,4 +71,4 @@
   </main>
 
 
-          {% endblock %}
+{% endblock %}

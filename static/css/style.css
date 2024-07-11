@@ -1975,8 +1975,12 @@ margin-left: auto;
 
 @media (max-width: 1200px) {
     #hero h1.flex-full-child {
-     font-size: 2.4em;
+     font-size: 3.3em;
     }
+    #hero p.flex-full-child {
+    font-size: 1.2em;
+    }
+}
 
 /* Responsive Styles */
 @media (max-width: 1100px) {
@@ -2251,7 +2255,7 @@ width: 100%;
     }
 
     #hero h1.flex-full-child {
-        font-size: 2.9em;
+        font-size: 2.6em;
         text-align: left !important;
     }
 
@@ -2338,7 +2342,7 @@ width: 85%;
     }
 
     button.faq-question, .faq-answer p{
-        font-size: 0.9em;
+        font-size: 1.05em;
     }
 
     .faq-question .num-rank {
