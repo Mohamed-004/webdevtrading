@@ -1,0 +1,401 @@
+/* horizintal card beginning  */
+
+.card-horizontal {
+    display: flex;
+    /* width: 80%; */ /* Adjust based on your screen size */
+    margin: 3em 0;
+    min-height: 150px;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    border-radius: 15px;
+    overflow: hidden;
+    align-items: stretch; /* Align children vertically */
+}
+
+.card-horizontal .header {
+    background-color: #ffffff;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    /* border-right: 2px solid #e8e8e8; */
+    /* flex: 1 1 5%; */ /* Adjust flex basis according to your layout */
+    /* width: 20% !important; */
+    /* border-radius: 20px; */
+    justify-content: center;
+    background-color: #ffffff;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30% ;
+    /* border-radius: 20px; */
+    box-shadow: inset 0 4px 80px #2196f357;
+    /* border: 1px solid #e8e8e8; */
+    border-radius: 15px;
+    /* border-right: 0.24em solid #007bffab; */
+}
+
+.card-horizontal .logo {
+    width: 200px;
+    /* height: 40px; */
+    margin-right: 15px;
+    /* text-align: center; */
+}
+
+.card-horizontal .title {
+    font-size: 16px;
+    color: #333;
+}
+
+.card-horizontal .form {
+    padding: 20px 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    /* position: relative; */
+    flex: 2; /* Larger flex-grow to take more space */
+    max-width: 100%;
+}
+
+.card-horizontal .input {
+    height: 40px;
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    /* padding: 0.8em 35px; */
+    border-radius: 10px;
+    background-color: #f1f8ff;
+    border: 1px solid #a7d4f6d9;
+    color: #0c3594d1;
+    width: 100%;
+    box-shadow: 0 4px 8px rgba(128, 128, 128, 0.116);
+    margin-bottom: 0;
+    border-left: 0.5rem solid rgb(248, 214, 38);
+    border-left-color: #007bff7a;
+}
+
+.card-horizontal .button, .sign-up-button {
+    padding: 10px 20px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.card-horizontal .svg-select-1 {
+
+    /* margin-right: 1em !important; */
+    opacity: 0.6;
+}
+
+.card-horizontal .footer {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border-left: 2px solid #e8e8e8;
+    flex: 1 1 20%; /* Similar flex basis as the header */
+}
+
+.card-horizontal .checkbox {
+    display: flex;
+    align-items: center;
+}
+
+.card-horizontal .checkbox input {
+    margin-right: 10px;
+}
+
+.card-horizontal .card-container-svg, .card-container-svg-general {
+    position: relative;
+}
+
+.card-horizontal .styled-select,  .card-horizontal .input  {
+ background-color: none;
+ border-top: none;
+ border-right: none;
+ border-bottom: none;
+ box-shadow: none;
+ color: #0c35948a;
+}
+
+
+
+.card-horizontal h2.form-h2 {
+    text-align: left;
+    margin-top: 0;
+    font-size: 1.3em;
+    /* opacity: 0.8; */
+    color: #0c3594d1;
+    font-weight: bold;
+    /* text-align: center; */
+}
+
+.card-horizontal .label-text {
+    color: #0c3594bd;
+    margin: 0;
+}
+
+.card-horizontal .checkbox-custom label {
+    color: #0c35948a;
+}
+
+.card-horizontal form .checkbox-custom-1 {
+    /* margin: 1em 0; */
+}
+
+.card-horizontal .button {
+    margin-top: 2em;
+    width: 200px;
+    border-radius: 23px;
+    margin: 2em auto 0;
+}
+
+.card-horizontal .card-more-info {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    gap: 20px;
+    border-radius: 10px;
+    background-color: #f1f8ff;
+    border: 1px solid #a7d4f6d9;
+    width: max-content;
+    padding: 0.4em 1em;
+    cursor: pointer;
+}
+
+.card-horizontal hr {
+    width: 100%;
+    background-color: #007bff24;
+    height: 1px;
+}
+
+.card-horizontal .coverage-ul-info {
+    padding-left: 1em;
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 5px;
+}
+
+
+.card-horizontal .coverage-p {
+    flex-flow: row wrap;
+    display: inline-flex;
+    position: relative;
+}
+
+.card-horizontal  .coverage-p em {
+    color: #0c35948a;
+}
+
+.card-horizontal .coverage-p svg {
+    position: absolute;
+    top: 0;
+}
+
+.card-horizontal .coverage-stacked {
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+.card-horizontal .coverage-p div {
+    padding-left: 2em;
+}
+
+
+
+.card-horizontal .card-more-info  label {
+    cursor: pointer;
+    font-size: 1.1em;
+    color: #0c3594a6;
+    font-weight: 500;
+}
+
+.card-horizontal .card-desc {
+    font-size: 1.1em;
+    color: #0c3594a6;
+    font-weight: 500;
+    margin-bottom: 0.4em;
+}
+
+.card-horizontal .benefit-list {
+    list-style: none;
+    padding: 0;
+    margin: 3em 0 0;
+    font-size: smaller;
+}
+
+
+
+.card-horizontal .benefit-list li {
+    margin-bottom: 10px;
+    /* padding-left: 10px; */
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    font-size: 16px;
+    gap: 10px;
+    color: #0c3594a6;
+    font-weight: 500;
+}
+
+.card-horizontal .checkmark-benefits {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+    fill: #4CAF50;
+}
+
+.card-horizontal form {
+    display: unset;
+    flex-direction: unset;
+    max-width: unset;
+    margin:  unset;
+    padding: unset;
+    background: unset;
+    border-radius: unset;
+    box-shadow: unset;
+    all: unset !important;
+}
+
+.card-horizontal .mg-top {
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+}
+
+.card-horizontal .early-access {
+    font-size: 1em;
+    /* opacity: 0.8; */
+    color: #0c3594a6;
+    font-weight: bold;
+    margin: 0;
+    background-color: #2196f321;
+    /* color: #0c3594d1; */
+    /* display: block; */
+    align-items: center;
+    width: max-content;
+    padding: 0.5em 1em;
+    /* border: solid 2px #233dff00; */
+    border-radius: 10px;
+}
+
+.card-horizontal ul.benefit-list svg {
+        position: absolute;
+    left: 0;
+}
+
+.card-horizontal .benefit-list li {
+    padding-left: 2em;
+    position: relative;
+    font-size: 1.3em;
+    font-style: normal;
+}
+
+.card-horizontal .coverage-p a {
+    font-style: italic;
+}
+
+.card-horizontal .payment-section .payment-top {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    margin-top: 1em;
+}
+
+.card-horizontal .payment-section {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+}
+
+.card-horizontal form label.checkbox-label {
+    margin-bottom: 0 !important;
+}
+
+.card-horizontal .payment-section .payment-top  p.payment-num {
+    font-size: 3em;
+    color: #0c3594d1;
+    font-weight: 500;
+}
+
+.card-horizontal .payment-section .payment-top .payment-symbol, .card-horizontal .payment-section .payment-top .payment-num-top  {
+    color: #0c3594c9;
+    font-size: 1.4em;
+}
+
+
+.card-horizontal .payment-section .payment-top .payment-symbol {
+    align-self: center;
+}
+
+.card-horizontal .payment-num-strike {
+    text-align: center;
+    font-size: 1.3em;
+    color: #0c35946e;
+    text-decoration: line-through;
+    align-self: center;
+    margin-right: 0.6em;
+}
+
+.card-horizontal .payment-button, .coupon-form .payment-button {
+    position: relative;
+    /* width: 100%; */
+    margin: 0 auto;
+    padding: 20px 40px 20px 40px;
+    background-color: #0c3594d1;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding-left: 65px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-size: 1em;
+    font-weight: bold;
+    /* box-shadow: inset 0 4px 80px #2196f357; */
+}
+
+.card-horizontal .coverage-p {
+
+font-size: 1.1em;
+
+color: #0c3594a6;
+
+font-weight: 500;
+
+display: flex;
+
+flex-flow: row nowrap;
+
+align-items: center;
+
+flex-flow: row wrap;
+
+display: inline-flex;
+
+position: relative;
+
+gap: 8px;
+}
+
+
+
+
+@media (max-width: 1250px) {
+    .card-horizontal .header {
+        width: 100%;
+        height: 120px;
+    }
+}
+
+@media (max-width: 1200px) {
+   
+
+   .card-horizontal {
+    flex-flow: row wrap;
+   }
+
+
+}

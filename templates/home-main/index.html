@@ -7,8 +7,10 @@
 <meta name="description" content="Prop Patrol is dedicated to advocating for traders, providing dispute resolution services,  ensuring fair practices by prop firms, and much more.">
 {% endblock %}
 
-{% block css %}    <link rel="stylesheet" href="{{ url_for('static', filename='css/cases.css') }}">
+{% block css %}    
+<link rel="stylesheet" href="{{ url_for('static', filename='css/cases.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/temp-index-stat.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/propsurance-home.css') }}">
 {% endblock %}
 
 {% block content %}
@@ -16,12 +18,14 @@
 
     <main class="content-main">
 
+      {% include "coverage-types/propsurance-home-preview.html" %}
+
       <h2 class="num-text">
         Featured Reports</h2>
 
 
         <div class="button-filter">
-          <a class="filter-btn in-progress filter-left" href="{{url_for('report_preview_unresolved_open')}}"> Open <img src="{{ url_for('static', filename='images/filter.png') }}" alt="filter icon logo"></a>
+          <a class="filter-btn in-progress filter-left" href="{{url_for('report_preview_unresolved_open')}}"> Active <img src="{{ url_for('static', filename='images/filter.png') }}" alt="filter icon logo"></a>
           <a class="filter-btn Resolved" href="{{url_for('report_preview_resolved')}}">Closed <img src="{{ url_for('static', filename='images/filter.png') }}" alt="filter icon logo"> </a>
           <a class="filter-btn UnResolved filter-right" href="{{url_for('report_preview_unresolved')}}">Closed <img src="{{ url_for('static', filename='images/filter.png') }}" alt="filter icon logo"> </a>
         </div>

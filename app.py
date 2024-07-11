@@ -105,6 +105,9 @@ oauth.register(
     # client_kwargs={'scope': 'openid  email'},
 )
 
+# add_on_1 to show yes or no
+add_on_1_allowed_base = False
+
 
 
 def send_email(recipient, template_id, substitution_data):
@@ -137,11 +140,11 @@ def send_email(recipient, template_id, substitution_data):
 
 @app.route('/propsurance-application')
 def propsurance_application():
-    return render_template('propsurance_application.html')
+    return render_template('home-main/propsurance_application.html')
 
 @app.errorhandler(404)
 def not_found(error):
-    return render_template('404.html'), 404
+    return render_template('home-main/404.html'), 404
     
 @app.route('/dashboard/process_payment/', methods=['POST'])
 @app.route('/dashboard/process_payment', methods=['POST'])
@@ -276,15 +279,15 @@ def callback():
             
             # If the user is not allowed, do not store in session or 'users' collection
             flash('You are not authorized to access this page.', 'error')
-            return render_template('noaccess.html', error='You did not complete your PropSurance application, please contact us at support@proppatrol.net') # Redirect to a generic page or a denial information page
+            return render_template('propsurance-dashboard/noaccess.html', error='You did not complete your PropSurance application, please contact us at support@proppatrol.net') # Redirect to a generic page or a denial information page
 
     except OAuthError as e:
         if 'access_denied' in str(e):
             # Handle specific case where access was denied
-            return render_template('noaccess.html', error='You do not have access to PropSurance, please contact us at support@proppatrol.net'), 403
+            return render_template('propsurance-dashboard/noaccess.html', error='You do not have access to PropSurance, please contact us at support@proppatrol.net'), 403
         else:
             # Handle other OAuth errors
-            return render_template('noaccess.html', error='You do not have access to PropSurance, please contact us at support@proppatrol.net'), 403
+            return render_template('propsurance-dashboard/noaccess.html', error='You do not have access to PropSurance, please contact us at support@proppatrol.net'), 403
         
 
 @app.route("/affiliate-center/account-info")
@@ -585,7 +588,7 @@ def dashboard_faq():
             # redirect to affiliate page
             return redirect(url_for("affiliate_login"))
         
-        return render_template("faq-dashboard.html",dashboard_nav=True)
+        return render_template("propsurance-dashboard/faq-dashboard.html",dashboard_nav=True)
 
     
         
@@ -605,7 +608,7 @@ def propsurance_service():
             # redirect to affiliate page
             return redirect(url_for("affiliate_login"))
         
-        return render_template("terms-propsurance.html",dashboard_nav=True)
+        return render_template("propsurance-dashboard/terms-propsurance.html",dashboard_nav=True)
 
    
         
@@ -623,7 +626,7 @@ def propsurance_terms():
             # redirect to affiliate page
             return redirect(url_for("affiliate_login"))
         
-        return render_template("privacy-propsurance.html",dashboard_nav=True)
+        return render_template("propsurance-dashboard/privacy-propsurance.html",dashboard_nav=True)
 
     
         
@@ -722,7 +725,7 @@ def access_ticket_handler(account_count):
         # pass
         raise err
 
-    return render_template("ticket_handler.html", account_info=account, prop_count=account_count,dashboard_nav=True, hash_code=hash_code,user_id=user_id)
+    return render_template("propsurance-dashboard/ticket_handler.html", account_info=account, prop_count=account_count,dashboard_nav=True, hash_code=hash_code,user_id=user_id)
 
 #  add coupon to user if they do not have one
 @app.route('/dashboard/add-coupon', methods=['GET', 'POST'])
@@ -790,7 +793,7 @@ def create_coupon():
 
             if not coupon_code_is_valid:
                 flash("Invalid coupon code", "error")
-                return render_template("create_coupon.html", coupon_code=coupon_code, allowed_to_redeem=allowed_to_redeem, allowed_to_add=allowed_to_add, dashboard_nav=True )
+                return render_template("propsurance-dashboard/create_coupon.html", coupon_code=coupon_code, allowed_to_redeem=allowed_to_redeem, allowed_to_add=allowed_to_add, dashboard_nav=True )
             
             else:
                 db.collection('affiliates').document(affiliate_email).update({
@@ -803,16 +806,7 @@ def create_coupon():
                 return redirect(url_for('create_coupon'))
             
 
-            
-            
-
-        
-        
-      
-            
-
-
-    return render_template("create_coupon.html", user_email=user_email, coupon_code=coupon_code, allowed_to_redeem=allowed_to_redeem, allowed_to_add=allowed_to_add, dashboard_nav=True )
+    return render_template("propsurance-dashboard/create_coupon.html", user_email=user_email, coupon_code=coupon_code, allowed_to_redeem=allowed_to_redeem, allowed_to_add=allowed_to_add, dashboard_nav=True )
 
 
 
@@ -1024,6 +1018,7 @@ def access_account_dashboard(account_count):
     account = {}
     product_name = ''
     plan_is_not_free = True
+    add_on_1_allowed = add_on_1_allowed_base
 
     try:
         user_email = user_info['email']
@@ -1124,7 +1119,7 @@ def access_account_dashboard(account_count):
         pass
         # raise err
 
-    return render_template("user_dashboard.html", account_info=account, prop_count=account_count, has_first_name=True, first_name=first_name, dashboard_nav=True)
+    return render_template("propsurance-dashboard/user_dashboard.html", account_info=account, prop_count=account_count, has_first_name=True, first_name=first_name, dashboard_nav=True, add_on_1_allowed=add_on_1_allowed)
 
 @app.route('/dashboard/new-coverage-free', methods=['GET', 'POST'])
 @app.route('/dashboard/new-coverage-free/', methods=['GET', 'POST'])
@@ -1377,7 +1372,7 @@ def submit_mt_account(account):
         # Redirect back to the same page to potentially show updated data or messages
         return redirect(url_for('submit_mt_account', account=account))
 
-    return render_template("validate_trader_info.html", accounts=accounts, prop_count=account, dashboard_nav=True, hash_code=hash_code, user_id=user_id)
+    return render_template("propsurance-dashboard/validate_trader_info.html", accounts=accounts, prop_count=account, dashboard_nav=True, hash_code=hash_code, user_id=user_id)
 
 
 
@@ -1422,7 +1417,7 @@ def dashboard(url_email=None):
     user_id = 0
     allowed_to_redeem = ''
     coupon_code = ''
-    add_on_1_allowed = False
+    add_on_1_allowed = add_on_1_allowed_base
 
     
 
@@ -1585,7 +1580,7 @@ def dashboard(url_email=None):
                     remaining_size = 50000 - account_size        
 
             else: 
-                return render_template("dashboard.html", session=user_info, user_email=user_email, user_validated_email=user_validated_email, dashboard_nav=True, remaining_size=50000, hash_code=hash_code, user_id=user_id, allowed_to_redeem=allowed_to_redeem, coupon_code=coupon_code, add_on_1_allowed=add_on_1_allowed)        
+                return render_template("propsurance-dashboard/dashboard.html", session=user_info, user_email=user_email, user_validated_email=user_validated_email, dashboard_nav=True, remaining_size=50000, hash_code=hash_code, user_id=user_id, allowed_to_redeem=allowed_to_redeem, coupon_code=coupon_code, add_on_1_allowed=add_on_1_allowed)        
                     
     
 
@@ -1615,14 +1610,14 @@ def dashboard(url_email=None):
         
 
     if account_insured:
-        return render_template("dashboard.html", session=user_info, user_email=user_email, user_name=user_name, account_insured=True, num_of_accounts = num_of_accounts, insured_accounts =insured_accounts, account_percentage=account_percentage, remaining_size=remaining_size, account_size=account_size, has_first_name=True,first_name=first_name, dashboard_nav=True, hash_code=hash_code, user_id=user_id, coupon_code=coupon_code, allowed_to_redeem=allowed_to_redeem,  add_on_1_allowed=add_on_1_allowed)
+        return render_template("propsurance-dashboard/dashboard.html", session=user_info, user_email=user_email, user_name=user_name, account_insured=True, num_of_accounts = num_of_accounts, insured_accounts =insured_accounts, account_percentage=account_percentage, remaining_size=remaining_size, account_size=account_size, has_first_name=True,first_name=first_name, dashboard_nav=True, hash_code=hash_code, user_id=user_id, coupon_code=coupon_code, allowed_to_redeem=allowed_to_redeem,  add_on_1_allowed=add_on_1_allowed)
     # # print(user_data + " the value for user data came")
     
         
     # firebase_user_data = list(user_data.values())[0]
     
     
-    return render_template("dashboard.html", session=user_info, user_email=user_email, user_validated_email=user_validated_email, dashboard_nav=True, remaining_size=200000, user_id=user_id, hash_code=hash_code,coupon_code=coupon_code, allowed_to_redeem=allowed_to_redeem,  add_on_1_allowed=add_on_1_allowed)
+    return render_template("propsurance-dashboard/dashboard.html", session=user_info, user_email=user_email, user_validated_email=user_validated_email, dashboard_nav=True, remaining_size=200000, user_id=user_id, hash_code=hash_code,coupon_code=coupon_code, allowed_to_redeem=allowed_to_redeem,  add_on_1_allowed=add_on_1_allowed)
 
 
 
@@ -1862,60 +1857,60 @@ def static_from_root():
 
 @app.route('/')
 def home():
-    return render_template('index.html')
+    return render_template('home-main/index.html')
 
 
 @app.route('/report-payout/')
 @app.route('/report-payout')
 def report_payout():
-    return render_template('report_payout.html')
+    return render_template('home-main/report_payout.html', remove_hero_css=True)
 
 
 
 @app.route('/featured-firms/')
 @app.route('/featured-firms')
 def featured_firms():
-    return render_template('featured-firms.html')
+    return render_template('home-main/featured-firms.html' , remove_hero_css=True)
 
 
 @app.route('/terms-of-service/')
 @app.route('/terms-of-service')
 def tos():
-    return render_template('terms-of-service.html')
+    return render_template('home-main/terms-of-service.html', remove_hero_css=True)
 
 
 @app.route('/reports/dei-20a/')
 @app.route('/reports/dei-20a')
 def dei_20a():
-    return render_template('dei_case_20a.html')
+    return render_template('cases/dei_case_20a.html', remove_hero_css=True)
 
 @app.route('/reports/fast-forex-funding-30a/')
 @app.route('/reports/fast-forex-funding-30a')
 def fff_30a():
-    return render_template('fff_case_30a.html')
+    return render_template('cases/fff_case_30a.html', remove_hero_css=True)
 
 
 @app.route('/reports/bespoke-funding-40a/')
 @app.route('/reports/bespoke-funding-40a')
 def bsp_40a():
-    return render_template('bsp_case_40a.html')
+    return render_template('cases/bsp_case_40a.html', remove_hero_css=True)
 
 @app.route('/reports/uwm-60a/')
 @app.route('/reports/uwm-60a')
 def uwm_60a():
-    return render_template('uwm_case_60a.html')
+    return render_template('cases/uwm_case_60a.html', remove_hero_css=True)
 
 
 @app.route('/reports/kortana-70a/')
 @app.route('/reports/kortana-70a')
 def kortana_70a():
-    return render_template('kor_case_70a.html')
+    return render_template('cases/kor_case_70a.html', remove_hero_css=True)
 
 
 @app.route('/reports/mff-90a/')
 @app.route('/reports/mff-90a')
 def mff_90a():
-    return render_template('mff_case_90a.html')
+    return render_template('cases/mff_case_90a.html', remove_hero_css=True)
 
 
 
@@ -1927,22 +1922,22 @@ def mff_90a():
 @app.route('/reports-unresolved-closed/')
 @app.route('/reports-unresolved-closed')
 def report_preview_unresolved():
-    return render_template('reports-unresolved-closed.html')
+    return render_template('reports-unresolved-closed.html', remove_hero_css=True)
 
 @app.route('/reports-unresolved-open/')
 @app.route('/reports-unresolved-open')
 def report_preview_unresolved_open():
-    return render_template('reports-unresolved-open.html')
+    return render_template('reports/reports-unresolved-open.html', remove_hero_css=True)
 
 @app.route('/reports-resolved/')
 @app.route('/reports-resolved')
 def report_preview_resolved():
-    return render_template('reports-resolved.html')
+    return render_template('reports/reports-resolved.html', remove_hero_css=True)
 
 @app.route('/view-reports/')
 @app.route('/view-reports')
 def view_firm_reports():
-    return render_template('reports-stats.html')
+    return render_template('reports/reports-stats.html', remove_hero_css=True)
 
 
 def free_coverage_update_accounts_info(customer_email, customer_name, form_data):
