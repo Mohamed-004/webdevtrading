@@ -1865,8 +1865,8 @@ def home():
 def report_payout():
     return render_template('home-main/report_payout.html', remove_hero_css=True)
 
-@app.route('/PropPatrol-leaderboard/')
-@app.route('/PropPatrol-leaderboard')
+@app.route('/firm-trust-index/')
+@app.route('/firm-trust-index')
 def proppatrol_leaderboard():
     
     collection_ref = db.collection('proppatrol_leaderboard').document('main_leaderboard').collection('firm_list')
@@ -1945,7 +1945,7 @@ def proppatrol_leaderboard():
     
     sorted_firm_list = sorted(firm_list, key=lambda x: x['prop_score'], reverse=True)
 
-    return render_template('home-main/proppatrol-leaderboard.html' , remove_hero_css=True, firm_list=sorted_firm_list, show_prop_score=show_prop_score)
+    return render_template('home-main/trust-index-table.html' , remove_hero_css=True, firm_list=sorted_firm_list, show_prop_score=show_prop_score)
 
 @app.route('/featured-firms/')
 @app.route('/featured-firms')
