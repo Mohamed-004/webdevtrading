@@ -214,6 +214,19 @@ p.name {
     
 }
 
+/* .sticky-column {
+    position: -webkit-sticky;
+    position: absolute;
+    left: 0;
+  
+    background-color: white;
+    z-index: 2;
+    box-shadow: inset 0 4px 80px #2196f357;
+    border-radius: 0;
+    border-top-left-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
+} */
+
 /* input style ending */
 
 /* warning styles ending */

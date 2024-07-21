@@ -381,6 +381,96 @@ gap: 8px;
 }
 
 
+.select-action-div {
+    margin-top: 20px;
+    text-align: center; /* Center the select box */
+}
+
+.select-action {
+    font-size: 16px;
+    padding: 10px 20px;
+    border: 1px solid #d1d5db;
+    border-radius: 10px;
+    background-color: #f3f4f6;
+    color: #1f2937;
+    appearance: none; /* Remove default arrow */
+    -webkit-appearance: none; /* Remove default arrow for Safari */
+    -moz-appearance: none; /* Remove default arrow for Firefox */
+    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg width%3D%2225px%22 class%3D%22svg-select-1%22 height%3D%2225px%22 id%3D%22dropdown-svg%22 viewBox%3D%220 0 24 24%22 fill%3D%22none%22 xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cg id%3D%22SVGRepo_bgCarrier%22 stroke-width%3D%220%22%3E%3C/g%3E%3Cg id%3D%22SVGRepo_tracerCarrier%22 stroke-linecap%3D%22round%22 stroke-linejoin%3D%22round%22%3E%3C/g%3E%3Cg id%3D%22SVGRepo_iconCarrier%22%3E%3Cpath fill-rule%3D%22evenodd%22 clip-rule%3D%22evenodd%22 d%3D%22M12.7071 14.7071C12.3166 15.0976 11.6834 15.0976 11.2929 14.7071L6.29289 9.70711C5.90237 9.31658 5.90237 8.68342 6.29289 8.29289C6.68342 7.90237 7.31658 7.90237 7.70711 8.29289L12 12.5858L16.2929 8.29289C16.6834 7.90237 17.3166 7.90237 17.7071 8.29289C18.0976 8.68342 18.0976 9.31658 17.7071 9.70711L12.7071 14.7071Z%22 fill%3D%22%230c3594d1%22%3E%3C/path%3E%3C/g%3E%3C/svg%3E');
+    background-repeat: no-repeat;
+    background-position-x: calc(0% + 25px);
+    background-position-y: 54%;
+    transition: all 0.3s ease;
+    width: max-content !important;
+    border: 0 solid #4663ad4a;
+    padding: 0.8em;
+    /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); */
+    border-left: 0.5rem solid rgb(248, 214, 38) !important;
+    border-left-color: #4663adc4 !important;
+    background-color: #f1f8ff;
+}
+
+.select-action:focus {
+    outline: none;
+    /* border-color: #3b82f6;
+    background-color: #e0f2fe;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2); */
+}
+
+.select-action option {
+    color: #4663AD;
+}
+
+.select-action option[disabled] {
+    color: #9ca3af;
+}
+
+/* Adjusting the font and padding to match overall theme */
+.select-action-div select {
+    /* font-family: 'Inter', sans-serif; */
+    font-weight: 500;
+    color: #0c3594d1 !important;
+    font-size: 1em;
+    padding: 1em 0;
+    border-radius: 25px;
+}
+
+/* Adding hover effect */
+.select-action:hover {
+    /* border-color: #3b82f6;
+    background-color: #f0f9ff; */
+}
+
+/* Center align text and ensure the width doesn't exceed the container */
+.select-action {
+    text-align: center;
+    max-width: 100%;
+    width: 100%; /* Make the select element take full width */
+}
+
+button#trust-index-btn {
+    position: relative;
+    /* width: 100%; */
+    margin: 0 auto;
+    padding: 1em 40px 1em 40px;
+    /* background-color: #0c3594d1; */
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-size: 1em;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    color: #0c3594d1;
+    font-weight: 500;
+    background-color: #f1f8ff;
+    border-left: 0.5rem solid rgb(248, 214, 38) !important;
+    border-left-color: #4663adc4 !important;
+    border-radius: 25px;
+}
 
 
 @media (max-width: 1250px) {

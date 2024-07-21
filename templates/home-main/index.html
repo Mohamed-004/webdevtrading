@@ -532,6 +532,14 @@ $(document).ready(function() {
         }
     });
 });
+
+function handleSelectChangeApplication(select) {
+    const selectedValue = select.value;
+    if (selectedValue === 'propsurance-application') {
+      window.location.href = '{{ url_for("propsurance_application") }}';
+    }
+    select.value = "";
+}
 </script>
 
 {% endblock %}

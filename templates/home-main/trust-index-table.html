@@ -70,7 +70,7 @@ footer {
         <thead>
             <tr>
                 
-                <th >Firm</th>
+                <th class="sticky-column">Firm</th>
                 {% if show_prop_score %}
                 <th>Propscore</th>
                 {% endif %}
@@ -84,7 +84,7 @@ footer {
             <!-- Example Rows -->
             {% for firm in firm_list %}
             <tr>
-                <td style="height: 140.391px;">
+                <td style="height: 140.391px;" class="sticky-column">
                     <div class="img-firm">
                         {% if firm.display_img%}
                         <div class="img-bg-td" style="background-color: {{ firm.bg_color }};"> 
