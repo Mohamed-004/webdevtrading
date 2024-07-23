@@ -304,7 +304,28 @@
     </div>
     
 
-    {% block script %}{% endblock %}
+    {% block script %}
+    
+    {% endblock %}
+    <script>
+
+      function handleSelectChangeApplication(select) {
+          const selectedValue = select.value;
+          if (selectedValue === 'propsurance-application') {
+            window.location.href = '{{ url_for("propsurance_application") }}';
+          }
+          else if (selectedValue === 'home') {
+            window.location.href = '{{ url_for("home") }}';
+          }
+      
+          else if (selectedValue === 'return-dashboard') {
+            window.location.href = '{{ url_for("dashboard") }}';
+          }
+          select.value = "";
+      }
+      
+      
+          </script>
 </body>
 
 </html>

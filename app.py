@@ -170,8 +170,7 @@ def process_payment():
             'phase1': ['https://luxtrading.com/phase1/50k', 'https://luxtrading.com/phase1/100k', 'https://luxtrading.com/phase1/200k'],
             'phase2': ['https://luxtrading.com/phase2/50k', 'https://luxtrading.com/phase2/100k', 'https://luxtrading.com/phase2/200k'],
             'live': ['https://luxtrading.com/live/50k', 'https://luxtrading.com/live/100k', 'https://luxtrading.com/live/200k']
-        }
-    }
+        }}
 
     redirect_url = urls[firm][phase][account_size - 1]  # Subtract 1 because list indices start at 0
     # print(redirect_url)
@@ -272,11 +271,6 @@ def callback():
                     return redirect(url_for("affiliate_login"))
 
 
-
-
-
-
-            
             # If the user is not allowed, do not store in session or 'users' collection
             flash('You are not authorized to access this page.', 'error')
             return render_template('propsurance-dashboard/noaccess.html', error='You did not complete your PropSurance application, please contact us at support@proppatrol.net') # Redirect to a generic page or a denial information page
@@ -990,13 +984,12 @@ def verify_payment():
 @app.route('/successful-payment')
 def success_payment():
     # return payment work and return to dashboard
-    return 'payment worked'
+    return render_template('payment-confirmation/success.html')
 
 @app.route('/canceled-payment')
 def cancel_payment():
     # payment was canceled return to dashboard
-    return 'cancel payment'
-
+    return render_template('payment-confirmation/cancel.html')
     
 
 @app.route('/dashboard/user/<int:account_count>', methods=['GET'])
