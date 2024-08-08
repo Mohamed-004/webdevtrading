@@ -1889,7 +1889,7 @@ h2.early-access.new {
 
     #hero {
         padding: 2em 10%;
-        background: rgb(241,248,255);
+        background: linear-gradient(179deg, rgba(241, 248, 255, 1) 60%, rgba(42, 67, 255, 1) 80%);
         /* background: linear-gradient(90deg, rgba(241,248,255,1) 70%, rgba(42,67,255,1) 80%); */
     }
 
