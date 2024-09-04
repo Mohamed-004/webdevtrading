@@ -139,6 +139,7 @@ def send_email(recipient, template_id, substitution_data):
     return response.json()
 
 @app.route('/propsurance-application')
+@app.route('/propsurance-application/')
 def propsurance_application():
     return render_template('home-main/propsurance_application.html')
 
@@ -602,7 +603,7 @@ def propsurance_service():
             # redirect to affiliate page
             return redirect(url_for("affiliate_login"))
         
-        return render_template("propsurance-dashboard/terms-propsurance.html",dashboard_nav=True)
+        return redirect('https://docs.google.com/document/d/1f99SUncGxvuIGNesTJxFBiDiJkn1Znex6MXmCfCpy68/edit#heading=h.dwhnu9lub68g')
 
    
         
@@ -620,7 +621,7 @@ def propsurance_terms():
             # redirect to affiliate page
             return redirect(url_for("affiliate_login"))
         
-        return render_template("propsurance-dashboard/privacy-propsurance.html",dashboard_nav=True)
+        return redirect('https://docs.google.com/document/d/1f99SUncGxvuIGNesTJxFBiDiJkn1Znex6MXmCfCpy68/edit#heading=h.dwhnu9lub68g')
 
     
         
