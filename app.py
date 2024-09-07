@@ -987,6 +987,12 @@ def success_payment():
     # return payment work and return to dashboard
     return render_template('payment-confirmation/success.html')
 
+@app.route('/confirmed-applicant')
+@app.route('/confirmed-applicant/')
+def success_applicant():
+    # return succesful applicant page
+    return render_template('payment-confirmation/success-applicant.html')
+
 @app.route('/canceled-payment')
 def cancel_payment():
     # payment was canceled return to dashboard

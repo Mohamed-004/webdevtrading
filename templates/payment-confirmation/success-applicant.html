@@ -1,0 +1,96 @@
+{% extends "layout.html" %}
+{% block title %}
+<title>PropPatrol | 404 Error </title>
+{% endblock %}
+
+{% block css %}   
+<meta name="robots" content="noindex, nofollow"> 
+<link rel="stylesheet" href="{{ url_for('static', filename='css/cases.css') }}">
+
+    <style>
+        html, body {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.content-wrap {
+    flex: 1 0 auto; /* Flex-grow, flex-shrink, flex-basis */
+}
+
+footer {
+    display: none;
+  position: absolute;
+  bottom: 0;
+  margin-bottom: 4em;
+}
+
+.bottom-footer {
+    position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+     .content-main    h1 {     font-size: 2.5em;
+    font-weight: 700;
+    text-align: center;
+    color: #233dff;}
+    .content-main p {
+    font-size: 22px;
+    margin: 20px 0;
+    text-align: center;
+    font-size: 1.4em;
+    color: #0c3594a6;
+    font-weight: 500;
+}
+       .content-main a { color: #337ab7; text-decoration: none; font-weight: bold; color: #337ab7;
+    text-decoration: none;
+    font-weight: bold;
+    width: 100%;
+    display: block; }
+       .content-main a    a:hover { text-decoration: underline; }
+        .content-main a  .img-container { margin: 20px; }
+        #hero {
+            display: none;
+        }
+
+        .select-action-layout {
+            background-position-x: calc(0% + 11px);
+        }
+
+            
+    </style>
+{% endblock %}
+
+{% block content %}
+
+<main class="content-main">
+
+   
+    <h1>Payment Successful!</h1>
+    <p>Thank you for your submission, you have successfully completed your application.</p>
+    
+    
+    <div class="select-action-div-layout">
+
+       
+                
+        
+        <select id="propsurance-select-apply-layout" onchange="handleSelectChangeApplication(this)"   class="select-action-layout">
+            <!-- Placeholder option -->
+            <option value=""  selected disabled >Dashboard</option>
+            <!-- Actual options -->
+            <option value="home">Home Page</option>
+            <option value="return-dashboard"  >Return to Dashboard</option>
+        </select>
+
+    </div>
+
+
+</main>
+
+{% endblock %}
